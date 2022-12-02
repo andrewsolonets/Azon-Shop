@@ -9,9 +9,9 @@ export const productRouter = router({
     });
   }),
   getOne: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    const title = input;
-    return ctx.prisma.product.findFirst({
-      where: { title },
+    const id = input;
+    return ctx.prisma.product.findUnique({
+      where: { id },
     });
   }),
 

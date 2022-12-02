@@ -23,16 +23,41 @@ model Category {
   products  Product[]
 }
 
+model CartItem {
+  id        String  @id @default(cuid())
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  quantity  Int
+
+  cart   Cart   @relation(fields: [cartId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  cartId String
+
+  @@index([productId])
+  @@index([cartId])
+}
+
+model Cart {
+  id             String     @id @default(cuid())
+  createdAt      DateTime   @default(now())
+  user           User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String?    @unique
+  registeredUser Boolean    @default(false)
+  items          CartItem[]
+
+  @@index([userId])
+}
+
 model Product {
-  id          String    @id @default(cuid())
-  title       String    @unique
+  id          String     @id @default(cuid())
+  title       String     @unique
   description String
   price       String
   quantity    Int
   image       String
-  createdAt   DateTime  @default(now())
-  category    Category? @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime   @default(now())
+  category    Category?  @relation(fields: [categoryId], references: [id])
   categoryId  String?
+  CartItem    CartItem[]
 
   @@index([categoryId])
 }
@@ -87,12 +112,5 @@ model User {
   orders        Order[]
   accounts      Account[]
   sessions      Session[]
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
+  Cart          Cart?
 }
