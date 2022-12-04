@@ -10,6 +10,7 @@ export const cartRouter = router({
       select: {
         items: {
           select: {
+            id: true,
             product: true,
             quantity: true,
           },
@@ -42,6 +43,16 @@ export const cartRouter = router({
         },
       });
     }),
+  removeOne: publicProcedure.input(z.string()).mutation(({ ctx, input }) => {
+    const id = input;
+
+    return ctx.prisma.cartItem.update({
+      where: { id },
+      data: {
+        quantity: { decrement: 1 },
+      },
+    });
+  }),
   removeItem: publicProcedure
     .input(
       z.object({
