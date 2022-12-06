@@ -1,49 +1,129 @@
 import { type NextPage } from "next";
+import type { CartItem } from "../types/cart";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-import { useQueryClient } from "@tanstack/react-query";
+// import { useQueryClient } from "@tanstack/react-query";
 import { trpc } from "../utils/trpc";
+import { type Product } from "@prisma/client";
 
 const Home: NextPage = () => {
   const utils = trpc.useContext();
-  const queryClient = useQueryClient();
   const { data: sessionData } = useSession();
   const userId = sessionData?.user?.id || "hi";
 
+  const { data: secretMessage } = trpc.auth.getSecretMessage.useQuery(
+    undefined, // no input
+    { enabled: sessionData?.user !== undefined }
+  );
+
+  console.log(secretMessage);
+
   const trpcTest = trpc.product.getAll.useQuery(20);
-  const cartUser = trpc.cart.getUserCart.useQuery(userId);
-  const addToCart = trpc.cart.addItem.useMutation();
-  // const removeFromCart = trpc.cart.removeItem.useMutation();
-  const removeCart = trpc.cart.removeCart.useMutation();
-  const removeOne = trpc.cart.removeOne.useMutation({
-    async onMutate() {
+  const cartUser = trpc.cart.getUserCart.useQuery();
+  const addToCart = trpc.cart.addItem.useMutation({
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    async onMutate(el: { userId: string; item: Product; quantity: number }) {
       await utils.cart.getUserCart.cancel();
-      const prevCart = utils.cart.getUserCart.getData();
-      if (prevCart) {
-        console.log(prevCart);
-      }
-
-      // const queryCache = queryClient.getQueryCache();
-      // const queryKeys = queryCache.getAll();
-      // console.log(queryClient.getQueryData());
+      console.log(el);
+      const prevData = utils.cart.getUserCart.getData();
+      const newItem = {
+        product: el.item,
+        productId: el.item.id,
+        quantity: el.quantity,
+        cart: prevData,
+        cartId: prevData?.id,
+      };
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const newData = { ...prevData, items: [...prevData?.items, newItem] };
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      utils.cart.getUserCart.setData(undefined, () => newData);
+      return { prevData };
     },
-
+    onError(err, newPost, ctx) {
+      // If the mutation fails, use the context-value from onMutate
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      utils.cart.getUserCart.setData(undefined, ctx.prevData);
+    },
     onSettled() {
       utils.cart.getUserCart.invalidate();
     },
   });
 
-  const addToCartHandler = (id: string) => {
-    return addToCart.mutate({ userId, id, quantity: 5 });
+  let totalQuantity = 0;
+  cartUser.data?.items.forEach((el) => {
+    totalQuantity += el.quantity;
+  });
+  console.log(totalQuantity);
+  const removeFromCart = trpc.cart.removeItem.useMutation({
+    async onMutate(id: string) {
+      console.log(id);
+      await utils.cart.getUserCart.cancel();
+      const prevData = utils.cart.getUserCart.getData();
+      const newItems = prevData?.items.filter((item) => item.id !== id);
+      const newData = { ...prevData, items: newItems };
+      console.log(newData);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      utils.cart.getUserCart.setData(undefined, () => newData);
+      return { prevData };
+    },
+    onError(err, newPost, ctx) {
+      // If the mutation fails, use the context-value from onMutate
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      utils.cart.getUserCart.setData(undefined, ctx.prevData);
+    },
+    onSettled() {
+      utils.cart.getUserCart.invalidate();
+    },
+  });
+  const removeCart = trpc.cart.removeCart.useMutation();
+  const removeOne = trpc.cart.removeOne.useMutation({
+    async onMutate(el: CartItem) {
+      await utils.cart.getUserCart.cancel();
+      const prevData = utils.cart.getUserCart.getData();
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+
+      prevData?.items.forEach((item) => {
+        if (item.id === el.id) {
+          item.quantity--;
+        }
+        return item;
+      });
+      console.log(prevData);
+
+      utils.cart.getUserCart.setData(undefined, () => prevData);
+      return { prevData };
+    },
+    onError(err, newPost, ctx) {
+      // If the mutation fails, use the context-value from onMutate
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      utils.cart.getUserCart.setData(undefined, ctx.prevData);
+    },
+    onSettled() {
+      utils.cart.getUserCart.invalidate();
+    },
+  });
+
+  const addToCartHandler = (el: Product) => {
+    console.log(el);
+    return addToCart.mutate({ userId, item: el, quantity: 5 });
   };
 
-  // const deleteAll = (productId: string) => {
-  //   return removeFromCart.mutate({ productId, userId });
-  // };
-
-  const deleteOne = (id: string) => {
-    return removeOne.mutate(id);
+  const deleteOne = (el: CartItem) => {
+    if (el.quantity === 1) {
+      return removeFromCart.mutate(el.id);
+    }
+    if (el.quantity > 1) {
+      return removeOne.mutate(el);
+    }
   };
 
   const deleteCart = () => {
@@ -68,7 +148,13 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        <div className="flex gap-4">
+        <div className="fixed top-0 left-4 mt-3 text-xl text-white">
+          Cart
+          <span className="absolute -top-2 -right-6 inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-red-500 text-xs font-bold text-white dark:border-gray-900">
+            {totalQuantity}
+          </span>
+        </div>
+        <div className="mt-5 flex gap-4">
           <button
             className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
             onClick={sessionData ? () => signOut() : () => signIn()}
@@ -94,15 +180,9 @@ const Home: NextPage = () => {
                 <Image alt={el.title} src={el.image} width={200} height={200} />
                 <button
                   className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-                  onClick={() => addToCartHandler(el.id)}
+                  onClick={() => addToCartHandler(el)}
                 >
                   Add to Cart
-                </button>
-                <button
-                  className="rounded-full bg-red-700 px-10 py-3 font-semibold text-white no-underline transition hover:bg-red-800"
-                  onClick={() => deleteOne(el.id)}
-                >
-                  Remove One
                 </button>
               </div>
             );
@@ -113,12 +193,11 @@ const Home: NextPage = () => {
             return (
               <div
                 key={el.id}
-                className="flex flex-col gap-3 text-xl text-white"
+                className="flex flex-col items-center gap-4 text-xl text-white"
               >
-                <div className="flex gap-2">
-                  <h6>{el.product.title}</h6>
-                  <span>{el.quantity}</span>
-                </div>
+                <span>{el.product.title}</span>
+                <span>{el.quantity}</span>
+
                 <Image
                   alt={el.product.title}
                   src={el.product.image}
@@ -128,7 +207,7 @@ const Home: NextPage = () => {
 
                 <button
                   className="rounded-full bg-red-700 px-10 py-3 font-semibold text-white no-underline transition hover:bg-red-800"
-                  onClick={() => deleteOne(el.id)}
+                  onClick={() => deleteOne(el)}
                 >
                   Remove One
                 </button>

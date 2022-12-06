@@ -1,10 +1,10 @@
 import { z } from "zod";
 
-import { router, publicProcedure } from "../trpc";
+import { router, publicProcedure, protectedProcedure } from "../trpc";
 
 export const cartRouter = router({
-  getUserCart: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    const userId = input;
+  getUserCart: protectedProcedure.query(({ ctx }) => {
+    const userId = ctx.session.user.id;
     return ctx.prisma.cart.findUnique({
       where: { userId },
       select: {
@@ -13,6 +13,7 @@ export const cartRouter = router({
             id: true,
             product: true,
             quantity: true,
+            cart: true,
           },
         },
         id: true,
@@ -24,12 +25,13 @@ export const cartRouter = router({
     .input(
       z.object({
         userId: z.string(),
-        id: z.string(),
+        item: z.object({ id: z.string() }),
         quantity: z.number(),
       })
     )
     .mutation(({ ctx, input }) => {
-      const { userId, id, quantity } = input;
+      const { userId, item, quantity } = input;
+      const { id } = item;
       return ctx.prisma.cartItem.create({
         data: {
           quantity,
@@ -43,29 +45,24 @@ export const cartRouter = router({
         },
       });
     }),
-  removeOne: publicProcedure.input(z.string()).mutation(({ ctx, input }) => {
-    const id = input;
-
-    return ctx.prisma.cartItem.update({
-      where: { id },
-      data: {
-        quantity: { decrement: 1 },
-      },
-    });
-  }),
-  removeItem: publicProcedure
-    .input(
-      z.object({
-        productId: z.string(),
-        userId: z.string(),
-      })
-    )
+  removeOne: publicProcedure
+    .input(z.object({ id: z.string(), quantity: z.number() }))
     .mutation(({ ctx, input }) => {
-      const { productId, userId } = input;
-      return ctx.prisma.cartItem.deleteMany({
-        where: { productId, cart: { userId } },
+      const { id } = input;
+
+      return ctx.prisma.cartItem.update({
+        where: { id },
+        data: {
+          quantity: { decrement: 1 },
+        },
       });
     }),
+  removeItem: publicProcedure.input(z.string()).mutation(({ ctx, input }) => {
+    const id = input;
+    return ctx.prisma.cartItem.delete({
+      where: { id },
+    });
+  }),
   removeCart: publicProcedure.input(z.string()).mutation(({ ctx, input }) => {
     const userId = input;
     return ctx.prisma.cart.delete({
