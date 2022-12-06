@@ -3,6 +3,19 @@ import { z } from "zod";
 import { router, publicProcedure, protectedProcedure } from "../trpc";
 
 export const cartRouter = router({
+  getCartItems: protectedProcedure.query(({ ctx }) => {
+    const userId = ctx.session.user.id;
+    return ctx.prisma.cartItem.findMany({
+      where: { cart: { userId } },
+      select: {
+        product: true,
+        quantity: true,
+        id: true,
+        cartId: true,
+        cart: true,
+      },
+    });
+  }),
   getUserCart: protectedProcedure.query(({ ctx }) => {
     const userId = ctx.session.user.id;
     return ctx.prisma.cart.findUnique({

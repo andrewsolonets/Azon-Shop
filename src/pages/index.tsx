@@ -9,8 +9,12 @@ import { type Product } from "@prisma/client";
 
 const Home: NextPage = () => {
   const utils = trpc.useContext();
+  const cartUser = trpc.cart.getUserCart.useQuery(undefined, {
+    enabled: false,
+  });
   const { data: sessionData } = useSession();
   const userId = sessionData?.user?.id || "hi";
+  const cartItems = trpc.cart.getCartItems.useQuery();
 
   const { data: secretMessage } = trpc.auth.getSecretMessage.useQuery(
     undefined, // no input
@@ -20,96 +24,93 @@ const Home: NextPage = () => {
   console.log(secretMessage);
 
   const trpcTest = trpc.product.getAll.useQuery(20);
-  const cartUser = trpc.cart.getUserCart.useQuery();
   const addToCart = trpc.cart.addItem.useMutation({
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     async onMutate(el: { userId: string; item: Product; quantity: number }) {
-      await utils.cart.getUserCart.cancel();
+      await utils.cart.getCartItems.cancel();
       console.log(el);
-      const prevData = utils.cart.getUserCart.getData();
+      const prevData = utils.cart.getCartItems.getData();
       if (!prevData) return;
       const newItem = {
+        id: (Math.random() + 1).toString(36).substring(7),
         product: el.item,
         productId: el.item.id,
         quantity: el.quantity,
-        cart: prevData,
-        cartId: prevData?.id,
+        cart: cartUser.data,
+        cartId: cartUser?.data?.id,
       };
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      const newData = { ...prevData, items: [...prevData?.items, newItem] };
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      utils.cart.getUserCart.setData(undefined, () => newData);
+      utils.cart.getCartItems.setData(undefined, (old) => [...old, newItem]);
       return { prevData };
     },
     onError(err, newPost, ctx) {
       // If the mutation fails, use the context-value from onMutate
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      utils.cart.getUserCart.setData(undefined, ctx.prevData);
+      utils.cart.getCartItems.setData(undefined, ctx.prevData);
     },
     onSettled() {
-      utils.cart.getUserCart.invalidate();
+      utils.cart.getCartItems.invalidate();
     },
   });
 
   let totalQuantity = 0;
-  cartUser.data?.items.forEach((el) => {
+  cartItems?.data?.forEach((el) => {
     totalQuantity += el.quantity;
   });
   console.log(totalQuantity);
   const removeFromCart = trpc.cart.removeItem.useMutation({
     async onMutate(id: string) {
-      console.log(id);
-      await utils.cart.getUserCart.cancel();
-      const prevData = utils.cart.getUserCart.getData();
-      const newItems = prevData?.items.filter((item) => item.id !== id);
-      const newData = { ...prevData, items: newItems };
-      console.log(newData);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      utils.cart.getUserCart.setData(undefined, () => newData);
+      await utils.cart.getCartItems.cancel();
+      const prevData = utils.cart.getCartItems.getData();
+      const newItems = prevData?.filter((item) => item.id !== id);
+      utils.cart.getCartItems.setData(undefined, () => newItems);
       return { prevData };
     },
     onError(err, newPost, ctx) {
-      // If the mutation fails, use the context-value from onMutate
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      utils.cart.getUserCart.setData(undefined, ctx.prevData);
+      utils.cart.getCartItems.setData(undefined, ctx?.prevData);
     },
     onSettled() {
-      utils.cart.getUserCart.invalidate();
+      utils.cart.getCartItems.invalidate();
     },
   });
-  const removeCart = trpc.cart.removeCart.useMutation();
+  const removeCart = trpc.cart.removeCart.useMutation({
+    async onMutate() {
+      await utils.cart.getCartItems.cancel();
+      const prevData = utils.cart.getCartItems.getData();
+      utils.cart.getCartItems.setData(undefined, () => []);
+      return { prevData };
+    },
+    onError(err, newPost, ctx) {
+      utils.cart.getCartItems.setData(undefined, ctx?.prevData);
+    },
+    onSettled() {
+      utils.cart.getCartItems.invalidate();
+    },
+    onSuccess() {
+      utils.cart.getUserCart.refetch();
+    },
+  });
   const removeOne = trpc.cart.removeOne.useMutation({
     async onMutate(el: CartItem) {
-      await utils.cart.getUserCart.cancel();
-      const prevData = utils.cart.getUserCart.getData();
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-
-      prevData?.items.forEach((item) => {
+      await utils.cart.getCartItems.cancel();
+      const prevData = utils.cart.getCartItems.getData();
+      prevData?.forEach((item) => {
         if (item.id === el.id) {
           item.quantity--;
         }
-        return item;
       });
-      console.log(prevData);
 
-      utils.cart.getUserCart.setData(undefined, () => prevData);
+      utils.cart.getCartItems.setData(undefined, () => prevData);
       return { prevData };
     },
     onError(err, newPost, ctx) {
-      // If the mutation fails, use the context-value from onMutate
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      utils.cart.getUserCart.setData(undefined, ctx.prevData);
+      utils.cart.getCartItems.setData(undefined, ctx?.prevData);
     },
     onSettled() {
-      utils.cart.getUserCart.invalidate();
+      utils.cart.getCartItems.invalidate();
     },
   });
 
@@ -134,12 +135,11 @@ const Home: NextPage = () => {
   // const trpcCategory = trpc.category.getOneCategory.useQuery("Kindle");
   // const trpcCategories = trpc.category.getAllCategories.useQuery();
   // const trpcTest2 = trpc.product.getOne.useQuery("clb3p3i59000055f8b7gejbm7");
-  if (cartUser?.data?.items[0]) {
-    const totalPrice =
-      cartUser?.data?.items[0]?.quantity *
-      Number(cartUser?.data?.items[0]?.product.price);
-    console.log(totalPrice);
-  }
+  // if (cartItems?.data[0]) {
+  //   const totalPrice =
+  //     cartItems?.data[0]?.quantity * Number(cartItems?.data[0]?.product.price);
+  //   console.log(totalPrice);
+  // }
 
   return (
     <>
@@ -190,7 +190,7 @@ const Home: NextPage = () => {
           })}
         </div>
         <div className="flex w-screen items-end gap-4 overflow-x-scroll px-12 py-12">
-          {cartUser.data?.items.map((el) => {
+          {cartItems?.data?.map((el) => {
             return (
               <div
                 key={el.id}
