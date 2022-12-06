@@ -28,6 +28,7 @@ const Home: NextPage = () => {
       await utils.cart.getUserCart.cancel();
       console.log(el);
       const prevData = utils.cart.getUserCart.getData();
+      if (!prevData) return;
       const newItem = {
         product: el.item,
         productId: el.item.id,
