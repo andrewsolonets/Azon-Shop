@@ -67,7 +67,6 @@ model Order {
   createdAt    DateTime @default(now())
   User         User?    @relation(fields: [userId], references: [id])
   userId       String?
-  totalAmount  Int
   customerNote String
 
   @@index([userId])
