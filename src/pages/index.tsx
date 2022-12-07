@@ -6,12 +6,33 @@ import Image from "next/image";
 import { trpc } from "../utils/trpc";
 // import { type Product } from "@prisma/client";
 import { useCartActions } from "../hooks/useCartActions";
+import axios from "axios";
+import getStripe from "../utils/get-stripejs";
+import { tranformCartItems } from "../utils/helpers";
 
 const Home: NextPage = () => {
   const { addToCartHandler, deleteOne, deleteCart } = useCartActions();
   const { data: sessionData } = useSession();
   const cartItems = trpc.cart.getCartItems.useQuery();
+  const createCheckOutSession = async () => {
+    const stripe = await getStripe();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const transformedItems = tranformCartItems(cartItems.data);
 
+    const checkoutSession = await axios.post(
+      "/api/checkout_sessions",
+      transformedItems
+    );
+
+    const result = await stripe?.redirectToCheckout({
+      sessionId: checkoutSession.data.id,
+    });
+
+    if (result?.error) {
+      alert(result?.error.message);
+    }
+  };
   const trpcTest = trpc.product.getAll.useQuery(20);
 
   let totalQuantity = 0;
@@ -108,6 +129,12 @@ const Home: NextPage = () => {
             );
           })}
         </div>
+        <button
+          className="rounded-full bg-red-700 px-10 py-3 font-semibold text-white no-underline transition hover:bg-red-800"
+          onClick={() => createCheckOutSession()}
+        >
+          Checkout
+        </button>
       </main>
     </>
   );
