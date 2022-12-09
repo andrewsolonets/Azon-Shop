@@ -6,11 +6,15 @@ interface CartItemLong extends CartItem {
 
 export const tranformCartItems = (items: CartItemLong[]) => {
   return items.map((item) => ({
-    currency: "PLN",
-    images: [item.product.image],
-    name: item.product.title,
-    amount: Math.floor(item.product.price),
-    description: item.product.description,
+    price_data: {
+      currency: "usd",
+      unit_amount: Math.floor(item.product.price),
+      product_data: {
+        name: item.product.title,
+        description: item.product.description,
+        images: [item.product.image],
+      },
+    },
     quantity: item.quantity,
   }));
 };

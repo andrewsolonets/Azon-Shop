@@ -1,6 +1,9 @@
-import { type Product } from "@prisma/client";
+import { type Cart, type Product } from "@prisma/client";
+import axios from "axios";
 import { useSession } from "next-auth/react";
 import { type CartItem } from "../types/cart";
+import getStripe from "../utils/get-stripejs";
+import { tranformCartItems } from "../utils/helpers";
 import { trpc } from "../utils/trpc";
 
 export const useCartActions = () => {
@@ -113,10 +116,40 @@ export const useCartActions = () => {
       return removeOne.mutate(el);
     }
   };
+  const createCheckOutSession = async (
+    cartItems:
+      | {
+          cart: Cart;
+          product: Product;
+          id: string;
+          quantity: number;
+          cartId: string;
+        }[]
+      | undefined
+  ) => {
+    const stripe = await getStripe();
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const transformedItems = tranformCartItems(cartItems);
+
+    const checkoutSession = await axios.post(
+      "/api/checkout_sessions",
+      transformedItems
+    );
+
+    const result = await stripe?.redirectToCheckout({
+      sessionId: checkoutSession.data.id,
+    });
+
+    if (result?.error) {
+      alert(result?.error.message);
+    }
+  };
 
   return {
     addToCartHandler,
     deleteOne,
     deleteCart,
+    createCheckOutSession,
   };
 };

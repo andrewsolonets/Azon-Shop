@@ -13,23 +13,22 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     const transformedItems = req.body;
-    console.log(req.body[0]);
-
     try {
       // Validate the amount that was passed from the client.
       // Create Checkout Sessions from body params.
       const params: Stripe.Checkout.SessionCreateParams = {
-        mode: "payment",
         payment_method_types: ["card"],
         line_items: transformedItems,
-        success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${req.headers.origin}/donate-with-checkout`,
+        mode: "payment",
+        success_url: `${req.headers.origin}/?status=success`,
+        cancel_url: `${req.headers.origin}/?status=cancel`,
       };
       const checkoutSession: Stripe.Checkout.Session =
         await stripe.checkout.sessions.create(params);
 
       res.status(200).json(checkoutSession);
     } catch (err) {
+      console.log(err);
       const errorMessage =
         err instanceof Error ? err.message : "Internal server error";
       res.status(500).json({ statusCode: 500, message: errorMessage });
