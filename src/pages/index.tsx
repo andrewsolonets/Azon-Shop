@@ -73,7 +73,7 @@ const Home: NextPage = () => {
                 <Image alt={el.title} src={el.image} width={200} height={200} />
                 <button
                   className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-                  onClick={() => addToCartHandler(el)}
+                  onClick={() => addToCartHandler(el, 5)}
                 >
                   Add to Cart
                 </button>

@@ -18,9 +18,20 @@ export const useCartActions = () => {
     // @ts-ignore
     async onMutate(el: { userId: string; item: Product; quantity: number }) {
       await utils.cart.getCartItems.cancel();
-      console.log(el);
       const prevData = utils.cart.getCartItems.getData();
       if (!prevData) return;
+      const existing = prevData?.find((data) => {
+        return data.product.id === el.item.id;
+      });
+
+      console.log(existing);
+      if (existing) {
+        existing.quantity++;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        utils.cart.getCartItems.setData(undefined, (old) => [...old]);
+        return { prevData };
+      }
       const newItem = {
         id: (Math.random() + 1).toString(36).substring(7),
         product: el.item,
@@ -103,9 +114,9 @@ export const useCartActions = () => {
     return removeCart.mutate(userId);
   };
 
-  const addToCartHandler = (el: Product) => {
+  const addToCartHandler = (el: Product, quantity: number) => {
     console.log(el);
-    return addToCart.mutate({ userId, item: el, quantity: 5 });
+    return addToCart.mutate({ userId, item: el, quantity });
   };
 
   const deleteOne = (el: CartItem) => {
