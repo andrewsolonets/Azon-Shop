@@ -18,6 +18,19 @@ export default async function handler(
       // Create Checkout Sessions from body params.
       const params: Stripe.Checkout.SessionCreateParams = {
         payment_method_types: ["card"],
+        shipping_options: [
+          {
+            shipping_rate_data: {
+              type: "fixed_amount",
+              fixed_amount: { amount: 2000, currency: "usd" },
+              display_name: "Free shipping",
+              delivery_estimate: {
+                minimum: { unit: "business_day", value: 5 },
+                maximum: { unit: "business_day", value: 7 },
+              },
+            },
+          },
+        ],
         line_items: transformedItems,
         mode: "payment",
         success_url: `${req.headers.origin}/?status=success`,

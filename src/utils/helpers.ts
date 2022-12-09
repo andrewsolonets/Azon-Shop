@@ -15,6 +15,7 @@ export const tranformCartItems = (items: CartItemLong[]) => {
         images: [item.product.image],
       },
     },
+
     quantity: item.quantity,
   }));
 };

@@ -1,9 +1,11 @@
+import { PrismaClient } from "@prisma/client";
 import { buffer } from "micro";
 import Cors from "micro-cors";
 import { type NextApiRequest, type NextApiResponse } from "next";
 
 import Stripe from "stripe";
 import { env } from "../../../env/server.mjs";
+const prisma = new PrismaClient();
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   // https://github.com/stripe/stripe-node#configuration
   apiVersion: "2022-11-15",
@@ -50,6 +52,30 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     // Cast event data to Stripe object.
     if (event.type === "payment_intent.succeeded") {
       const paymentIntent = event.data.object as Stripe.PaymentIntent;
+      console.log(paymentIntent);
+      const email = paymentIntent.receipt_email;
+      const totalAmount = paymentIntent.amount;
+      const status = paymentIntent.status;
+      console.log(email);
+
+      if (email) {
+        await prisma.order.create({
+          data: {
+            user: { connect: { email } },
+            customerNote: "hello from webhooks",
+            totalAmount,
+            status,
+          },
+        });
+      }
+      if (status === "succeeded") {
+        await prisma.cart.deleteMany({
+          where: {
+            user: { email },
+          },
+        });
+      }
+
       console.log(`💰 PaymentIntent status: ${paymentIntent.status}`);
     } else if (event.type === "payment_intent.payment_failed") {
       const paymentIntent = event.data.object as Stripe.PaymentIntent;
