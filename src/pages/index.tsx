@@ -20,10 +20,6 @@ const Home: NextPage = () => {
   });
   console.log(totalQuantity);
 
-  // const placeOrder = () => {
-  //   createOrder.mutate();
-  // };
-
   // const trpcCategory = trpc.category.getOneCategory.useQuery("Kindle");
   // const trpcCategories = trpc.category.getAllCategories.useQuery();
   // const trpcTest2 = trpc.product.getOne.useQuery("clb3p3i59000055f8b7gejbm7");
@@ -70,7 +66,10 @@ const Home: NextPage = () => {
               >
                 <span>{el.id}</span>
                 <span>{el.title}</span>
-                <Image alt={el.title} src={el.image} width={200} height={200} />
+                <div className="relative h-52 w-52 object-cover">
+                  <Image alt={el.title} src={el.image} fill />
+                </div>
+
                 <button
                   className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
                   onClick={() => addToCartHandler(el, 5)}
@@ -90,13 +89,9 @@ const Home: NextPage = () => {
               >
                 <span>{el.product.title}</span>
                 <span>{el.quantity}</span>
-
-                <Image
-                  alt={el.product.title}
-                  src={el.product.image}
-                  width={200}
-                  height={200}
-                />
+                <div className="relative h-52 w-52">
+                  <Image alt={el.product.title} src={el.product.image} fill />
+                </div>
 
                 <button
                   className="rounded-full bg-red-700 px-10 py-3 font-semibold text-white no-underline transition hover:bg-red-800"

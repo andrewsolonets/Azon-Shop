@@ -14,14 +14,7 @@ const config = {
     defaultLocale: "en",
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "placeimg.com",
-        port: "",
-        pathname: "/500/500/tech",
-      },
-    ],
+    domains: ["shorturl.at", "placeimg.com"],
   },
 };
 export default config;
