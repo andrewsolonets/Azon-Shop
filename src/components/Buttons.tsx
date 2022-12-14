@@ -32,6 +32,31 @@ export const BigButton = ({ children, onClick }: Props) => {
   );
 };
 
+export const OutlineBtn = ({ children, onClick }: Props) => {
+  return (
+    <button
+      onClick={onClick}
+      className="outline-ambtext-amber-400 hover:bg-ambtext-amber-400 rounded-sm bg-transparent px-3 py-1  text-amber-400 outline outline-2 transition-all duration-300 hover:bg-opacity-10"
+    >
+      {children}
+    </button>
+  );
+};
+
+export const ArrowBtn = ({ children, onClick }: Props) => {
+  return (
+    <button
+      onClick={onClick}
+      className="group flex w-fit items-center gap-2 rounded-lg bg-amber-400 px-8 py-3 text-2xl font-bold text-violet-700 hover:bg-violet-700 hover:text-amber-400 "
+    >
+      {children}
+      <div className="relative h-7 w-7">
+        <Arrow className="fill-violet-700 group-hover:fill-amber-400" />
+      </div>
+    </button>
+  );
+};
+
 export const ArrowLinkBtn = ({ url, children }: ArrowProps) => {
   return (
     <a

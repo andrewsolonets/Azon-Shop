@@ -11,7 +11,7 @@ export const Header = () => {
     totalQuantity += el.quantity;
   });
   return (
-    <header className="drop-shadow-header fixed top-0 left-0 right-0 z-50 flex items-center gap-10 bg-violet-800 py-4 px-10 font-medium text-white  backdrop-blur">
+    <header className="drop-shadow-header fixed top-0 left-0 right-0 z-20 flex items-center gap-10 bg-violet-800 py-4 px-10 font-medium text-white  backdrop-blur">
       <Link href="/">
         <h3 className="text-2xl font-bold text-amber-400">Azon</h3>
       </Link>

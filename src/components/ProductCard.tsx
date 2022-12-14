@@ -14,21 +14,23 @@ export const ProductCard = ({ product }: Props) => {
   const { addToCartHandler } = useCartActions();
   const priceFinal = Math.round(Number(price));
   return (
-    <Link href={`/product/${id}`}>
-      <div className="mb-2 flex w-60 min-w-[15rem] snap-center flex-col rounded-lg bg-violet-600 drop-shadow-md">
+    <div className="mb-2 flex w-60 min-w-[15rem] snap-center flex-col rounded-lg bg-violet-600 drop-shadow-md">
+      <Link href={`/product/${id}`}>
         <div className="relative h-40 w-full  object-cover ">
           <Image src={TestCardImg} alt={title} fill className="rounded-lg" />
         </div>
-        <div className="flex w-full flex-col items-center justify-end gap-4 px-3 py-4 ">
+      </Link>
+      <div className="flex w-full flex-col items-center justify-end gap-4 px-3 py-4 ">
+        <Link href={`/product/${id}`}>
           <h4 className=" text-center text-xl font-bold">{title}</h4>
-          <h4 className="text-xl font-normal">${priceFinal}</h4>
-          <div className="w-full">
-            <ButtonRegular onClick={() => addToCartHandler(product, 5)}>
-              Add to Cart
-            </ButtonRegular>
-          </div>
+        </Link>
+        <h4 className="text-xl font-normal">${priceFinal}</h4>
+        <div className="w-full">
+          <ButtonRegular onClick={() => addToCartHandler(product, 5)}>
+            Add to Cart
+          </ButtonRegular>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };

@@ -1,12 +1,19 @@
 import { type Cart, type Product } from "@prisma/client";
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 import { type CartItem } from "../types/cart";
 import getStripe from "../utils/get-stripejs";
-import { tranformCartItems } from "../utils/helpers";
+import { getTotalAmount, tranformCartItems } from "../utils/helpers";
 import { trpc } from "../utils/trpc";
 
 export const useCartActions = () => {
+  const queryClient = new QueryClient();
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const setTotalAmount = useMutation(["totalAmount"], getTotalAmount);
+  const [isOpen, setIsOpen] = useState(false);
   const utils = trpc.useContext();
   const { data: sessionData } = useSession();
   const userId = sessionData?.user?.id || "hi";
@@ -30,6 +37,9 @@ export const useCartActions = () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         utils.cart.getCartItems.setData(undefined, (old) => [...old]);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        setTotalAmount.mutate([...prevData]);
         return { prevData };
       }
       const newItem = {
@@ -43,6 +53,9 @@ export const useCartActions = () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       utils.cart.getCartItems.setData(undefined, (old) => [...old, newItem]);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      setTotalAmount.mutate([...prevData, newItem]);
       return { prevData };
     },
     onError(err, newPost, ctx) {
@@ -110,13 +123,17 @@ export const useCartActions = () => {
     },
   });
 
-  const deleteCart = () => {
+  const clearCart = () => {
     return removeCart.mutate(userId);
   };
 
   const addToCartHandler = (el: Product, quantity: number) => {
     console.log(el);
     return addToCart.mutate({ userId, item: el, quantity });
+  };
+
+  const removeItem = (id: string) => {
+    return removeFromCart.mutate(id);
   };
 
   const deleteOne = (el: CartItem) => {
@@ -159,8 +176,11 @@ export const useCartActions = () => {
 
   return {
     addToCartHandler,
+    removeItem,
     deleteOne,
-    deleteCart,
+    clearCart,
     createCheckOutSession,
+    isOpen,
+    setIsOpen,
   };
 };

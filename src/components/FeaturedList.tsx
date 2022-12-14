@@ -15,8 +15,6 @@ export const FeaturedList = ({ items }: { items: Product[] | undefined }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    console.log(carousel.current?.scrollWidth);
-    console.log(carousel.current?.offsetWidth);
     maxScrollWidth.current = carousel.current
       ? carousel.current.scrollWidth - carousel.current.offsetWidth
       : 0;
@@ -47,8 +45,6 @@ export const FeaturedList = ({ items }: { items: Product[] | undefined }) => {
       carousel.current !== null &&
       currentIndex !== 0
     ) {
-      console.log(carousel.current.offsetWidth * currentIndex);
-      console.log(maxScrollWidth.current);
       return (
         carousel.current.offsetWidth * currentIndex + 400 >=
         maxScrollWidth.current

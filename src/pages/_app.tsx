@@ -7,6 +7,7 @@ import "@fontsource/inter";
 
 import "../styles/globals.css";
 import Layout from "../components/layout";
+import { Cart } from "../components/Cart";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -17,6 +18,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <Layout>
         <Component {...pageProps} />
         <ReactQueryDevtools />
+      <Cart />
       </Layout>
     </SessionProvider>
   );

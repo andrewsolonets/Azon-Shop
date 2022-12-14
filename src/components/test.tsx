@@ -7,7 +7,7 @@ import { trpc } from "../utils/trpc";
 import { useCartActions } from "../hooks/useCartActions";
 
 export const Test = () => {
-  const { addToCartHandler, deleteOne, deleteCart, createCheckOutSession } =
+  const { addToCartHandler, deleteOne, clearCart, createCheckOutSession } =
     useCartActions();
   const { data: sessionData } = useSession();
   const cartItems = trpc.cart.getCartItems.useQuery();
@@ -50,7 +50,7 @@ export const Test = () => {
           </button>
           <button
             className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-            onClick={deleteCart}
+            onClick={clearCart}
           >
             Delete Cart
           </button>
