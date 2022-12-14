@@ -10,7 +10,9 @@ export default function Layout({ children }: Props) {
   return (
     <>
       <Header />
-      <main className="bg-violet-700 text-white">{children}</main>
+      <main className="flex w-full flex-col gap-28 bg-violet-700 text-white">
+        {children}
+      </main>
       <Footer />
     </>
   );

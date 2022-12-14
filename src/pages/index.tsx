@@ -1,8 +1,11 @@
 import { type NextPage } from "next";
 import Head from "next/head";
+import { FeaturedList } from "../components/FeaturedList";
 import { HeroSection } from "../components/HeroSection";
+import { trpc } from "../utils/trpc";
 
 const Home: NextPage = () => {
+  const trpcTest = trpc.product.getAll.useQuery(20);
   return (
     <>
       <Head>
@@ -11,6 +14,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <HeroSection />
+      <FeaturedList items={trpcTest.data} />
     </>
   );
 };
