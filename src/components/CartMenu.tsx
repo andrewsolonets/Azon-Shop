@@ -9,14 +9,13 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
   const [totalAmount, setTotalAmount] = useState(0);
   const { clearCart, createCheckOutSession } = useCartActions();
   const { toggleCart } = useCart();
-  console.log(isOpen);
   // const { totalAmount } = useQuery(["totalAmount"]);
   const cartItems = trpc.cart.getCartItems.useQuery();
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    setTotalAmount(getTotalAmount(cartItems.data));
+    setTotalAmount(Math.round(getTotalAmount(cartItems.data)));
   }, [cartItems]);
 
   return (

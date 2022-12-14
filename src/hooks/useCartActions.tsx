@@ -39,9 +39,7 @@ export const useCartActions = () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         utils.cart.getCartItems.setData(undefined, (old) => [...old]);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        setTotalAmount.mutate([...prevData]);
+
         return { prevData };
       }
       const newItem = {
@@ -55,9 +53,6 @@ export const useCartActions = () => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       utils.cart.getCartItems.setData(undefined, (old) => [...old, newItem]);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      setTotalAmount.mutate([...prevData, newItem]);
       return { prevData };
     },
     onError(err, newPost, ctx) {
