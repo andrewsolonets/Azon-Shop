@@ -7,7 +7,7 @@ import "@fontsource/inter";
 
 import "../styles/globals.css";
 import Layout from "../components/layout";
-import { Cart } from "../components/Cart";
+import { CartProvider } from "../hooks/useCartActions";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -15,11 +15,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <Layout>
-        <Component {...pageProps} />
-        <ReactQueryDevtools />
-      <Cart />
-      </Layout>
+      <CartProvider>
+        <Layout>
+          <Component {...pageProps} />
+          <ReactQueryDevtools />
+        </Layout>
+      </CartProvider>
     </SessionProvider>
   );
 };

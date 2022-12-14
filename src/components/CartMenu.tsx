@@ -1,14 +1,15 @@
-import { useQuery } from "@tanstack/react-query";
-import { useCartActions } from "../hooks/useCartActions";
+import { useCart, useCartActions } from "../hooks/useCartActions";
 import { getTotalAmount } from "../utils/helpers";
 import { trpc } from "../utils/trpc";
 import { ArrowBtn, OutlineBtn } from "./Buttons";
 import { CartItemCard } from "./CartItem";
 import { useEffect, useState } from "react";
 
-export const Cart = ({}) => {
+export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
   const [totalAmount, setTotalAmount] = useState(0);
-  const { isOpen, clearCart, createCheckOutSession } = useCartActions();
+  const { clearCart, createCheckOutSession } = useCartActions();
+  const { toggleCart } = useCart();
+  console.log(isOpen);
   // const { totalAmount } = useQuery(["totalAmount"]);
   const cartItems = trpc.cart.getCartItems.useQuery();
 
@@ -19,7 +20,11 @@ export const Cart = ({}) => {
   }, [cartItems]);
 
   return (
-    <div className="fixed right-0 top-0 bottom-0 z-50 flex h-full flex-col justify-between bg-violet-800  pt-6">
+    <div
+      className={`animate fixed right-0 top-0 bottom-0 z-50 flex h-full transform flex-col justify-between bg-violet-800 pt-6 text-white duration-500  ease-out ${
+        isOpen ? "" : "translate-x-full"
+      }`}
+    >
       <div className="flex flex-col gap-6 px-8">
         <div className="flex items-center justify-between gap-8">
           <div className="flex items-center gap-2">
@@ -28,7 +33,7 @@ export const Cart = ({}) => {
           </div>
           <div className="flex items-center gap-4">
             <OutlineBtn onClick={() => clearCart()}>Clear</OutlineBtn>
-            <OutlineBtn>Close</OutlineBtn>
+            <OutlineBtn onClick={toggleCart}>Close</OutlineBtn>
           </div>
         </div>
         <div className="flex w-[600px] flex-col gap-4">

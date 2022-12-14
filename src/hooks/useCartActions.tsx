@@ -1,19 +1,21 @@
 import { type Cart, type Product } from "@prisma/client";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useState, createContext, type ReactNode, useContext } from "react";
+import { CartMenu } from "../components/CartMenu";
 import { type CartItem } from "../types/cart";
 import getStripe from "../utils/get-stripejs";
-import { getTotalAmount, tranformCartItems } from "../utils/helpers";
+import { tranformCartItems } from "../utils/helpers";
 import { trpc } from "../utils/trpc";
 
+type CartProviderProps = {
+  children: ReactNode;
+};
+type CartContext = {
+  toggleCart: () => void;
+};
+
 export const useCartActions = () => {
-  const queryClient = new QueryClient();
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const setTotalAmount = useMutation(["totalAmount"], getTotalAmount);
-  const [isOpen, setIsOpen] = useState(false);
   const utils = trpc.useContext();
   const { data: sessionData } = useSession();
   const userId = sessionData?.user?.id || "hi";
@@ -180,7 +182,23 @@ export const useCartActions = () => {
     deleteOne,
     clearCart,
     createCheckOutSession,
-    isOpen,
-    setIsOpen,
   };
 };
+const CartContext = createContext({} as CartContext);
+
+export function useCart() {
+  return useContext(CartContext);
+}
+
+export function CartProvider({ children }: CartProviderProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleCart = () => setIsOpen((prev) => !prev);
+
+  return (
+    <CartContext.Provider value={{ toggleCart }}>
+      {children}
+      <CartMenu isOpen={isOpen} />
+    </CartContext.Provider>
+  );
+}

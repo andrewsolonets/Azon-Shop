@@ -2,9 +2,12 @@ import CartIcon from "../assets/cart.svg";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { trpc } from "../utils/trpc";
 import Link from "next/link";
+import { useCart } from "../hooks/useCartActions";
 
 export const Header = () => {
   const { data: sessionData } = useSession();
+  const { toggleCart } = useCart();
+
   const cartItems = trpc.cart.getCartItems.useQuery();
   let totalQuantity = 0;
   cartItems?.data?.forEach((el) => {
@@ -22,9 +25,11 @@ export const Header = () => {
         </ul>
         <ul className="flex items-center gap-16">
           <li className="relative ">
-            <div className="h-7 w-7">
-              <CartIcon />
-            </div>
+            <button onClick={toggleCart}>
+              <div className="h-7 w-7">
+                <CartIcon />
+              </div>
+            </button>
 
             <span className="items absolute -bottom-2 -right-3 flex h-6 w-6 items-center justify-center rounded-full bg-violet-600">
               <span className="text-sm font-bold">{totalQuantity}</span>
