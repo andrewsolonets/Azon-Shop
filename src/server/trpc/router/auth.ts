@@ -7,4 +7,10 @@ export const authRouter = router({
   getSecretMessage: protectedProcedure.query(({ ctx }) => {
     return ctx.session.user.id;
   }),
+  getUser: protectedProcedure.query(({ ctx }) => {
+    const id = ctx.session.user.id;
+    return ctx.prisma.user.findUnique({
+      where: { id },
+    });
+  }),
 });

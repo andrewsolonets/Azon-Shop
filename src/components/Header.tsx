@@ -2,11 +2,13 @@ import CartIcon from "../assets/cart.svg";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { trpc } from "../utils/trpc";
 import Link from "next/link";
+import ProfileIcon from "../assets/profile.svg";
 import { useCart } from "../hooks/useCartActions";
 
 export const Header = () => {
   const { data: sessionData } = useSession();
   const { toggleCart } = useCart();
+  const userId = sessionData?.user?.id;
 
   const cartItems = trpc.cart.getCartItems.useQuery();
   let totalQuantity = 0;
@@ -23,7 +25,7 @@ export const Header = () => {
           <li>Home</li>
           <li>Shop</li>
         </ul>
-        <ul className="flex items-center gap-16">
+        <ul className="flex items-center gap-8">
           <li className="relative ">
             <button onClick={toggleCart}>
               <div className="h-7 w-7">
@@ -34,6 +36,16 @@ export const Header = () => {
             <span className="items absolute -bottom-2 -right-3 flex h-6 w-6 items-center justify-center rounded-full bg-violet-600">
               <span className="text-sm font-bold">{totalQuantity}</span>
             </span>
+          </li>
+          <li>
+            <Link
+              href={`/profile/${userId ? userId : "#"}`}
+              className="h-fit w-fit"
+            >
+              <div className="h-7 w-7">
+                <ProfileIcon />
+              </div>
+            </Link>
           </li>
           <li>
             <button

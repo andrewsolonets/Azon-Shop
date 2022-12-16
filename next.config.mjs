@@ -22,7 +22,7 @@ const config = {
     return config;
   },
   images: {
-    domains: ["shorturl.at", "placeimg.com"],
+    domains: ["shorturl.at", "placeimg.com", "lh3.googleusercontent.com"],
   },
 };
 export default config;

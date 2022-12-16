@@ -3,7 +3,7 @@ import LinkedInIcon from "../assets/linkedinicon.svg";
 
 export const Footer = () => {
   return (
-    <footer className="mt-28 flex h-16 w-full items-center justify-center gap-2 bg-violet-700">
+    <footer className=" flex h-16 w-full items-center justify-center gap-2 bg-violet-700">
       <div className="flex gap-1">
         <a
           href="https://github.com/andrewsolonets"
