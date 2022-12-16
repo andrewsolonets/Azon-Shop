@@ -11,6 +11,9 @@ export const authRouter = router({
     const id = ctx.session.user.id;
     return ctx.prisma.user.findUnique({
       where: { id },
+      include: {
+        orders: true,
+      },
     });
   }),
 });

@@ -19,7 +19,7 @@ const SingleProductPage = () => {
   const { image, title, price } = item.data;
   const finalPrice = Math.round(Number(price));
   return (
-    <section className="mt-32 py-4 px-8">
+    <section className="mt-32 h-screen py-4 px-8">
       <div className=" flex w-full justify-between gap-20">
         <div className="relative h-72 w-72 rounded-sm object-cover ring-8 ring-amber-400">
           <Image src={image} alt={title} fill />
@@ -45,7 +45,7 @@ const SingleProductPage = () => {
                   className="h-5 w-5"
                   onClick={() => setQuantity((prev) => (prev -= 1))}
                 >
-                  <MinusIcon />
+                  <MinusIcon className="text-amber-400 hover:text-violet-400 " />
                 </button>
 
                 <input
@@ -58,7 +58,7 @@ const SingleProductPage = () => {
                   className="h-5 w-5"
                   onClick={() => setQuantity((prev) => (prev += 1))}
                 >
-                  <AddIcon />
+                  <AddIcon className="text-amber-400 hover:text-violet-400 " />
                 </button>
               </div>
             </div>

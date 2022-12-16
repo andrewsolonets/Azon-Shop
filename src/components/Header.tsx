@@ -4,10 +4,12 @@ import { trpc } from "../utils/trpc";
 import Link from "next/link";
 import ProfileIcon from "../assets/profile.svg";
 import { useCart } from "../hooks/useCartActions";
+import { useRouter } from "next/router";
 
 export const Header = () => {
   const { data: sessionData } = useSession();
   const { toggleCart } = useCart();
+  const router = useRouter();
   const userId = sessionData?.user?.id;
 
   const cartItems = trpc.cart.getCartItems.useQuery();
@@ -22,14 +24,25 @@ export const Header = () => {
       </Link>
       <nav className="flex w-full items-center justify-between">
         <ul className="flex items-center gap-10">
-          <li>Home</li>
+          <li>
+            <Link
+              href="/"
+              className={
+                router.pathname == "/"
+                  ? "font-semibold text-amber-400"
+                  : "text-white"
+              }
+            >
+              Home
+            </Link>
+          </li>
           <li>Shop</li>
         </ul>
         <ul className="flex items-center gap-8">
           <li className="relative ">
-            <button onClick={toggleCart}>
-              <div className="h-7 w-7">
-                <CartIcon />
+            <button onClick={toggleCart} className="group">
+              <div className="h-7 w-7 ">
+                <CartIcon className="text-amber-400 hover:text-violet-400 " />
               </div>
             </button>
 
@@ -43,7 +56,7 @@ export const Header = () => {
               className="h-fit w-fit"
             >
               <div className="h-7 w-7">
-                <ProfileIcon />
+                <ProfileIcon className="text-amber-400 hover:text-violet-400 " />
               </div>
             </Link>
           </li>

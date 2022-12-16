@@ -11,7 +11,7 @@ export const Footer = () => {
           target="_blank"
           rel="noreferrer"
         >
-          <GithubIcon className="h-7 w-7 stroke-white stroke-[1.75] hover:stroke-amber-400 group-hover:stroke-amber-400" />
+          <GithubIcon className="h-7 w-7 stroke-white stroke-[1.75] text-transparent hover:stroke-amber-400 group-hover:stroke-amber-400" />
         </a>
         <a
           href="https://www.linkedin.com/in/andrii-solonets/"
@@ -19,7 +19,7 @@ export const Footer = () => {
           target="_blank"
           rel="noreferrer"
         >
-          <LinkedInIcon className="group-hover:fill-amstroke-amber-400 hover:fill-amstroke-amber-400 h-7 w-7 fill-white" />
+          <LinkedInIcon className="h-7 w-7 fill-white hover:stroke-amber-400 group-hover:stroke-amber-400" />
         </a>
       </div>
       <h2 className="text-white">Designed & Built by Andrii Solonets</h2>

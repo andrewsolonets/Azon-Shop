@@ -22,7 +22,9 @@ export const ProductCard = ({ product }: Props) => {
       </Link>
       <div className="flex w-full flex-col items-center justify-end gap-4 px-3 py-4 ">
         <Link href={`/item/${id}`}>
-          <h4 className=" text-center text-xl font-bold">{title}</h4>
+          <h4 className=" text-center text-xl font-bold hover:text-amber-400 ">
+            {title}
+          </h4>
         </Link>
         <h4 className="text-xl font-normal">${priceFinal}</h4>
         <div className="w-full">
