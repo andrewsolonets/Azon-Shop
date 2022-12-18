@@ -1,11 +1,18 @@
 import { type Cart, type Product } from "@prisma/client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useState, createContext, type ReactNode, useContext } from "react";
+import {
+  useState,
+  createContext,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useRef,
+} from "react";
 import { CartMenu } from "../components/CartMenu";
 import { type CartItem } from "../types/cart";
 import getStripe from "../utils/get-stripejs";
-import { tranformCartItems } from "../utils/helpers";
+import { listenForOutsideClicks, tranformCartItems } from "../utils/helpers";
 import { toast } from "react-toastify";
 import { trpc } from "../utils/trpc";
 

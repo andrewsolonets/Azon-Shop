@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 
 export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
   const [totalAmount, setTotalAmount] = useState(0);
+
   const { clearCart, createCheckOutSession } = useCartActions();
   const { toggleCart } = useCart();
   // const { totalAmount } = useQuery(["totalAmount"]);

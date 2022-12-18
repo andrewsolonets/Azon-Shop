@@ -10,6 +10,7 @@ import "../styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import Layout from "../components/layout";
 import { CartProvider } from "../hooks/useCartActions";
+import { useEffect } from "react";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
