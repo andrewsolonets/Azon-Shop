@@ -31,9 +31,9 @@ export const useCartActions = () => {
       await utils.cart.getCartItems.cancel();
       const prevData = utils.cart.getCartItems.getData();
 
-      console.log(el.item);
-      if (el.item && prevData) {
-        const newItems = prevData.map(
+      utils.cart.getCartItems.setData(undefined, (old) =>
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        old!.map(
           (oldCart: {
             cart: Cart;
             product: Product;
@@ -42,18 +42,17 @@ export const useCartActions = () => {
             cartId: string;
           }) => {
             if (oldCart.id === el.item.id) {
+              console.log("NEW ITEMS OLD CART");
               oldCart.quantity = newQuantity;
+              console.log(oldCart);
               return oldCart;
             }
             return oldCart;
           }
-        );
-        console.log(newItems);
+        )
+      );
 
-        utils.cart.getCartItems.setData(undefined, () => newItems);
-
-        return { prevData };
-      }
+      return { prevData };
     },
     onError(err, newPost, ctx) {
       // If the mutation fails, use the context-value from onMutate
