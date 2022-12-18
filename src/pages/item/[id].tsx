@@ -1,7 +1,7 @@
 import { type Product } from "@prisma/client";
 import Image from "next/image";
-import AddIcon from "../../assets/plus.svg";
-import MinusIcon from "../../assets/minus.svg";
+import PlusIcon from "../../assets/PlusIcon";
+import MinusIcon from "../../assets/MinusIcon";
 import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
 import { useState } from "react";
@@ -45,7 +45,7 @@ const SingleProductPage = () => {
                   className="h-5 w-5"
                   onClick={() => setQuantity((prev) => (prev -= 1))}
                 >
-                  <MinusIcon className="text-amber-400 hover:text-violet-400 " />
+                  <MinusIcon className="fill-amber-400 hover:fill-violet-400 " />
                 </button>
 
                 <input
@@ -58,7 +58,7 @@ const SingleProductPage = () => {
                   className="h-5 w-5"
                   onClick={() => setQuantity((prev) => (prev += 1))}
                 >
-                  <AddIcon className="text-amber-400 hover:text-violet-400 " />
+                  <PlusIcon className="fill-amber-400 hover:fill-violet-400 " />
                 </button>
               </div>
             </div>

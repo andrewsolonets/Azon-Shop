@@ -31,12 +31,12 @@
     "next-auth": "^4.15.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-toastify": "^9.1.1",
     "stripe": "^11.2.0",
     "superjson": "1.9.1",
     "zod": "^3.18.0"
   },
   "devDependencies": {
-    "@svgr/webpack": "^6.5.1",
     "@tanstack/react-query-devtools": "^4.19.1",
     "@types/micro": "^7.3.7",
     "@types/micro-cors": "^0.1.2",
@@ -46,6 +46,7 @@
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
     "autoprefixer": "^10.4.7",
+    "babel-plugin-inline-react-svg": "^2.0.1",
     "eslint": "^8.26.0",
     "eslint-config-next": "13.0.2",
     "postcss": "^8.4.14",

@@ -1,8 +1,8 @@
 import Image from "next/image";
 import TestCardImg from "../assets/testcardimg.png";
-import AddIcon from "../assets/plus.svg";
-import MinusIcon from "../assets/minus.svg";
-import CrossIcon from "../assets/cross.svg";
+import PlusIcon from "../assets/PlusIcon";
+import MinusIcon from "../assets/MinusIcon";
+import CrossIcon from "../assets/CrossIcon";
 import { useCartActions } from "../hooks/useCartActions";
 import { type Product, type CartItem } from "@prisma/client";
 
@@ -27,7 +27,7 @@ export const CartItemCard = ({ item }: Props) => {
             className="h-7 w-7"
             onClick={() => addToCartHandler(item.product, 1)}
           >
-            <AddIcon />
+            <PlusIcon />
           </button>
           <button className="h-7 w-7" onClick={() => deleteOne(item)}>
             <MinusIcon />

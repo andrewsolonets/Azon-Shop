@@ -28,7 +28,7 @@ export const ProductCard = ({ product }: Props) => {
         </Link>
         <h4 className="text-xl font-normal">${priceFinal}</h4>
         <div className="w-full">
-          <ButtonRegular onClick={() => addToCartHandler(product, 5)}>
+          <ButtonRegular onClick={() => addToCartHandler(product, 1)}>
             Add to Cart
           </ButtonRegular>
         </div>

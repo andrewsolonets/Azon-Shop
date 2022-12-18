@@ -6,6 +6,7 @@ import { CartMenu } from "../components/CartMenu";
 import { type CartItem } from "../types/cart";
 import getStripe from "../utils/get-stripejs";
 import { tranformCartItems } from "../utils/helpers";
+import { toast } from "react-toastify";
 import { trpc } from "../utils/trpc";
 
 type CartProviderProps = {
@@ -126,6 +127,7 @@ export const useCartActions = () => {
 
   const addToCartHandler = (el: Product, quantity: number) => {
     console.log(el);
+    toast.success("Added to cart");
     return addToCart.mutate({ userId, item: el, quantity });
   };
 
