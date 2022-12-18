@@ -34,50 +34,21 @@ export const cartRouter = router({
       },
     });
   }),
-  addItem: publicProcedure
+  increaseQuantity: protectedProcedure
     .input(
       z.object({
-        userId: z.string(),
-        item: z.object({ id: z.string() }),
+        item: z.object({ id: z.string(), quantity: z.number() }),
         quantity: z.number(),
       })
     )
-    .mutation(async ({ ctx, input }) => {
-      const { userId, item, quantity } = input;
+    .mutation(({ ctx, input }) => {
+      const { item } = input;
       const { id } = item;
-      return await ctx.prisma?.$transaction(async (tx) => {
-        const item = await tx.cartItem.findFirst({
-          where: { product: { id } },
-        });
-
-        if (item && quantity === 1) {
-          return await tx.cartItem.update({
-            where: { id: item.id },
-            data: {
-              quantity: { increment: 1 },
-            },
-          });
-        } else if (item && quantity > 1) {
-          return await tx.cartItem.update({
-            where: { id: item.id },
-            data: {
-              quantity,
-            },
-          });
-        } else {
-          return await ctx.prisma.cartItem.create({
-            data: {
-              quantity,
-              cart: {
-                connectOrCreate: {
-                  where: { userId },
-                  create: { userId, registeredUser: true },
-                },
-              },
-              product: { connect: { id } },
-            },
-          });
-        }
+      return ctx.prisma.cartItem.update({
+        where: { id },
+        data: {
+          quantity: item.quantity,
+        },
       });
     }),
   addNewItem: protectedProcedure

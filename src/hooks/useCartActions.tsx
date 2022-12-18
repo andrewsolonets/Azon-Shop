@@ -23,26 +23,56 @@ export const useCartActions = () => {
   const cartUser = trpc.cart.getUserCart.useQuery(undefined, {
     enabled: false,
   });
-  const addToCart = trpc.cart.addItem.useMutation({
+  const increaseQuantity = trpc.cart.increaseQuantity.useMutation({
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    async onMutate(el: { item: CartItem; quantity: number }) {
+      const newQuantity = el.item.quantity + el.quantity;
+      await utils.cart.getCartItems.cancel();
+      const prevData = utils.cart.getCartItems.getData();
+
+      console.log(el.item);
+      if (el.item && prevData) {
+        const newItems = prevData.map(
+          (oldCart: {
+            cart: Cart;
+            product: Product;
+            id: string;
+            quantity: number;
+            cartId: string;
+          }) => {
+            if (oldCart.id === el.item.id) {
+              oldCart.quantity = newQuantity;
+              return oldCart;
+            }
+            return oldCart;
+          }
+        );
+        console.log(newItems);
+
+        utils.cart.getCartItems.setData(undefined, () => newItems);
+
+        return { prevData };
+      }
+    },
+    onError(err, newPost, ctx) {
+      // If the mutation fails, use the context-value from onMutate
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      utils.cart.getCartItems.setData(undefined, ctx.prevData);
+    },
+    onSettled() {
+      utils.cart.getCartItems.invalidate();
+    },
+  });
+
+  const addNewToCart = trpc.cart.addNewItem.useMutation({
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     async onMutate(el: { userId: string; item: Product; quantity: number }) {
       await utils.cart.getCartItems.cancel();
       const prevData = utils.cart.getCartItems.getData();
-      if (!prevData) return;
-      const existing = prevData?.find((data) => {
-        return data.product.id === el.item.id;
-      });
 
-      console.log(existing);
-      if (existing) {
-        existing.quantity++;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        utils.cart.getCartItems.setData(undefined, (old) => [...old]);
-
-        return { prevData };
-      }
       const newItem = {
         id: (Math.random() + 1).toString(36).substring(7),
         product: el.item,
@@ -56,6 +86,7 @@ export const useCartActions = () => {
       utils.cart.getCartItems.setData(undefined, (old) => [...old, newItem]);
       return { prevData };
     },
+
     onError(err, newPost, ctx) {
       // If the mutation fails, use the context-value from onMutate
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -125,10 +156,30 @@ export const useCartActions = () => {
     return removeCart.mutate(userId);
   };
 
+  const addToCartRegulator = ({
+    item,
+    quantity,
+  }: {
+    item: Product;
+    quantity: number;
+  }) => {
+    const prevData = utils.cart.getCartItems.getData();
+    console.log(prevData);
+    if (!prevData) return;
+    const existing = prevData?.find((data) => {
+      return data.product.id === item.id;
+    });
+    if (existing) {
+      return increaseQuantity.mutate({ item: existing, quantity });
+    } else {
+      return addNewToCart.mutate({ item, quantity });
+    }
+  };
+
   const addToCartHandler = (el: Product, quantity: number) => {
     console.log(el);
     toast.success("Added to cart");
-    return addToCart.mutate({ userId, item: el, quantity });
+    addToCartRegulator({ item: el, quantity });
   };
 
   const removeItem = (id: string) => {
