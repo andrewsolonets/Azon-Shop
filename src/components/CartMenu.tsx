@@ -35,7 +35,7 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
             <OutlineBtn onClick={toggleCart}>Close</OutlineBtn>
           </div>
         </div>
-        <div className="flex w-[600px] flex-col gap-4">
+        <div className="flex w-[600px] flex-col gap-4 overflow-y-auto">
           {cartItems.data?.map((el) => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore

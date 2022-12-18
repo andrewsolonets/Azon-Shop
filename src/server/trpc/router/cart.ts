@@ -45,15 +45,23 @@ export const cartRouter = router({
     .mutation(async ({ ctx, input }) => {
       const { userId, item, quantity } = input;
       const { id } = item;
-      return await prisma?.$transaction(async (tx) => {
+      return await ctx.prisma?.$transaction(async (tx) => {
         const item = await tx.cartItem.findFirst({
           where: { product: { id } },
         });
-        if (item) {
+
+        if (item && quantity === 1) {
           return await tx.cartItem.update({
             where: { id: item.id },
             data: {
               quantity: { increment: 1 },
+            },
+          });
+        } else if (item && quantity > 1) {
+          return await tx.cartItem.update({
+            where: { id: item.id },
+            data: {
+              quantity,
             },
           });
         } else {
@@ -72,6 +80,29 @@ export const cartRouter = router({
         }
       });
     }),
+  addNewItem: protectedProcedure
+    .input(
+      z.object({ item: z.object({ id: z.string() }), quantity: z.number() })
+    )
+    .mutation(({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+      const { item, quantity } = input;
+      const { id } = item;
+
+      return ctx.prisma.cartItem.create({
+        data: {
+          quantity,
+          cart: {
+            connectOrCreate: {
+              where: { userId },
+              create: { userId, registeredUser: true },
+            },
+          },
+          product: { connect: { id } },
+        },
+      });
+    }),
+
   removeOne: publicProcedure
     .input(z.object({ id: z.string(), quantity: z.number() }))
     .mutation(({ ctx, input }) => {
