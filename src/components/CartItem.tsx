@@ -22,7 +22,7 @@ export const CartItemCard = ({ item }: Props) => {
   return (
     <div className="flex h-28 w-full items-center justify-around border-[3px] border-amber-400 bg-transparent">
       <div className="flex h-full gap-6">
-        <div className=" flex flex-col justify-center gap-4">
+        <div className=" flex flex-col items-start justify-center gap-4">
           <button
             className="h-7 w-7"
             onClick={() => addToCartHandler(item.product, 1)}

@@ -1,5 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
+import { CategoryList } from "../components/CategoryList";
 import { FeaturedList } from "../components/FeaturedList";
 import { HeroSection } from "../components/HeroSection";
 import { trpc } from "../utils/trpc";

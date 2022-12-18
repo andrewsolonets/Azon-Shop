@@ -24,9 +24,9 @@ export const categoryRouter = router({
     });
   }),
   getOneCategory: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    const name = input;
-    return ctx.prisma.category.findMany({
-      where: { name },
+    const id = input;
+    return ctx.prisma.category.findUnique({
+      where: { id },
       select: {
         id: true,
         name: true,

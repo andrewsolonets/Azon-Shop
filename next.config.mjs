@@ -14,7 +14,12 @@ const config = {
     defaultLocale: "en",
   },
   images: {
-    domains: ["shorturl.at", "placeimg.com", "lh3.googleusercontent.com"],
+    domains: [
+      "shorturl.at",
+      "placeimg.com",
+      "lh3.googleusercontent.com",
+      "loremflickr.com",
+    ],
   },
 };
 export default config;
