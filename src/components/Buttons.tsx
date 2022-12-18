@@ -51,7 +51,7 @@ export const ArrowBtn = ({ children, onClick }: Props) => {
     >
       {children}
       <div className="relative h-7 w-7">
-        <ArrowIcon className="fill-violet-700 group-hover:fill-amber-400" />
+        <ArrowIcon className="fill-violet-700 transition-all duration-300 group-hover:fill-amber-400" />
       </div>
     </button>
   );

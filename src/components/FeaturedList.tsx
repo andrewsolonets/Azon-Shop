@@ -66,24 +66,24 @@ export const FeaturedList = ({ items }: { items: Product[] | undefined }) => {
         Featured Products
       </h4>
       <div className="relative ">
-        <div className=" absolute flex h-full w-full items-center justify-between ">
+        <div className=" absolute flex h-full w-full items-center justify-between">
           <button
             onClick={movePrev}
-            className="group relative z-20 h-12 w-12 rotate-180 rounded-full bg-amber-400 p-2 transition-all duration-300 hover:bg-violet-800 disabled:opacity-0"
+            className="group relative z-10 h-12 w-12 rotate-180 rounded-full bg-amber-400 p-2 transition-all duration-300 hover:bg-violet-800 disabled:opacity-0"
             disabled={isDisabled("prev")}
           >
             <ArrowCarouselIcon className=" fill-violet-600 transition-all duration-300 hover:fill-amber-400 group-hover:fill-amber-400" />
           </button>
           <button
             onClick={moveNext}
-            className="group relative z-20 h-12 w-12 rounded-full bg-amber-400 p-2 transition-all duration-300 hover:bg-violet-800 disabled:opacity-0"
+            className="group relative z-10 h-12 w-12 rounded-full bg-amber-400 p-2 transition-all duration-300 hover:bg-violet-800 disabled:opacity-0"
             disabled={isDisabled("next")}
           >
             <ArrowCarouselIcon className=" fill-violet-600 transition-all duration-300 hover:fill-amber-400 group-hover:fill-amber-400" />
           </button>
         </div>
         <div
-          className=" relative flex touch-pan-x snap-x  snap-mandatory justify-between gap-6 overflow-x-auto scroll-smooth md:overflow-x-hidden  "
+          className=" relative  flex touch-pan-x snap-x snap-mandatory justify-between gap-6 overflow-x-auto scroll-smooth md:overflow-x-hidden  "
           ref={carousel}
         >
           {items?.map((el) => {

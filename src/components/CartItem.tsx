@@ -27,10 +27,10 @@ export const CartItemCard = ({ item }: Props) => {
             className="h-7 w-7"
             onClick={() => addToCartHandler(item.product, 1)}
           >
-            <PlusIcon />
+            <PlusIcon className="fill-amber-400 transition-all duration-300 hover:fill-violet-400" />
           </button>
           <button className="h-7 w-7" onClick={() => deleteOne(item)}>
-            <MinusIcon />
+            <MinusIcon className="fill-amber-400 transition-all duration-300 hover:fill-violet-400" />
           </button>
         </div>
         <div className="relative h-full w-28 object-cover object-center">
@@ -46,10 +46,10 @@ export const CartItemCard = ({ item }: Props) => {
       </div>
       <p>${finalPrice}</p>
       <button
-        className="flex h-8 w-8 items-center justify-center rounded-sm bg-amber-400"
+        className="flex h-8 w-8 items-center justify-center rounded-sm bg-amber-400 transition-all duration-300 hover:bg-violet-600"
         onClick={() => removeItem(item.id)}
       >
-        <CrossIcon />
+        <CrossIcon className="fill-violet-600 transition-all duration-300 hover:fill-amber-400" />
       </button>
     </div>
   );
