@@ -1,6 +1,6 @@
 import { type Product, type CartItem } from "@prisma/client";
 import { type MutableRefObject } from "react";
-import onClickOutside from "react-onclickoutside";
+// import onClickOutside from "react-onclickoutside";
 
 interface CartItemLong extends CartItem {
   product: { title: string; image: string; price: number; description: string };
@@ -10,24 +10,24 @@ interface CartItemPlus extends CartItem {
   product: Product;
 }
 
-function listenForOutsideClicks(
-  listening: boolean,
-  setListening: (val: boolean) => void,
-  menuRef: MutableRefObject<null>,
-  setIsOpen: (val: boolean) => void
-) {
-  return () => {
-    if (listening) return;
-    if (!menuRef.current) return;
-    setListening(true);
-    [`click`, `touchstart`].forEach((type) => {
-      document.addEventListener(`click`, (evt) => {
-        if (menuRef.current?.contains(evt.target)) return;
-        setIsOpen(false);
-      });
-    });
-  };
-}
+// function listenForOutsideClicks(
+//   listening: boolean,
+//   setListening: (val: boolean) => void,
+//   menuRef: MutableRefObject<null>,
+//   setIsOpen: (val: boolean) => void
+// ) {
+//   return () => {
+//     if (listening) return;
+//     if (!menuRef.current) return;
+//     setListening(true);
+//     [`click`, `touchstart`].forEach((type) => {
+//       document.addEventListener(`click`, (evt) => {
+//         if (menuRef.current?.contains(evt.target)) return;
+//         setIsOpen(false);
+//       });
+//     });
+//   };
+// }
 
 export const tranformCartItems = (items: CartItemLong[]) => {
   return items.map((item) => ({

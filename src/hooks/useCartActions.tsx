@@ -12,7 +12,7 @@ import {
 import { CartMenu } from "../components/CartMenu";
 import { type CartItem } from "../types/cart";
 import getStripe from "../utils/get-stripejs";
-import { listenForOutsideClicks, tranformCartItems } from "../utils/helpers";
+import { tranformCartItems } from "../utils/helpers";
 import { toast } from "react-toastify";
 import { trpc } from "../utils/trpc";
 
