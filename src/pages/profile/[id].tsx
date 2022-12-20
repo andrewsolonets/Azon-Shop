@@ -6,9 +6,6 @@ const UserProfile = () => {
   const { data: sessionData } = useSession();
   const router = useRouter();
   const { data } = trpc.auth.getUser.useQuery();
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //@ts-ignore
-  const role = data.role;
 
   if (!sessionData?.user?.id)
     return (
@@ -39,7 +36,7 @@ const UserProfile = () => {
             ))}
           </tbody>
         </table>
-        <div className="h-72 w-full ">{role}</div>
+        <div className="h-72 w-full "></div>
       </div>
     </section>
   );
