@@ -15,14 +15,14 @@ export const ProductCard = ({ product }: Props) => {
   const priceFinal = Math.round(Number(price));
   return (
     <div className="mb-2 flex w-60 min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-violet-600 drop-shadow-md">
-      <Link href={`/item/${id}`}>
+      <Link href={`/products/${id}`}>
         <div className="relative h-40 w-full  object-cover ">
           <Image src={TestCardImg} alt={title} fill className="rounded-lg" />
         </div>
       </Link>
       <div className="flex w-full flex-col items-center justify-end gap-4 px-3 py-4 ">
         <Link
-          href={`/item/${id}`}
+          href={`/products/${id}`}
           className="flex w-full flex-col items-center justify-end gap-4"
         >
           <h4 className=" text-center text-xl font-bold hover:text-amber-400 ">

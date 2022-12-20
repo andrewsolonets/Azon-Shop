@@ -52,7 +52,19 @@ export const Header = () => {
               Categories
             </Link>
           </li>
-          <li>All Products</li>
+          <li>
+            <Link
+              href="/products"
+              className={`
+              transition-all duration-300 hover:text-violet-300 active:text-amber-300 ${
+                router.pathname == "/products"
+                  ? "font-semibold text-amber-400 "
+                  : "text-white "
+              }`}
+            >
+              All Products
+            </Link>
+          </li>
         </ul>
         <ul className="flex items-center gap-8">
           <li className="relative ">
