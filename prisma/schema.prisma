@@ -104,6 +104,11 @@ model Session {
   @@index([userId])
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -114,4 +119,5 @@ model User {
   accounts      Account[]
   sessions      Session[]
   Cart          Cart?
+  role          Role      @default(USER)
 }

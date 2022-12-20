@@ -7,9 +7,11 @@ import { trpc } from "../../utils/trpc";
 import { useState } from "react";
 import { BigButton } from "../../components/Buttons";
 import { useCartActions } from "../../hooks/useCartActions";
+import { FeaturedList } from "../../components/FeaturedList";
 
 const SingleProductPage = () => {
   const router = useRouter();
+  const featured = trpc.product.getAll.useQuery(20);
   const [quantityCounter, setQuantity] = useState(1);
   const { addToCartHandler } = useCartActions();
   if (!router.query) return;
@@ -19,13 +21,13 @@ const SingleProductPage = () => {
   const { image, title, price } = item.data;
   const finalPrice = Math.round(Number(price));
   return (
-    <section className="mt-32 h-screen py-4 px-8">
+    <section className="mt-32 flex h-screen flex-col gap-24 py-4 px-8">
       <div className=" flex w-full justify-between gap-20">
         <div className="relative h-72 w-72 rounded-sm object-cover ring-8 ring-amber-400">
           <Image src={image} alt={title} fill />
         </div>
         <div className="flex w-[80%] flex-col gap-8">
-          <h2 className="font-semifold max-w-sm text-4xl">{title}</h2>
+          <h2 className="max-w-sm text-4xl font-semibold">{title}</h2>
           <p>
             Lorem ipsum dolor sit amet consectetur. Tortor consequat commodo
             facilisis quam dictumst ut magna pharetra. Turpis malesuada enim sit
@@ -70,6 +72,7 @@ const SingleProductPage = () => {
           </div>
         </div>
       </div>
+      <FeaturedList items={featured.data} />
     </section>
   );
 };
