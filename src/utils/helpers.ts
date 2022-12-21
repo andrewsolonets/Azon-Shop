@@ -53,3 +53,22 @@ export const getTotalAmount = (items: CartItemPlus[] | undefined) => {
   });
   return total;
 };
+
+// <CartItemCard
+// item={{
+//   product: {
+//     title: "Hello",
+//     price: "1212",
+//     id: "sddjsds",
+//     description: "dsdskdj",
+//     quantity: 1,
+//     image: "https://placeimg.com/1000/1000/tech",
+//     createdAt: new Date("December 17, 1995 03:24:00"),
+//     categoryId: "dskdlskdl",
+//   },
+//   id: "oqpwoepqwoepqwo",
+//   productId: "sdjskjdksjdks",
+//   quantity: 5,
+//   cartId: "sjdksjdkj",
+// }}
+// />

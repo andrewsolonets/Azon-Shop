@@ -21,13 +21,13 @@ const SingleProductPage = () => {
   const { image, title, price } = item.data;
   const finalPrice = Math.round(Number(price));
   return (
-    <section className="mt-32 flex h-screen flex-col gap-24 py-4 px-8">
-      <div className=" flex w-full justify-between gap-20">
+    <section className="mt-32 flex h-fit flex-col gap-24 py-4 px-8">
+      <div className=" flex w-full flex-col items-center justify-between gap-20 md:flex-row md:items-start">
         <div className="relative h-72 w-72 rounded-sm object-cover ring-8 ring-amber-400">
           <Image src={image} alt={title} fill />
         </div>
-        <div className="flex w-[80%] flex-col gap-8">
-          <h2 className="max-w-sm text-4xl font-semibold">{title}</h2>
+        <div className="flex w-full flex-col gap-8 text-center md:w-[80%] md:text-left">
+          <h2 className="max-w-sm  text-4xl font-semibold ">{title}</h2>
           <p>
             Lorem ipsum dolor sit amet consectetur. Tortor consequat commodo
             facilisis quam dictumst ut magna pharetra. Turpis malesuada enim sit
@@ -35,7 +35,7 @@ const SingleProductPage = () => {
             metus. Mauris egestas euismod turpis arcu at bibendum risus aliquam.
             Ornare pulvinar pretium nunc ante. Sed faucibus pretium et id.
           </p>
-          <div className="flex justify-between">
+          <div className="flex flex-col justify-between gap-6 md:flex-row">
             <div className="flex flex-col items-center gap-1">
               <span>Price</span>
               <span className="text-2xl font-bold">${finalPrice}</span>

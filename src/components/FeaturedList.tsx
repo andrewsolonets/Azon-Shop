@@ -62,11 +62,11 @@ export const FeaturedList = ({ items }: { items: Product[] | undefined }) => {
 
   return (
     <div className=" flex flex-col gap-6 px-4 ">
-      <h4 className="ml-4 w-fit rounded-md bg-violet-600 px-4 py-1 font-semibold drop-shadow-sm">
+      <h4 className="w-fit rounded-md bg-violet-600 px-4 py-1 font-semibold drop-shadow-sm md:ml-4">
         Featured Products
       </h4>
       <div className="relative ">
-        <div className=" absolute flex h-full w-full items-center justify-between">
+        <div className="absolute hidden h-full w-full items-center justify-between md:flex">
           <button
             onClick={movePrev}
             className="group relative z-10 h-12 w-12 rotate-180 rounded-full bg-amber-400 p-2 transition-all duration-300 hover:bg-violet-800 disabled:opacity-0"

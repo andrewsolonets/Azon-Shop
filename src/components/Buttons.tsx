@@ -25,7 +25,7 @@ export const BigButton = ({ children, onClick }: Props) => {
   return (
     <button
       onClick={onClick}
-      className="flex w-fit items-center gap-2 rounded-lg bg-amber-400 px-10 py-2 text-xl font-bold text-violet-700 transition-all duration-150 hover:bg-violet-800 hover:text-amber-400"
+      className="flex w-full items-center justify-center gap-2 rounded-lg bg-amber-400 px-10 py-2 text-xl font-bold text-violet-700 transition-all duration-150 hover:bg-violet-800 hover:text-amber-400 md:w-fit md:justify-start"
     >
       {children}
     </button>
@@ -47,7 +47,7 @@ export const ArrowBtn = ({ children, onClick }: Props) => {
   return (
     <button
       onClick={onClick}
-      className="group flex w-fit items-center gap-2 rounded-lg bg-amber-400 px-8 py-3 text-2xl font-bold text-violet-700 transition-all duration-300 hover:bg-violet-700 hover:text-amber-400 "
+      className="group flex w-fit items-center gap-2 rounded-lg bg-amber-400 py-1 px-6 text-xl font-bold text-violet-700 transition-all duration-300 hover:bg-violet-700 hover:text-amber-400 md:px-8 md:py-3 md:text-2xl "
     >
       {children}
       <div className="relative h-7 w-7">

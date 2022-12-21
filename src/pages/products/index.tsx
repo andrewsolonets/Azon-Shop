@@ -28,7 +28,7 @@ const AllPoductsPage = () => {
     <section className="mt-32 h-fit py-4 px-8">
       <div className="flex flex-col items-center justify-center">
         <h2 className="mb-8 text-3xl font-bold ">All Products</h2>
-        <div className="grid auto-cols-max grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid auto-cols-max grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {data?.pages.map((page) => (
             <Fragment key={page.nextCursor}>
               {page.items.map((item) => (
