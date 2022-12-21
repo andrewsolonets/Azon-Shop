@@ -35,7 +35,7 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
       //@ts-ignore
       setTotalAmount(Math.round(getTotalAmount(data)));
     }
-  }, [cartItems]);
+  }, [cartItems, data]);
 
   return (
     <div
