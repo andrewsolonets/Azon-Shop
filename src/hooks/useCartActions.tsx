@@ -26,7 +26,7 @@ type CartContext = {
 export const useCartActions = () => {
   const utils = trpc.useContext();
   const { data: sessionData } = useSession();
-  const userId = sessionData?.user?.id || "hi";
+  const userId = sessionData?.user?.id;
   const cartUser = trpc.cart.getUserCart.useQuery(undefined, {
     enabled: false,
   });
@@ -159,6 +159,11 @@ export const useCartActions = () => {
   });
 
   const clearCart = () => {
+    if (!userId)
+      return toast.error("Not Logged In!", {
+        position: "top-center",
+        autoClose: 3500,
+      });
     return removeCart.mutate(userId);
   };
 
@@ -183,7 +188,11 @@ export const useCartActions = () => {
   };
 
   const addToCartHandler = (el: Product, quantity: number) => {
-    console.log(el);
+    if (!userId)
+      return toast.error("Please Log In to use cart!", {
+        position: "top-center",
+        autoClose: 3500,
+      });
     toast.success("Added to cart");
     addToCartRegulator({ item: el, quantity });
   };
