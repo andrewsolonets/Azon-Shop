@@ -26,9 +26,11 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
   cartItems = guestItems;
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    setTotalAmount(Math.round(getTotalAmount(cartItems)));
+    if (cartItems) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      setTotalAmount(Math.round(getTotalAmount(cartItems)));
+    }
   }, [cartItems]);
 
   return (

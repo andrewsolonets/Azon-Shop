@@ -1,5 +1,6 @@
 import { type Product, type CartItem } from "@prisma/client";
 import { toast } from "react-toastify";
+import { type CartItemGuest } from "../context/CartContext";
 // import onClickOutside from "react-onclickoutside";
 
 interface CartItemLong extends CartItem {
@@ -60,7 +61,9 @@ export const paymentNotification = (status: string | string[]) => {
   }
 };
 
-export const getTotalAmount = (items: CartItemPlus[] | undefined) => {
+export const getTotalAmount = (
+  items: CartItemPlus[] | CartItemGuest[] | undefined
+) => {
   let total = 0;
   items?.forEach((item) => {
     const itemTotal = item.quantity * Number(item.product.price);
