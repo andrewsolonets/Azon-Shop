@@ -73,7 +73,9 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
           <h6 className=" font-medium">Subtotal Amount:</h6>
           <h6 className="text-2xl font-semibold">${totalAmount}</h6>
         </div>
-        <ArrowBtn onClick={() => createCheckOutSession(cartItems)}>
+        <ArrowBtn
+          onClick={() => createCheckOutSession(data ? data : cartItems)}
+        >
           Checkout
         </ArrowBtn>
       </div>
