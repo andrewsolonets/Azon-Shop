@@ -1,5 +1,4 @@
 import { type Product, type CartItem } from "@prisma/client";
-import { type MutableRefObject } from "react";
 import { toast } from "react-toastify";
 // import onClickOutside from "react-onclickoutside";
 

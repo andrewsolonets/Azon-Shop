@@ -3,19 +3,22 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { trpc } from "../utils/trpc";
 import Link from "next/link";
 import ProfileIcon from "../assets/ProfileIcon";
-import { useCart } from "../hooks/useCartActions";
 import { NavMain } from "./NavMain";
+import { useCart } from "../context/CartContext";
 
 export const Header = () => {
   const { data: sessionData } = useSession();
-  const { toggleCart } = useCart();
+  const { toggleCart, getCartQuantity } = useCart();
   const userId = sessionData?.user?.id;
-
-  const cartItems = trpc.cart.getCartItems.useQuery();
   let totalQuantity = 0;
-  cartItems?.data?.forEach((el) => {
-    totalQuantity += el.quantity;
-  });
+  if (userId) {
+    const cartItems = trpc.cart.getCartItems.useQuery();
+    cartItems?.data?.forEach((el) => {
+      totalQuantity += el.quantity;
+    });
+  }
+  totalQuantity = getCartQuantity();
+
   return (
     <header className="drop-shadow-header fixed top-0 left-0 right-0 z-20 flex items-center justify-between gap-10 bg-violet-800 py-4 px-10 font-medium text-white backdrop-blur  md:justify-start">
       <Link href="/">
