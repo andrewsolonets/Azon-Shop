@@ -1,18 +1,88 @@
-# Create T3 App
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+# Azon Shop
 
-## What's next? How do I make an app with this?
+Ecommerce website built with t3-stack (typescript, prisma, trpc, next.js)
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Features
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+- Fully functioning, persistent Cart
+- Infinite scroll 
+- User profile with order history
+- Checkout with Stripe
+- Custom db with orders connected to Stripe
+- Authentication
+
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`DATABASE_URL`
+
+`NEXTAUTH_SECRET`
+
+`NEXTAUTH_URL`
+
+`GOOGLE_CLIENT_ID`
+
+`GOOGLE_CLIENT_SECRET`
+
+`GITHUB_ID`
+
+`GITHUB_SECRET`
+
+`NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
+
+`STRIPE_SECRET_KEY`
+
+`STRIPE_WEBHOOK_SECRET`
+
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/andrewsolonets/Azon-Shop.git
+```
+
+Go to the project directory
+
+```bash
+  cd Azon-Shop
+```
+
+Install dependencies
+
+```bash
+  npm install
+```
+
+
+Connect to your db, change schema.prisma if it's not mysql
+
+```bash
+in .env
+  DATABASE_URL=
+```
+
+Add all the vars to the .env
+    
+    
+
+Start the server
+
+```bash
+  npm run start
+```
+
+
+## Tech Stack
+
+**Client:** React, React Query TailwindCSS, nextauth.js.
+
+**Server:** Next.js, trpc, prisma, planetscale.
 
 ## Learn More
 
