@@ -30,6 +30,11 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
     if (cartItems) {
       setTotalAmount(Math.round(getTotalAmount(cartItems)));
     }
+    if (data) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      setTotalAmount(Math.round(getTotalAmount(data)));
+    }
   }, [cartItems]);
 
   return (
