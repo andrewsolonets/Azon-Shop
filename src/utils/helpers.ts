@@ -1,5 +1,6 @@
 import { type Product, type CartItem } from "@prisma/client";
 import { type MutableRefObject } from "react";
+import { toast } from "react-toastify";
 // import onClickOutside from "react-onclickoutside";
 
 interface CartItemLong extends CartItem {
@@ -43,6 +44,21 @@ export const tranformCartItems = (items: CartItemLong[]) => {
 
     quantity: item.quantity,
   }));
+};
+
+export const paymentNotification = (status: string | string[]) => {
+  if (status === "cancel") {
+    toast.error("Payment Canceled!", {
+      position: "top-center",
+      autoClose: 3500,
+    });
+  }
+  if (status === "success") {
+    toast.success("Payment Successful!", {
+      position: "top-center",
+      autoClose: 3500,
+    });
+  }
 };
 
 export const getTotalAmount = (items: CartItemPlus[] | undefined) => {
