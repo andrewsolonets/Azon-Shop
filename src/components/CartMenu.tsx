@@ -50,11 +50,17 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
           </div>
         </div>
         <div className="flex w-full flex-col gap-4 overflow-y-auto md:w-[600px]">
-          {cartItems?.map((el) => {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return <CartItemCard key={el.id} item={el} />;
-          })}
+          {data
+            ? data?.map((el) => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                return <CartItemCard key={el.id} item={el} />;
+              })
+            : cartItems?.map((el) => {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                return <CartItemCard key={el.id} item={el} />;
+              })}
         </div>
       </div>
       <div className="flex w-full justify-between justify-self-end bg-violet-900 py-4 px-4 md:px-8 md:py-6">
