@@ -9,8 +9,7 @@ import "@fontsource/inter";
 import "../styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import Layout from "../components/layout";
-import { CartProvider } from "../hooks/useCartActions";
-import { useEffect } from "react";
+import { CartProvider } from "../context/CartContext";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,

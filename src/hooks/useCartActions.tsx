@@ -1,30 +1,22 @@
 import { type Cart, type Product } from "@prisma/client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import {
-  useState,
-  createContext,
-  type ReactNode,
-  useContext,
-  useEffect,
-  useRef,
-} from "react";
-import { CartMenu } from "../components/CartMenu";
+
 import { type CartItem } from "../types/cart";
 import getStripe from "../utils/get-stripejs";
 import { tranformCartItems } from "../utils/helpers";
 import { toast } from "react-toastify";
 import { trpc } from "../utils/trpc";
-
-type CartProviderProps = {
-  children: ReactNode;
-};
-type CartContext = {
-  toggleCart: () => void;
-};
+import { type CartItemGuest, useCart } from "../context/CartContext";
 
 export const useCartActions = () => {
   const utils = trpc.useContext();
+  const {
+    increaseQuantity: addItemsGuest,
+    decreaseQuantity,
+    deleteGuestItem,
+    clearCart: clearGuestCart,
+  } = useCart();
   const { data: sessionData } = useSession();
   const userId = sessionData?.user?.id;
   const cartUser = trpc.cart.getUserCart.useQuery(undefined, {
@@ -159,11 +151,7 @@ export const useCartActions = () => {
   });
 
   const clearCart = () => {
-    if (!userId)
-      return toast.error("Not Logged In!", {
-        position: "top-center",
-        autoClose: 3500,
-      });
+    if (!userId) return clearGuestCart();
     return removeCart.mutate(userId);
   };
 
@@ -188,20 +176,22 @@ export const useCartActions = () => {
   };
 
   const addToCartHandler = (el: Product, quantity: number) => {
-    if (!userId)
-      return toast.error("Please Log In to use cart!", {
-        position: "top-center",
-        autoClose: 3500,
-      });
+    if (!userId) return addItemsGuest(el);
     toast.success("Added to cart");
     addToCartRegulator({ item: el, quantity });
   };
 
   const removeItem = (id: string) => {
+    if (!userId) {
+      return deleteGuestItem(id);
+    }
     return removeFromCart.mutate(id);
   };
 
   const deleteOne = (el: CartItem) => {
+    if (!userId) {
+      return decreaseQuantity(el.id);
+    }
     if (el.quantity === 1) {
       return removeFromCart.mutate(el.id);
     }
@@ -210,15 +200,7 @@ export const useCartActions = () => {
     }
   };
   const createCheckOutSession = async (
-    cartItems:
-      | {
-          cart: Cart;
-          product: Product;
-          id: string;
-          quantity: number;
-          cartId: string;
-        }[]
-      | undefined
+    cartItems: CartItemGuest[] | CartItem[] | undefined
   ) => {
     const stripe = await getStripe();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -247,21 +229,3 @@ export const useCartActions = () => {
     createCheckOutSession,
   };
 };
-const CartContext = createContext({} as CartContext);
-
-export function useCart() {
-  return useContext(CartContext);
-}
-
-export function CartProvider({ children }: CartProviderProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleCart = () => setIsOpen((prev) => !prev);
-
-  return (
-    <CartContext.Provider value={{ toggleCart }}>
-      {children}
-      <CartMenu isOpen={isOpen} />
-    </CartContext.Provider>
-  );
-}

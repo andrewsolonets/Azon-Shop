@@ -1,22 +1,35 @@
-import { useCart, useCartActions } from "../hooks/useCartActions";
+import { useCartActions } from "../hooks/useCartActions";
 import { getTotalAmount } from "../utils/helpers";
 import { trpc } from "../utils/trpc";
 import { ArrowBtn, OutlineBtn } from "./Buttons";
 import { CartItemCard } from "./CartItem";
 import { useEffect, useState } from "react";
+import { type Product, type CartItem } from "@prisma/client";
+import { type CartItemGuest, useCart } from "../context/CartContext";
+
+interface CartItemPlus extends CartItem {
+  product: Product;
+}
 
 export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
   const [totalAmount, setTotalAmount] = useState(0);
+  let cartItems: CartItemPlus[] | CartItemGuest[];
 
   const { clearCart, createCheckOutSession } = useCartActions();
-  const { toggleCart } = useCart();
+  const { toggleCart, cartItems: guestItems } = useCart();
+  const { data } = trpc.cart.getCartItems.useQuery();
   // const { totalAmount } = useQuery(["totalAmount"]);
-  const cartItems = trpc.cart.getCartItems.useQuery();
+  if (data) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    cartItems = data;
+  }
+  cartItems = guestItems;
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    setTotalAmount(Math.round(getTotalAmount(cartItems.data)));
+    if (cartItems) {
+      setTotalAmount(Math.round(getTotalAmount(cartItems)));
+    }
   }, [cartItems]);
 
   return (
@@ -37,7 +50,7 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
           </div>
         </div>
         <div className="flex w-full flex-col gap-4 overflow-y-auto md:w-[600px]">
-          {cartItems.data?.map((el) => {
+          {cartItems?.map((el) => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             return <CartItemCard key={el.id} item={el} />;
@@ -49,7 +62,7 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
           <h6 className=" font-medium">Subtotal Amount:</h6>
           <h6 className="text-2xl font-semibold">${totalAmount}</h6>
         </div>
-        <ArrowBtn onClick={() => createCheckOutSession(cartItems.data)}>
+        <ArrowBtn onClick={() => createCheckOutSession(cartItems)}>
           Checkout
         </ArrowBtn>
       </div>
