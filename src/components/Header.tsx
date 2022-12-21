@@ -10,14 +10,15 @@ export const Header = () => {
   const { data: sessionData } = useSession();
   const { toggleCart, getCartQuantity } = useCart();
   const userId = sessionData?.user?.id;
+  const { data: cartItems } = trpc.cart.getCartItems.useQuery();
   let totalQuantity = 0;
-  if (userId) {
-    const cartItems = trpc.cart.getCartItems.useQuery();
-    cartItems?.data?.forEach((el) => {
+  if (cartItems) {
+    cartItems?.forEach((el) => {
       totalQuantity += el.quantity;
     });
+  } else {
+    totalQuantity = getCartQuantity();
   }
-  totalQuantity = getCartQuantity();
 
   return (
     <header className="drop-shadow-header fixed top-0 left-0 right-0 z-20 flex items-center justify-between gap-10 bg-violet-800 py-4 px-10 font-medium text-white backdrop-blur  md:justify-start">

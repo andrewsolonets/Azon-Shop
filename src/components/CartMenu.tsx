@@ -4,21 +4,22 @@ import { trpc } from "../utils/trpc";
 import { ArrowBtn, OutlineBtn } from "./Buttons";
 import { CartItemCard } from "./CartItem";
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { type CartItem } from "@prisma/client";
+import { type Product, type CartItem } from "@prisma/client";
 import { type CartItemGuest, useCart } from "../context/CartContext";
+
+interface CartItemPlus extends CartItem {
+  product: Product;
+}
 
 export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
   const [totalAmount, setTotalAmount] = useState(0);
-  const { data: sessionData } = useSession();
-  const userId = sessionData?.user?.id;
-  let cartItems: CartItem[] | CartItemGuest[];
+  let cartItems: CartItemPlus[] | CartItemGuest[];
 
   const { clearCart, createCheckOutSession } = useCartActions();
   const { toggleCart, cartItems: guestItems } = useCart();
+  const { data } = trpc.cart.getCartItems.useQuery();
   // const { totalAmount } = useQuery(["totalAmount"]);
-  if (userId) {
-    const { data } = trpc.cart.getCartItems.useQuery();
+  if (data) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     cartItems = data;
@@ -27,8 +28,6 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
 
   useEffect(() => {
     if (cartItems) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       setTotalAmount(Math.round(getTotalAmount(cartItems)));
     }
   }, [cartItems]);
