@@ -10,7 +10,9 @@ export const NavMain = () => {
           href="/"
           className={`
       transition-all duration-300 hover:text-violet-300 active:text-amber-300 ${
-        router.pathname == "/" ? "font-semibold text-amber-400 " : "text-white "
+        router.pathname == "/"
+          ? "font-semibold text-amber-400 "
+          : "text-slate-50 "
       }`}
         >
           Home
@@ -23,7 +25,7 @@ export const NavMain = () => {
       transition-all duration-300 hover:text-violet-300 active:text-amber-300 ${
         router.pathname == "/categories"
           ? "font-semibold text-amber-400 "
-          : "text-white "
+          : "text-slate-50 "
       }`}
         >
           Categories

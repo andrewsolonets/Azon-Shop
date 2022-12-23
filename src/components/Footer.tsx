@@ -22,7 +22,7 @@ export const Footer = () => {
           <LinkedInIcon className="h-7 w-7 fill-white hover:stroke-amber-400 group-hover:stroke-amber-400" />
         </a>
       </div>
-      <h2 className="text-white">Designed & Built by Andrii Solonets</h2>
+      <h2 className="text-slate-50">Designed & Built by Andrii Solonets</h2>
     </footer>
   );
 };

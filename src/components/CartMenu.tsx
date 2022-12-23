@@ -8,7 +8,6 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
   const { clearCart, createCheckOutSession } = useCartActions();
   const { toggleCart, cartItems: guestItems, totalAmount } = useCart();
   const { data: cartItems } = trpc.cart.getCartItems.useQuery();
-  // const { totalAmount } = useQuery(["totalAmount"]);
 
   return (
     <div
