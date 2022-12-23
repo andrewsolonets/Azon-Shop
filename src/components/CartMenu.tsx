@@ -16,9 +16,9 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
         isOpen ? "" : "translate-x-full"
       } animate fixed top-0 bottom-0 z-50 flex h-screen w-screen justify-end duration-500 ease-out`}
     >
-      <div className="h-full w-2/3" onClick={() => toggleCart()}></div>
+      <div className="md:h-full md:w-2/3  " onClick={() => toggleCart()}></div>
       <div
-        className={`flex h-full w-1/3 transform flex-col justify-between bg-violet-800 pt-6 text-white  md:w-fit `}
+        className={`flex h-full w-screen transform flex-col justify-between bg-violet-800 pt-6 text-white  md:w-fit `}
       >
         <div className="flex h-5/6 flex-col gap-6 px-4 md:px-8">
           <div className="flex items-center justify-between gap-8">
