@@ -37,12 +37,11 @@ model CartItem {
 }
 
 model Cart {
-  id             String     @id @default(cuid())
-  createdAt      DateTime   @default(now())
-  user           User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId         String?    @unique
-  registeredUser Boolean    @default(false)
-  items          CartItem[]
+  id        String     @id @default(cuid())
+  createdAt DateTime   @default(now())
+  user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String?    @unique
+  items     CartItem[]
 
   @@index([userId])
 }

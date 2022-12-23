@@ -66,7 +66,7 @@ export const cartRouter = router({
           cart: {
             connectOrCreate: {
               where: { userId },
-              create: { userId, registeredUser: true },
+              create: { userId },
             },
           },
           product: { connect: { id } },
@@ -114,7 +114,6 @@ export const cartRouter = router({
         where: { userId },
         create: {
           userId,
-          registeredUser: true,
           items: {
             createMany: {
               data,
