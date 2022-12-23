@@ -2,12 +2,12 @@ import { type Cart, type Product } from "@prisma/client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
-import { type CartItem } from "../types/cart";
+import { type CartItemGuest, type CartItem } from "../types/cart";
 import getStripe from "../utils/get-stripejs";
 import { tranformCartItems } from "../utils/helpers";
 import { toast } from "react-toastify";
 import { trpc } from "../utils/trpc";
-import { type CartItemGuest, useCart } from "../context/CartContext";
+import { useCart } from "../context/CartContext";
 
 export const useCartActions = () => {
   const utils = trpc.useContext();
@@ -26,13 +26,12 @@ export const useCartActions = () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     async onMutate(el: { item: CartItem; quantity: number }) {
-      const newQuantity = el.item.quantity + el.quantity;
       await utils.cart.getCartItems.cancel();
       const prevData = utils.cart.getCartItems.getData();
 
-      utils.cart.getCartItems.setData(undefined, (old) =>
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        old!.map(
+      utils.cart.getCartItems.setData(undefined, (old) => {
+        if (!old) return;
+        return old.map(
           (oldCart: {
             cart: Cart;
             product: Product;
@@ -41,15 +40,13 @@ export const useCartActions = () => {
             cartId: string;
           }) => {
             if (oldCart.id === el.item.id) {
-              console.log("NEW ITEMS OLD CART");
-              oldCart.quantity = newQuantity;
-              console.log(oldCart);
+              return { ...oldCart, quantity: oldCart.quantity + el.quantity };
+            } else {
               return oldCart;
             }
-            return oldCart;
           }
-        )
-      );
+        );
+      });
 
       return { prevData };
     },
@@ -115,13 +112,17 @@ export const useCartActions = () => {
     async onMutate(el: CartItem) {
       await utils.cart.getCartItems.cancel();
       const prevData = utils.cart.getCartItems.getData();
-      prevData?.forEach((item) => {
-        if (item.id === el.id) {
-          item.quantity--;
-        }
-      });
 
-      utils.cart.getCartItems.setData(undefined, () => prevData);
+      utils.cart.getCartItems.setData(undefined, (old) => {
+        if (!old) return;
+        return old.map((item) => {
+          if (item.id === el.id) {
+            return { ...item, quantity: item.quantity - 1 };
+          } else {
+            return item;
+          }
+        });
+      });
       return { prevData };
     },
     onError(err, newPost, ctx) {
@@ -152,7 +153,41 @@ export const useCartActions = () => {
 
   const clearCart = () => {
     if (!userId) return clearGuestCart();
-    return removeCart.mutate(userId);
+    return removeCart.mutate();
+  };
+
+  const transferItems = trpc.cart.addCartItems.useMutation({
+    async onMutate(
+      items: {
+        product: {
+          id: string;
+        };
+        quantity: number;
+      }[]
+    ) {
+      await utils.cart.getCartItems.cancel();
+      const prevData = utils.cart.getCartItems.getData();
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      //@ts-ignore
+      utils.cart.getCartItems.setData(undefined, (old) => {
+        if (!old) return items;
+        return [...old, items];
+      });
+      return { prevData };
+    },
+    onError(err, newPost, ctx) {
+      // If the mutation fails, use the context-value from onMutate
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      utils.cart.getCartItems.setData(undefined, ctx.prevData);
+    },
+    onSettled() {
+      utils.cart.getCartItems.invalidate();
+    },
+  });
+
+  const addItemsToUserCart = (cartItems: CartItemGuest[]) => {
+    transferItems.mutate(cartItems);
   };
 
   const addToCartRegulator = ({
@@ -163,8 +198,6 @@ export const useCartActions = () => {
     quantity: number;
   }) => {
     const prevData = utils.cart.getCartItems.getData();
-    console.log(prevData);
-    if (!prevData) return;
     const existing = prevData?.find((data) => {
       return data.product.id === item.id;
     });
@@ -176,7 +209,7 @@ export const useCartActions = () => {
   };
 
   const addToCartHandler = (el: Product, quantity: number) => {
-    if (!userId) return addItemsGuest(el);
+    if (!userId) return addItemsGuest(el, quantity);
     toast.success("Added to cart");
     addToCartRegulator({ item: el, quantity });
   };
@@ -224,6 +257,7 @@ export const useCartActions = () => {
   return {
     addToCartHandler,
     removeItem,
+    addItemsToUserCart,
     deleteOne,
     clearCart,
     createCheckOutSession,

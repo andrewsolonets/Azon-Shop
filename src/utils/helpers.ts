@@ -1,15 +1,19 @@
-import { type Product, type CartItem } from "@prisma/client";
+import { type Product, type CartItem, type Cart } from "@prisma/client";
 import { toast } from "react-toastify";
-import { type CartItemGuest } from "../context/CartContext";
+import { type CartItemGuest } from "../types/cart";
 // import onClickOutside from "react-onclickoutside";
 
 interface CartItemLong extends CartItem {
   product: { title: string; image: string; price: number; description: string };
 }
 
-interface CartItemPlus extends CartItem {
+export type CartItemPlus = {
+  cart: Cart;
   product: Product;
-}
+  id: string;
+  quantity: number;
+  cartId: string;
+};
 
 // function listenForOutsideClicks(
 //   listening: boolean,

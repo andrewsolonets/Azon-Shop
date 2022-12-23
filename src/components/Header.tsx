@@ -5,6 +5,7 @@ import Link from "next/link";
 import ProfileIcon from "../assets/ProfileIcon";
 import { NavMain } from "./NavMain";
 import { useCart } from "../context/CartContext";
+import { useEffect } from "react";
 
 export const Header = () => {
   const { data: sessionData } = useSession();
@@ -12,6 +13,7 @@ export const Header = () => {
   const userId = sessionData?.user?.id;
   const { data: cartItems } = trpc.cart.getCartItems.useQuery();
   let totalQuantity = 0;
+
   if (cartItems) {
     cartItems?.forEach((el) => {
       totalQuantity += el.quantity;
@@ -57,7 +59,7 @@ export const Header = () => {
           )}
           <li>
             <button
-              className="outline-amber  rounded-sm bg-transparent px-4 py-1 text-amber-400 outline outline-2 transition-all duration-300 hover:bg-amber-400/20 hover:bg-opacity-10"
+              className="outline-amber  rounded-sm bg-transparent px-3 py-1 text-amber-400 outline outline-2 transition-all duration-300 hover:bg-amber-400/20 hover:bg-opacity-10 md:px-4"
               onClick={sessionData ? () => signOut() : () => signIn()}
             >
               {sessionData ? "Sign out" : "Sign in"}

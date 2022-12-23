@@ -4,14 +4,11 @@ import PlusIcon from "../assets/PlusIcon";
 import MinusIcon from "../assets/MinusIcon";
 import CrossIcon from "../assets/CrossIcon";
 import { useCartActions } from "../hooks/useCartActions";
-import { type Product, type CartItem } from "@prisma/client";
-
-interface CartItemExt extends CartItem {
-  product: Product;
-}
+import { type CartItemPlus } from "../utils/helpers";
+import { type CartItemGuest } from "../types/cart";
 
 type Props = {
-  item: CartItemExt;
+  item: CartItemPlus | CartItemGuest;
 };
 
 export const CartItemCard = ({ item }: Props) => {
@@ -20,8 +17,8 @@ export const CartItemCard = ({ item }: Props) => {
   const { removeItem, addToCartHandler, deleteOne } = useCartActions();
   const finalPrice = Math.round(Number(price));
   return (
-    <div className="flex h-28 w-full items-center justify-around border-[3px] border-amber-400 bg-transparent">
-      <div className="flex h-full gap-6">
+    <div className="flex  h-32 min-h-[8rem] w-full items-center justify-between border-[3px] border-amber-400 bg-transparent px-2 md:justify-around md:px-0">
+      <div className="flex h-full items-center gap-2 md:gap-6">
         <div className=" flex flex-col items-start justify-center gap-4">
           <button
             className="h-7 w-7"
@@ -33,11 +30,11 @@ export const CartItemCard = ({ item }: Props) => {
             <MinusIcon className="fill-amber-400 transition-all duration-300 hover:fill-violet-400" />
           </button>
         </div>
-        <div className="relative h-full w-28 object-cover object-center">
+        <div className="relative h-24 w-24 object-cover object-center md:h-full md:w-28">
           <Image src={TestCardImg} alt={title} fill />
         </div>
       </div>
-      <div className="flex w-1/4 flex-col items-center gap-2">
+      <div className="flex w-1/3 flex-col items-center gap-2">
         <h6 className="text-center text-lg font-medium">{title}</h6>
         <div className="flex items-center gap-1 text-sm">
           Quantity:
