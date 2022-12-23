@@ -38,7 +38,7 @@ export const tranformCartItems = (items: CartItemLong[]) => {
   return items.map((item) => ({
     price_data: {
       currency: "usd",
-      unit_amount: Math.floor(item.product.price),
+      unit_amount: Math.floor(item.product.price) * 100,
       product_data: {
         name: item.product.title,
         description: item.product.description,

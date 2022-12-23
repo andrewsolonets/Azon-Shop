@@ -4,6 +4,7 @@ import {
   randProduct,
   randProductAdjective,
 } from "@ngneat/falso";
+import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
 
 const primsa = new PrismaClient();
@@ -17,16 +18,17 @@ const main = async () => {
     });
     for (let index = 0; index < fakeProducts.length; index++) {
       const product = fakeProducts[index];
+      const name = faker.commerce.productName();
       const productAdjective = randProductAdjective();
       await primsa.product.upsert({
         where: {
-          title: `${productAdjective} ${product?.title}`,
+          title: name,
         },
         create: {
-          title: `${productAdjective} ${product?.title}`,
+          title: name,
           description: product?.description || "hello world",
-          price: product?.price || "150",
-          image: `${product?.image}/tech` || "img",
+          price: faker.commerce.price(),
+          image: faker.image.abstract(640, 480, true),
           quantity: randNumber({ min: 10, max: 100 }),
           category: {
             connectOrCreate: {

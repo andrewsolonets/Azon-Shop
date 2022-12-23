@@ -31,7 +31,7 @@ export const CartItemCard = ({ item }: Props) => {
           </button>
         </div>
         <div className="relative h-24 w-24 object-cover object-center md:h-full md:w-28">
-          <Image src={TestCardImg} alt={title} fill />
+          <Image src={image} alt={title} fill />
         </div>
       </div>
       <div className="flex w-1/3 flex-col items-center gap-2">
