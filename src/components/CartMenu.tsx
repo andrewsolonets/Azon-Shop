@@ -1,9 +1,7 @@
 import { useCartActions } from "../hooks/useCartActions";
-import { getTotalAmount } from "../utils/helpers";
 import { trpc } from "../utils/trpc";
 import { ArrowBtn, OutlineBtn } from "./Buttons";
 import { CartItemCard } from "./CartItem";
-import { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
 
 export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {

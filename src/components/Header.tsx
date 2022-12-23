@@ -5,7 +5,6 @@ import Link from "next/link";
 import ProfileIcon from "../assets/ProfileIcon";
 import { NavMain } from "./NavMain";
 import { useCart } from "../context/CartContext";
-import { useEffect } from "react";
 
 export const Header = () => {
   const { data: sessionData } = useSession();
