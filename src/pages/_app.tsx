@@ -8,6 +8,7 @@ import "@fontsource/inter";
 
 import "../styles/globals.css";
 import "react-toastify/dist/ReactToastify.css";
+import "@smastrom/react-rating/style.css";
 import Layout from "../components/layout";
 import { CartProvider } from "../context/CartContext";
 

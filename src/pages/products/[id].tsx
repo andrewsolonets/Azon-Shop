@@ -9,6 +9,7 @@ import { BigButton } from "../../components/Buttons";
 import { useCartActions } from "../../hooks/useCartActions";
 import { FeaturedList } from "../../components/FeaturedList";
 import Head from "next/head";
+import { ProductReviews } from "../../components/ProductReviews";
 
 const SingleProductPage = () => {
   const router = useRouter();
@@ -78,6 +79,7 @@ const SingleProductPage = () => {
             </div>
           </div>
         </div>
+        <ProductReviews />
         <FeaturedList items={featured.data} />
       </section>
     </>

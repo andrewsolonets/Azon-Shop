@@ -1,4 +1,9 @@
-import { type Product, type CartItem, type Cart } from "@prisma/client";
+import {
+  type Product,
+  type CartItem,
+  type Cart,
+  Ratings,
+} from "@prisma/client";
 import { toast } from "react-toastify";
 import { type CartItemGuest } from "../types/cart";
 // import onClickOutside from "react-onclickoutside";
@@ -48,6 +53,14 @@ export const tranformCartItems = (items: CartItemLong[]) => {
 
     quantity: item.quantity,
   }));
+};
+
+export const getAvgRating = (ratings: Ratings[]) => {
+  return Math.round(
+    ratings.reduce((acc, item) => {
+      return (acc += item.rating);
+    }, 0) / ratings.length
+  );
 };
 
 export const paymentNotification = (status: string | string[]) => {

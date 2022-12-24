@@ -6,6 +6,9 @@ export const productRouter = router({
   getAll: publicProcedure.input(z.number()).query(({ ctx, input }) => {
     return ctx.prisma.product.findMany({
       take: input,
+      include: {
+        Ratings: true,
+      },
     });
   }),
   getOne: publicProcedure.input(z.string()).query(({ ctx, input }) => {
@@ -40,4 +43,48 @@ export const productRouter = router({
         nextCursor,
       };
     }),
+  postRating: publicProcedure
+    .input(
+      z.object({
+        productId: z.string(),
+        heading: z.string(),
+        message: z.string(),
+        rating: z.number(),
+        username: z.string().optional(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      const userId = ctx?.session?.user?.id;
+      const { productId, heading, message, rating } = input;
+      if (userId) {
+        return ctx.prisma.ratings.create({
+          data: {
+            product: { connect: { id: productId } },
+            heading,
+            message,
+            rating,
+            user: { connect: { id: userId } },
+          },
+        });
+      } else {
+        return ctx.prisma.ratings.create({
+          data: {
+            userName: input.username,
+            product: { connect: { id: productId } },
+            heading,
+            message,
+            rating,
+          },
+        });
+      }
+    }),
+  getRating: publicProcedure.input(z.string()).query(({ ctx, input }) => {
+    const productId = input;
+    return ctx.prisma.ratings.findMany({
+      where: { productId },
+      include: {
+        user: true,
+      },
+    });
+  }),
 });

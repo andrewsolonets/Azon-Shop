@@ -37,6 +37,8 @@ const AllPoductsPage = () => {
             {data?.pages.map((page) => (
               <Fragment key={page.nextCursor}>
                 {page.items.map((item) => (
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  //@ts-ignore
                   <ProductCard key={item.id} product={item} />
                 ))}
               </Fragment>
