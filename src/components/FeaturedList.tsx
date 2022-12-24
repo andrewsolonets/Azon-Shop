@@ -1,7 +1,7 @@
-import { type Product } from "@prisma/client";
 import { useEffect, useRef, useState } from "react";
 import { ProductCard } from "./ProductCard";
 import ArrowCarouselIcon from "../assets/ArrowCarouselIcon";
+import { type ExtProduct } from "../types/product";
 
 interface Ref extends HTMLDivElement {
   offsetWidth: number;
@@ -9,7 +9,11 @@ interface Ref extends HTMLDivElement {
   scrollWidth: number;
 }
 
-export const FeaturedList = ({ items }: { items: Product[] | undefined }) => {
+export const FeaturedList = ({
+  items,
+}: {
+  items: ExtProduct[] | undefined;
+}) => {
   const carousel = useRef<Ref>(null);
   const maxScrollWidth = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);

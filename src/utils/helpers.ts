@@ -1,9 +1,4 @@
-import {
-  type Product,
-  type CartItem,
-  type Cart,
-  Ratings,
-} from "@prisma/client";
+import type { Product, CartItem, Cart, Ratings } from "@prisma/client";
 import { toast } from "react-toastify";
 import { type CartItemGuest } from "../types/cart";
 // import onClickOutside from "react-onclickoutside";
