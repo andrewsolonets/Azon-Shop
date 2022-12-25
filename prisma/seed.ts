@@ -1,26 +1,20 @@
-import {
-  randBetweenDate,
-  randNumber,
-  randProduct,
-  randProductAdjective,
-} from "@ngneat/falso";
+import { randBetweenDate, randNumber, randProduct } from "@ngneat/falso";
 import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
 
-const primsa = new PrismaClient();
+const prisma = new PrismaClient();
 
 const main = async () => {
   try {
-    await primsa.category.deleteMany();
-    await primsa.product.deleteMany();
+    await prisma.category.deleteMany();
+    await prisma.product.deleteMany();
     const fakeProducts = randProduct({
       length: 1000,
     });
     for (let index = 0; index < fakeProducts.length; index++) {
       const product = fakeProducts[index];
       const name = faker.commerce.productName();
-      const productAdjective = randProductAdjective();
-      await primsa.product.upsert({
+      await prisma.product.upsert({
         where: {
           title: name,
         },

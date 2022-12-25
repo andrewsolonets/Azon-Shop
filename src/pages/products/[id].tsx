@@ -9,6 +9,7 @@ import { BigButton } from "../../components/Buttons";
 import { useCartActions } from "../../hooks/useCartActions";
 import { FeaturedList } from "../../components/FeaturedList";
 import Head from "next/head";
+import { ProductReviews } from "../../components/ProductReviews";
 
 const SingleProductPage = () => {
   const router = useRouter();
@@ -28,7 +29,7 @@ const SingleProductPage = () => {
       </Head>
       <section className="mt-32 flex h-fit flex-col gap-24 py-4 px-8">
         <div className=" flex w-full flex-col items-center justify-between gap-20 md:flex-row md:items-start">
-          <div className="relative h-72 w-72 rounded-sm object-cover ring-8 ring-amber-400">
+          <div className="b- border- relative h-72 w-72 rounded-lg border-8 border-amber-400 object-cover">
             <Image src={image} alt={title} fill />
           </div>
           <div className="flex w-full flex-col gap-8 text-center md:w-[80%] md:text-left">
@@ -78,6 +79,7 @@ const SingleProductPage = () => {
             </div>
           </div>
         </div>
+        <ProductReviews />
         <FeaturedList items={featured.data} />
       </section>
     </>
