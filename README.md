@@ -8,6 +8,7 @@ Ecommerce website built with t3-stack (typescript, prisma, trpc, next.js)
 
 - Fully functioning, persistent Cart
 - Infinite scroll 
+- Rating System
 - User profile with order history
 - Checkout with Stripe
 - Custom db with orders connected to Stripe
