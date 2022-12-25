@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { type ReviewItem } from "../types/product";
 import { trpc } from "../utils/trpc";
 
@@ -36,6 +37,7 @@ export const useReviewActions = () => {
     username,
   }: ReviewItem) => {
     trpcAddReview.mutate({ rating, productId, heading, message, username });
+    toast.success("Review Added!");
   };
   return { addReview };
 };

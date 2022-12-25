@@ -10,7 +10,8 @@
     "start": "next start"
   },
   "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+    "seed1": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts",
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed1.ts"
   },
   "dependencies": {
     "@fontsource/inter": "^4.5.14",

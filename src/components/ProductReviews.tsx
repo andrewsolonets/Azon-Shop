@@ -11,7 +11,7 @@ export const ProductReviews = () => {
   const [isFormOpen, setFormOpen] = useState(false);
   const { data: reviews } = trpc.product.getRating.useQuery(id);
   return (
-    <div className=" flex h-fit flex-col gap-6  px-4">
+    <div className=" flex h-fit flex-col gap-6 ">
       {!isFormOpen ? (
         <ButtonRegular onClick={() => setFormOpen((prev) => !prev)}>
           Leave a Review
