@@ -85,6 +85,9 @@ export const productRouter = router({
       include: {
         user: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
   }),
 });

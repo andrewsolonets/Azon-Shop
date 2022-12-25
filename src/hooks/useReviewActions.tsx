@@ -14,7 +14,7 @@ export const useReviewActions = () => {
       // @ts-ignore
       utils.product.getRating.setData(item.productId, (old) => {
         if (!old) return itemNew;
-        return [...old, itemNew];
+        return [itemNew, ...old];
       });
       return { prevData };
     },
