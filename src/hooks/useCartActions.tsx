@@ -209,8 +209,8 @@ export const useCartActions = () => {
   };
 
   const addToCartHandler = (el: Product, quantity: number) => {
-    if (!userId) return addItemsGuest(el, quantity);
     toast.success("Added to cart");
+    if (!userId) return addItemsGuest(el, quantity);
     addToCartRegulator({ item: el, quantity });
   };
 
