@@ -46,7 +46,7 @@ export const ReviewForm = ({
   };
   return (
     <form
-      className="flex w-1/2 flex-col items-center gap-7 p-10"
+      className="flex w-full flex-col items-center gap-7 self-center py-2 md:w-1/2"
       onSubmit={submitCallback}
     >
       <h4 className="w-fit self-start rounded-md bg-violet-600 px-4 py-1 font-semibold drop-shadow-sm md:ml-4">

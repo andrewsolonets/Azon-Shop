@@ -30,6 +30,9 @@ export const productRouter = router({
       const { limit, skip, cursor } = input;
       const items = await ctx.prisma.product.findMany({
         take: limit + 1,
+        include: {
+          Ratings: true,
+        },
         skip: skip,
         cursor: cursor ? { id: cursor } : undefined,
       });

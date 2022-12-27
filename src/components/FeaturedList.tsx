@@ -65,8 +65,8 @@ export const FeaturedList = ({
   }, [currentIndex]);
 
   return (
-    <div className=" flex flex-col gap-6 px-4 ">
-      <h4 className="w-fit rounded-md bg-violet-600 px-4 py-1 font-semibold drop-shadow-sm md:ml-4">
+    <div className=" flex flex-col gap-6  ">
+      <h4 className="ml-4 w-fit rounded-md bg-violet-600 px-4  py-1 font-semibold drop-shadow-sm">
         Featured Products
       </h4>
       <div className="relative ">

@@ -15,7 +15,9 @@ const Home: NextPage = () => {
       </Head>
 
       <HeroSection />
-      <FeaturedList items={featuredProd.data} />
+      <div className="px-4">
+        <FeaturedList items={featuredProd.data} />
+      </div>
     </>
   );
 };

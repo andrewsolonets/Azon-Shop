@@ -17,7 +17,7 @@ export const ProductCard = ({ product }: Props) => {
   const priceFinal = Math.round(Number(price));
   const avgRating = getAvgRating(product.Ratings);
   return (
-    <div className="mb-2 flex w-60 min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-violet-600 drop-shadow-md">
+    <div className="mb-2 flex w-full min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-violet-600 drop-shadow-md md:w-60">
       <Link href={`/products/${id}`}>
         <div className="relative h-40 w-full  object-cover ">
           <Image src={image} alt={title} fill className="rounded-lg" />

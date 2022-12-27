@@ -27,7 +27,7 @@ const SingleProductPage = () => {
       <Head>
         <title>{title}</title>
       </Head>
-      <section className="mt-32 flex h-fit flex-col gap-24 py-4 px-8">
+      <section className="mt-32 flex h-fit flex-col gap-24 py-4 px-4 md:px-8">
         <div className=" flex w-full flex-col items-center justify-between gap-20 md:flex-row md:items-start">
           <div className="b- border- relative h-72 w-72 rounded-lg border-8 border-amber-400 object-cover">
             <Image src={image} alt={title} fill />
