@@ -52,7 +52,11 @@ const SingleProductPage = () => {
                 <div className="flex items-center gap-2">
                   <button
                     className="h-5 w-5"
-                    onClick={() => setQuantity((prev) => (prev -= 1))}
+                    onClick={() => {
+                      if (quantityCounter > 0) {
+                        setQuantity((prev) => (prev -= 1));
+                      }
+                    }}
                   >
                     <MinusIcon className="fill-amber-400 hover:fill-violet-400 " />
                   </button>
