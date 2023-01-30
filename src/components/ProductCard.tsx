@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const ProductCard = ({ product }: Props) => {
-  const { title, price, image, id } = product;
+  const { title, price, image, id, quantity } = product;
   const { addToCartHandler } = useCartActions();
   const priceFinal = Math.round(Number(price));
   const avgRating = getAvgRating(product.Ratings);
@@ -33,7 +33,13 @@ export const ProductCard = ({ product }: Props) => {
           </h4>
 
           <h4 className="text-xl font-bold">${priceFinal}</h4>
+          <h5
+            className={`text-lg font-bold ${
+              quantity > 0 ? "" : "text-violet-400"
+            }`}
+          >{`${quantity > 0 ? "In stock" : "Out of stock"}`}</h5>
         </Link>
+
         <div className="w-28">
           <Rating
             value={avgRating ? avgRating : 4}
@@ -43,7 +49,10 @@ export const ProductCard = ({ product }: Props) => {
         </div>
 
         <div className="w-full">
-          <ButtonRegular onClick={() => addToCartHandler(product, 1)}>
+          <ButtonRegular
+            onClick={() => addToCartHandler(product, 1)}
+            disabled={quantity < 1}
+          >
             Add to Cart
           </ButtonRegular>
         </div>

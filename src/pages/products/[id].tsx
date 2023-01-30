@@ -10,6 +10,7 @@ import { useCartActions } from "../../hooks/useCartActions";
 import { FeaturedList } from "../../components/FeaturedList";
 import Head from "next/head";
 import { ProductReviews } from "../../components/ProductReviews";
+import { toast } from "react-toastify";
 
 const SingleProductPage = () => {
   const router = useRouter();
@@ -20,7 +21,7 @@ const SingleProductPage = () => {
   const { id } = router.query as { id: string };
   const item = trpc.product.getOne.useQuery(id) as { data: Product };
   if (!item.data) return;
-  const { image, title, price } = item.data;
+  const { image, title, price, quantity } = item.data;
   const finalPrice = Math.round(Number(price));
   return (
     <>
@@ -69,7 +70,18 @@ const SingleProductPage = () => {
                   />
                   <button
                     className="h-5 w-5"
-                    onClick={() => setQuantity((prev) => (prev += 1))}
+                    onClick={() =>
+                      setQuantity((prev) => {
+                        if (prev < quantity) {
+                          return (prev += 1);
+                        } else {
+                          toast.info(
+                            `Maxed out (only ${quantity} items available)`
+                          );
+                          return prev;
+                        }
+                      })
+                    }
                   >
                     <PlusIcon className="fill-amber-400 hover:fill-violet-400 " />
                   </button>
@@ -77,6 +89,7 @@ const SingleProductPage = () => {
               </div>
               <BigButton
                 onClick={() => addToCartHandler(item.data, quantityCounter)}
+                disabled={quantity < 1}
               >
                 Add to Cart
               </BigButton>
