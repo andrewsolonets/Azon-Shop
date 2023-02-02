@@ -20,7 +20,16 @@ export const ProductCard = ({ product }: Props) => {
     <div className="mb-2 flex w-full min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-violet-600 drop-shadow-md md:w-60">
       <Link href={`/products/${id}`}>
         <div className="relative h-40 w-full  object-cover ">
-          <Image src={image} alt={title} fill className="rounded-lg" />
+          <Image
+            src={image}
+            alt={title}
+            fill
+           
+            className="rounded-lg object-cover"
+            sizes="(min-width: 60em) 24vw,
+                    (min-width: 28em) 45vw,
+                    100vw"
+          />
         </div>
       </Link>
       <div className="flex w-full flex-col items-center justify-end gap-4 px-3 py-4 ">

@@ -31,7 +31,15 @@ const SingleProductPage = () => {
       <section className="mt-32 flex h-fit flex-col gap-24 py-4 px-4 md:px-8">
         <div className=" flex w-full flex-col items-center justify-between gap-20 md:flex-row md:items-start">
           <div className="b- border- relative h-72 w-72 rounded-lg border-8 border-amber-400 object-cover">
-            <Image src={image} alt={title} fill />
+            <Image
+              src={image}
+              alt={title}
+              className="object-cover"
+              fill
+              sizes="(min-width: 60em) 24vw,
+                    (min-width: 28em) 45vw,
+                    100vw"
+            />
           </div>
           <div className="flex w-full flex-col gap-8 text-center md:w-[80%] md:text-left">
             <h2 className="max-w-sm  text-4xl font-semibold ">{title}</h2>

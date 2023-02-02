@@ -1,5 +1,4 @@
 import Image from "next/image";
-import TestCardImg from "../assets/testcardimg.png";
 import PlusIcon from "../assets/PlusIcon";
 import MinusIcon from "../assets/MinusIcon";
 import CrossIcon from "../assets/CrossIcon";
@@ -22,16 +21,28 @@ export const CartItemCard = ({ item }: Props) => {
         <div className=" flex flex-col items-start justify-center gap-4">
           <button
             className="h-7 w-7"
+            aria-label="Increase quantity"
             onClick={() => addToCartHandler(item.product, 1)}
           >
             <PlusIcon className="fill-amber-400 transition-all duration-300 hover:fill-violet-400" />
           </button>
           <button className="h-7 w-7" onClick={() => deleteOne(item)}>
-            <MinusIcon className="fill-amber-400 transition-all duration-300 hover:fill-violet-400" />
+            <MinusIcon
+              aria-label="Decrease quantity"
+              className="fill-amber-400 transition-all duration-300 hover:fill-violet-400"
+            />
           </button>
         </div>
         <div className="relative h-24 w-24 object-cover object-center md:h-full md:w-28">
-          <Image src={image} alt={title} fill />
+          <Image
+            src={image}
+            alt={title}
+            className="object-cover"
+            fill
+            sizes="(min-width: 60em) 24vw,
+                    (min-width: 28em) 45vw,
+                    100vw"
+          />
         </div>
       </div>
       <div className="flex w-1/3 flex-col items-center gap-2">

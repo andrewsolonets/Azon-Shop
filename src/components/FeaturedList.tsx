@@ -73,6 +73,7 @@ export const FeaturedList = ({
         <div className="absolute hidden h-full w-full items-center justify-between md:flex">
           <button
             onClick={movePrev}
+            aria-label="Previous Page"
             className="group relative z-10 h-12 w-12 rotate-180 rounded-full bg-amber-400 p-2 transition-all duration-300 hover:bg-violet-800 disabled:opacity-0"
             disabled={isDisabled("prev")}
           >
@@ -80,6 +81,7 @@ export const FeaturedList = ({
           </button>
           <button
             onClick={moveNext}
+            aria-label="Next Page"
             className="group relative z-10 h-12 w-12 rounded-full bg-amber-400 p-2 transition-all duration-300 hover:bg-violet-800 disabled:opacity-0"
             disabled={isDisabled("next")}
           >

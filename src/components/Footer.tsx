@@ -6,6 +6,7 @@ export const Footer = () => {
     <footer className=" flex h-16 w-full items-center justify-center gap-2 bg-violet-700">
       <div className="flex gap-1">
         <a
+          aria-label="GitHub"
           href="https://github.com/andrewsolonets"
           className="group"
           target="_blank"
@@ -16,6 +17,7 @@ export const Footer = () => {
         <a
           href="https://www.linkedin.com/in/andrii-solonets/"
           className="group"
+          aria-label="LinkedIn"
           target="_blank"
           rel="noreferrer"
         >
