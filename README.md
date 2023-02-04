@@ -13,6 +13,7 @@ Ecommerce website built with t3-stack (typescript, prisma, trpc, next.js)
 - Checkout with Stripe
 - Custom db with orders connected to Stripe
 - Authentication
+- Algolia Autocomplete search
 
 
 ## Environment Variables
