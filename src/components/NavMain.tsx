@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 export const NavMain = () => {
   const router = useRouter();
   return (
-    <ul className="hidden items-center gap-10 md:flex">
+    <ul className="hidden items-center gap-10 sm:flex">
       <li>
         <Link
           href="/"
@@ -31,7 +31,7 @@ export const NavMain = () => {
           Categories
         </Link>
       </li>
-      <li>
+      <li className="w-max">
         <Link
           href="/products"
           className={`

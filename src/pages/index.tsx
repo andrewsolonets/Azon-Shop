@@ -1,11 +1,13 @@
-import { type NextPage } from "next";
 import Head from "next/head";
 import { FeaturedList } from "../components/FeaturedList";
 import { HeroSection } from "../components/HeroSection";
 import { trpc } from "../utils/trpc";
 
+import { type NextPage } from "next";
+
 const Home: NextPage = () => {
   const featuredProd = trpc.product.getAll.useQuery(20);
+
   return (
     <>
       <Head>
@@ -15,6 +17,7 @@ const Home: NextPage = () => {
       </Head>
 
       <HeroSection />
+
       <div className="px-4">
         <FeaturedList items={featuredProd.data} />
       </div>

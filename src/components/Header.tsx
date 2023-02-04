@@ -5,10 +5,12 @@ import Link from "next/link";
 import ProfileIcon from "../assets/ProfileIcon";
 import { NavMain } from "./NavMain";
 import { useCart } from "../context/CartContext";
+import Search from "./Search/Search";
 
 export const Header = () => {
   const { data: sessionData } = useSession();
   const { toggleCart, getCartQuantity } = useCart();
+
   const userId = sessionData?.user?.id;
   const { data: cartItems } = trpc.cart.getCartItems.useQuery();
   let totalQuantity = 0;
@@ -22,21 +24,17 @@ export const Header = () => {
   }
 
   return (
-    <header className="drop-shadow-header fixed top-0 left-0 right-0 z-20 flex items-center justify-between gap-10 bg-violet-800 py-4 px-4 font-medium text-slate-50 backdrop-blur md:justify-start  md:px-10">
+    <header className="drop-shadow-header fixed  top-0 left-0 right-0 z-20 flex items-center justify-between gap-10 bg-violet-800 py-4 px-4 font-medium text-slate-50 backdrop-blur  md:justify-start md:px-10">
       <Link href="/">
         <h3 className="text-2xl font-bold text-amber-400 transition-all duration-300 hover:text-violet-400">
           Azon
         </h3>
       </Link>
-      <nav className="flex  items-center justify-between md:w-full">
+
+      <nav className="flex items-center justify-between gap-6 sm:w-full">
         <NavMain />
-        {/* <input
-          ref={searchInputRef}
-          type="search"
-          placeholder="Search"
-          className="w-1/3 border-2 border-amber-400 bg-transparent px-2 text-slate-50 placeholder-violet-200/60 "
-        /> */}
-        <ul className="flex items-center gap-6 md:gap-8">
+        <Search />
+        <ul className="relative flex items-center gap-6 md:gap-8">
           <li className="relative ">
             <button
               onClick={toggleCart}
@@ -68,7 +66,7 @@ export const Header = () => {
           )}
           <li>
             <button
-              className="outline-amber  rounded-sm bg-transparent px-3 py-1 text-amber-400 outline outline-2 transition-all duration-300 hover:bg-amber-400/20 hover:bg-opacity-10 md:px-4"
+              className="outline-amber  w-max rounded-sm bg-transparent px-3 py-1 text-amber-400 outline outline-2 transition-all duration-300 hover:bg-amber-400/20 hover:bg-opacity-10 md:px-4"
               onClick={sessionData ? () => signOut() : () => signIn()}
             >
               {sessionData ? "Sign out" : "Sign in"}
