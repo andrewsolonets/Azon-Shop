@@ -1,8 +1,8 @@
-import CartIcon from "../assets/CartIcon";
+import CartIcon from "../../public/static/img/CartIcon";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { trpc } from "../utils/trpc";
 import Link from "next/link";
-import ProfileIcon from "../assets/ProfileIcon";
+import ProfileIcon from "../../public/static/img/ProfileIcon";
 import { NavMain } from "./NavMain";
 import { useCart } from "../context/CartContext";
 import Search from "./Search/Search";

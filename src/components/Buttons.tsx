@@ -1,4 +1,4 @@
-import ArrowIcon from "../assets/ArrowIcon";
+import ArrowIcon from "../../public/static/img/ArrowIcon";
 
 type Props = {
   children: string;

@@ -1,4 +1,4 @@
-import StarIcon from "../assets/StartIcon";
+import StarIcon from "../../public/static/img/StartIcon";
 
 export const RatingStyles = {
   itemShapes: <StarIcon />,

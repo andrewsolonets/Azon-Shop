@@ -1,5 +1,5 @@
-import GithubIcon from "../assets/GithubIcon";
-import LinkedInIcon from "../assets/LinkedinIcon";
+import GithubIcon from "../../public/static/img/GithubIcon";
+import LinkedInIcon from "../../public/static/img/LinkedinIcon";
 
 export const Footer = () => {
   return (

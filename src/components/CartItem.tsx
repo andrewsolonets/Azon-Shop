@@ -1,7 +1,7 @@
 import Image from "next/image";
-import PlusIcon from "../assets/PlusIcon";
-import MinusIcon from "../assets/MinusIcon";
-import CrossIcon from "../assets/CrossIcon";
+import PlusIcon from "../../public/static/img/PlusIcon";
+import MinusIcon from "../../public/static/img/MinusIcon";
+import CrossIcon from "../../public/static/img/CrossIcon";
 import { useCartActions } from "../hooks/useCartActions";
 import { type CartItemPlus } from "../utils/helpers";
 import { type CartItemGuest } from "../types/cart";

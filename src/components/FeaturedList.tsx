@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ProductCard } from "./ProductCard";
-import ArrowCarouselIcon from "../assets/ArrowCarouselIcon";
+import ArrowCarouselIcon from "../../public/static/img/ArrowCarouselIcon";
 import { type ExtProduct } from "../types/product";
 
 interface Ref extends HTMLDivElement {

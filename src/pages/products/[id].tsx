@@ -1,7 +1,7 @@
 import { type Product } from "@prisma/client";
 import Image from "next/image";
-import PlusIcon from "../../assets/PlusIcon";
-import MinusIcon from "../../assets/MinusIcon";
+import PlusIcon from "../../../public/static/img/PlusIcon";
+import MinusIcon from "../../../public/static/img/MinusIcon";
 import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
 import { useState } from "react";
