@@ -2,14 +2,14 @@ import { ButtonRegular } from "./Buttons";
 import { ReviewCard } from "./ReviewCard";
 import { ReviewForm } from "./ReviewForm";
 import { useState } from "react";
-import { trpc } from "../utils/trpc";
+import { api } from "../utils/api";
 import { useRouter } from "next/router";
 
 export const ProductReviews = () => {
   const router = useRouter();
   const { id } = router.query as { id: string };
   const [isFormOpen, setFormOpen] = useState(false);
-  const { data: reviews } = trpc.product.getRating.useQuery(id);
+  const { data: reviews } = api.product.getRating.useQuery(id);
   return (
     <div className=" flex h-fit flex-col gap-6 ">
       {!isFormOpen ? (

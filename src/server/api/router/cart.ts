@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-import { router, publicProcedure, protectedProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 
-export const cartRouter = router({
+export const cartRouter = createTRPCRouter({
   getCartItems: protectedProcedure.query(({ ctx }) => {
     const userId = ctx.session.user.id;
     return ctx.prisma.cartItem.findMany({

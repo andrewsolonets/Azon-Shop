@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-import { router, publicProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure } from "../trpc";
 
-export const categoryRouter = router({
+export const categoryRouter = createTRPCRouter({
   getAllCategories: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.category.findMany({
       select: {

@@ -1,8 +1,8 @@
-import { trpc } from "../utils/trpc";
+import { api } from "../utils/api";
 import { CategoryItem } from "./CategoryItem";
 
 export const CategoryList = () => {
-  const categories = trpc.category.getAllCategories.useQuery(undefined, {
+  const categories = api.category.getAllCategories.useQuery(undefined, {
     staleTime: Infinity,
   });
 

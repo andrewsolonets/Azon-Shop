@@ -6,11 +6,11 @@ import { type CartItemGuest, type CartItem } from "../types/cart";
 import getStripe from "../utils/get-stripejs";
 import { tranformCartItems } from "../utils/helpers";
 import { toast } from "react-toastify";
-import { trpc } from "../utils/trpc";
+import { api } from "../utils/api";
 import { useCart } from "../context/CartContext";
 
 export const useCartActions = () => {
-  const utils = trpc.useContext();
+  const utils = api.useContext();
   const {
     increaseQuantity: addItemsGuest,
     decreaseQuantity,
@@ -19,10 +19,10 @@ export const useCartActions = () => {
   } = useCart();
   const { data: sessionData } = useSession();
   const userId = sessionData?.user?.id;
-  const cartUser = trpc.cart.getUserCart.useQuery(undefined, {
+  const cartUser = api.cart.getUserCart.useQuery(undefined, {
     enabled: false,
   });
-  const increaseQuantity = trpc.cart.increaseQuantity.useMutation({
+  const increaseQuantity = api.cart.increaseQuantity.useMutation({
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     async onMutate(el: { item: CartItem; quantity: number }) {
@@ -61,7 +61,7 @@ export const useCartActions = () => {
     },
   });
 
-  const addNewToCart = trpc.cart.addNewItem.useMutation({
+  const addNewToCart = api.cart.addNewItem.useMutation({
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     async onMutate(el: { userId: string; item: Product; quantity: number }) {
@@ -93,7 +93,7 @@ export const useCartActions = () => {
     },
   });
 
-  const removeFromCart = trpc.cart.removeItem.useMutation({
+  const removeFromCart = api.cart.removeItem.useMutation({
     async onMutate(id: string) {
       await utils.cart.getCartItems.cancel();
       const prevData = utils.cart.getCartItems.getData();
@@ -108,7 +108,7 @@ export const useCartActions = () => {
       utils.cart.getCartItems.invalidate();
     },
   });
-  const removeOne = trpc.cart.removeOne.useMutation({
+  const removeOne = api.cart.removeOne.useMutation({
     async onMutate(el: CartItem) {
       await utils.cart.getCartItems.cancel();
       const prevData = utils.cart.getCartItems.getData();
@@ -133,7 +133,7 @@ export const useCartActions = () => {
     },
   });
 
-  const removeCart = trpc.cart.removeCart.useMutation({
+  const removeCart = api.cart.removeCart.useMutation({
     async onMutate() {
       await utils.cart.getCartItems.cancel();
       const prevData = utils.cart.getCartItems.getData();
@@ -156,7 +156,7 @@ export const useCartActions = () => {
     return removeCart.mutate();
   };
 
-  const transferItems = trpc.cart.addCartItems.useMutation({
+  const transferItems = api.cart.addCartItems.useMutation({
     async onMutate(
       items: {
         product: {

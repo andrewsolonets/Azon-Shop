@@ -1,12 +1,12 @@
 import Head from "next/head";
 import { FeaturedList } from "../components/FeaturedList";
 import { HeroSection } from "../components/HeroSection";
-import { trpc } from "../utils/trpc";
+import { api } from "../utils/api";
 
 import { type NextPage } from "next";
 
 const Home: NextPage = () => {
-  const featuredProd = trpc.product.getAll.useQuery(20);
+  const featuredProd = api.product.getAll.useQuery(20);
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { SessionProvider } from "next-auth/react";
-import { trpc } from "../utils/trpc";
+import { api } from "../utils/api";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ToastContainer } from "react-toastify";
 import Layout from "../components/layout";
@@ -40,4 +40,4 @@ const MyApp: AppType<{ session: Session | null }> = ({
   );
 };
 
-export default trpc.withTRPC(MyApp);
+export default api.withTRPC(MyApp);

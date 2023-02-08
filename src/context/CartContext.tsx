@@ -4,7 +4,7 @@ import { CartMenu } from "../components/CartMenu";
 import { randUuid } from "@ngneat/falso";
 import { type Product } from "@prisma/client";
 import useLocalStorage from "../hooks/useLocalStorage";
-import { trpc } from "../utils/trpc";
+import { api } from "../utils/api";
 import { useSession } from "next-auth/react";
 import {
   CartContext,
@@ -27,7 +27,7 @@ export function CartProvider({ children }: CartProviderProps) {
     "guestCart",
     [] as CartItemGuest[]
   );
-  const { data: cartItemsServer } = trpc.cart.getCartItems.useQuery();
+  const { data: cartItemsServer } = api.cart.getCartItems.useQuery();
   const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(() => {

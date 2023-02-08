@@ -1,5 +1,5 @@
 import { useCartActions } from "../hooks/useCartActions";
-import { trpc } from "../utils/trpc";
+import { api } from "../utils/api";
 import { ArrowBtn, OutlineBtn } from "./Buttons";
 import { CartItemCard } from "./CartItem";
 import { useCart } from "../context/CartContext";
@@ -7,7 +7,7 @@ import { useCart } from "../context/CartContext";
 export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
   const { clearCart, createCheckOutSession } = useCartActions();
   const { toggleCart, cartItems: guestItems, totalAmount } = useCart();
-  const { data: cartItems } = trpc.cart.getCartItems.useQuery();
+  const { data: cartItems } = api.cart.getCartItems.useQuery();
 
   return (
     <div

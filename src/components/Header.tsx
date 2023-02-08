@@ -1,6 +1,6 @@
 import CartIcon from "../../public/static/img/CartIcon";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { trpc } from "../utils/trpc";
+import { api } from "../utils/api";
 import Link from "next/link";
 import ProfileIcon from "../../public/static/img/ProfileIcon";
 import { NavMain } from "./NavMain";
@@ -12,7 +12,7 @@ export const Header = () => {
   const { toggleCart, getCartQuantity } = useCart();
 
   const userId = sessionData?.user?.id;
-  const { data: cartItems } = trpc.cart.getCartItems.useQuery();
+  const { data: cartItems } = api.cart.getCartItems.useQuery();
   let totalQuantity = 0;
 
   if (cartItems) {

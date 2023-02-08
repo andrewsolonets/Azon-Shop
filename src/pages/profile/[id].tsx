@@ -1,12 +1,12 @@
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { trpc } from "../../utils/trpc";
+import { api } from "../../utils/api";
 
 const UserProfile = () => {
   const { data: sessionData } = useSession();
   const router = useRouter();
-  const { data } = trpc.auth.getUser.useQuery();
+  const { data } = api.auth.getUser.useQuery();
 
   if (!sessionData?.user?.id)
     return (

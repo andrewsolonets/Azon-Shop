@@ -1,5 +1,5 @@
 import { Fragment, useEffect } from "react";
-import { trpc } from "../../utils/trpc";
+import { api } from "../../utils/api";
 import { useInView } from "react-intersection-observer";
 import { ProductCard } from "../../components/ProductCard";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
@@ -9,7 +9,7 @@ const AllPoductsPage = () => {
   const { ref, inView } = useInView();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    trpc.product.getBatch.useInfiniteQuery(
+    api.product.getBatch.useInfiniteQuery(
       {
         limit: 8,
       },

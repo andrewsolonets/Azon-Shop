@@ -52,9 +52,9 @@ export const tranformCartItems = (items: CartItemLong[]) => {
 
 export const getAvgRating = (ratings: Ratings[]) => {
   return Math.round(
-    ratings.reduce((acc, item) => {
+    ratings?.reduce((acc, item) => {
       return (acc += item.rating);
-    }, 0) / ratings.length
+    }, 0) / ratings?.length
   );
 };
 

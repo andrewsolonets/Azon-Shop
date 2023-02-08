@@ -1,12 +1,12 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { ProductCard } from "../../components/ProductCard";
-import { trpc } from "../../utils/trpc";
+import { api } from "../../utils/api";
 
 const SingleCategory = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { data } = trpc.category.getOneCategory.useQuery(id as string);
+  const { data } = api.category.getOneCategory.useQuery(id as string);
   return (
     <>
       <Head>

@@ -1,10 +1,10 @@
 import { toast } from "react-toastify";
 import { type ReviewItem } from "../types/product";
-import { trpc } from "../utils/trpc";
+import { api } from "../utils/api";
 
 export const useReviewActions = () => {
-  const utils = trpc.useContext();
-  const trpcAddReview = trpc.product.postRating.useMutation({
+  const utils = api.useContext();
+  const trpcAddReview = api.product.postRating.useMutation({
     async onMutate(item: ReviewItem) {
       await utils.product.getRating.cancel(item.productId);
       const prevData = utils.product.getRating.getData(item.productId);

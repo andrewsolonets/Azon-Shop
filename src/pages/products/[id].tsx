@@ -3,7 +3,7 @@ import Image from "next/image";
 import PlusIcon from "../../../public/static/img/PlusIcon";
 import MinusIcon from "../../../public/static/img/MinusIcon";
 import { useRouter } from "next/router";
-import { trpc } from "../../utils/trpc";
+import { api } from "../../utils/api";
 import { useState } from "react";
 import { BigButton } from "../../components/Buttons";
 import { useCartActions } from "../../hooks/useCartActions";
@@ -14,12 +14,12 @@ import { toast } from "react-toastify";
 
 const SingleProductPage = () => {
   const router = useRouter();
-  const featured = trpc.product.getAll.useQuery(20);
+  const featured = api.product.getAll.useQuery(20);
   const [quantityCounter, setQuantity] = useState(1);
   const { addToCartHandler } = useCartActions();
   if (!router.query) return;
   const { id } = router.query as { id: string };
-  const item = trpc.product.getOne.useQuery(id) as { data: Product };
+  const item = api.product.getOne.useQuery(id) as { data: Product };
   if (!item.data) return;
   const { image, title, price, quantity } = item.data;
   const finalPrice = Math.round(Number(price));
@@ -116,7 +116,7 @@ const SingleProductPage = () => {
 //   const id = ctx?.params?.id;
 //   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //   // @ts-ignore
-//   const item = trpc.product.getOne.useQuery(id);
+//   const item = api.product.getOne.useQuery(id);
 //   console.log(item);
 //   return {
 //     props: {}, // will be passed to the page component as props
