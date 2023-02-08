@@ -24,7 +24,7 @@ export const Header = () => {
   }
 
   return (
-    <header className="drop-shadow-header fixed  top-0 left-0 right-0 z-20 flex items-center justify-between gap-10 bg-violet-800 py-4 px-4 font-medium text-slate-50 backdrop-blur  md:justify-start md:px-10">
+    <header className="drop-shadow-header fixed  top-0 left-0 right-0 z-20 flex items-center justify-between bg-violet-800 py-4 px-4 font-medium text-slate-50 backdrop-blur sm:gap-10  md:justify-start md:px-10">
       <Link href="/">
         <h3 className="text-2xl font-bold text-amber-400 transition-all duration-300 hover:text-violet-400">
           Azon
