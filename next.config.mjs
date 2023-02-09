@@ -13,6 +13,19 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  async headers() {
+    return [
+      {
+        source: "/trpc",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
+  },
   images: {
     domains: [
       "shorturl.at",
