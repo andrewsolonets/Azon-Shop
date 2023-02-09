@@ -16,7 +16,7 @@ const config = {
   async headers() {
     return [
       {
-        source: "/trpc",
+        source: "/trpc/:slug*",
         headers: [
           {
             key: "Cache-Control",
