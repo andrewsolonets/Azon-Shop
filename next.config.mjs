@@ -16,11 +16,12 @@ const config = {
   async headers() {
     return [
       {
-        source: "/trpc/:slug*",
+        source: "/:all*(svg|jpg|png)",
+        locale: false,
         headers: [
           {
             key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
+            value: "public, max-age=9999999999, must-revalidate",
           },
         ],
       },
