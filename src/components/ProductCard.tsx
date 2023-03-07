@@ -21,10 +21,11 @@ export const ProductCard = ({ product }: Props) => {
       <Link href={`/products/${id}`}>
         <div className="relative h-40 w-full  object-cover ">
           <Image
-            src={image}
+            // changed image to static for data saving
+            // src={image}
+            src={"/static/img/testcardimg.png"}
             alt={title}
             fill
-           
             className="rounded-lg object-cover"
             sizes="(min-width: 60em) 24vw,
                     (min-width: 28em) 45vw,

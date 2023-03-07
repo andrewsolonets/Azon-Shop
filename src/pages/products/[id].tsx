@@ -32,7 +32,9 @@ const SingleProductPage = () => {
         <div className=" flex w-full flex-col items-center justify-between gap-20 md:flex-row md:items-start">
           <div className="b- border- relative h-72 w-72 rounded-lg border-8 border-amber-400 object-cover">
             <Image
-              src={image}
+              // changed image to static for data saving
+              // src={image}
+              src={"/static/img/testcardimg.png"}
               alt={title}
               className="object-cover"
               fill

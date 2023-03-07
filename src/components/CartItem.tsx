@@ -35,7 +35,9 @@ export const CartItemCard = ({ item }: Props) => {
         </div>
         <div className="relative h-24 w-24 object-cover object-center md:h-full md:w-28">
           <Image
-            src={image}
+            // changed image to static for data saving
+            // src={image}
+            src={"/static/img/testcardimg.png"}
             alt={title}
             className="object-cover"
             fill
