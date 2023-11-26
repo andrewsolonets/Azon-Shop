@@ -70,8 +70,46 @@ in .env
 ```
 
 Add all the vars to the .env
-    
-    
+
+## Set up Algolia
+
+1. Go to `seed.ts` and change `"azon1"` to your index name:
+
+    ```typescript
+    const index = client.initIndex("azon1");
+    ```
+
+2. Go to `Search.tsx` and change:
+
+    - `sourceId: "AzonShop"` to your Algolia application name.
+    - `indexName: "azon1"` to your index.
+
+
+
+## Seeding the Database
+
+Once you've completed the setup for Algolia and added the necessary environment variables, proceed with seeding your database with products.
+
+**Seed the Database:** Run the following command in your terminal:
+
+   ```bash
+    npx prisma db seed
+   ```
+
+### Checking the Changes
+
+After the seeding process completes:
+
+- **Algolia Dashboard:** Visit the Algolia dashboard to see your data indexed based on your seeding.
+
+- **Prisma Studio:** Access Prisma Studio using the following command:
+
+    ```bash
+    npx prisma db studio
+    ```
+
+    Use Prisma Studio to examine your database and verify the seeded data.
+
 
 Start the server
 
