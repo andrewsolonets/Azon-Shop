@@ -25,6 +25,7 @@ export const serverSchema = z.object({
   GITHUB_SECRET: z.string(),
   STRIPE_WEBHOOK_SECRET: z.string(),
   STRIPE_SECRET_KEY: z.string(),
+  ADMIN_ALGOLIA_KEY: z.string(),
 });
 
 /**
@@ -35,6 +36,8 @@ export const serverSchema = z.object({
 export const clientSchema = z.object({
   // NEXT_PUBLIC_BAR: z.string(),
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string(),
+  NEXT_PUBLIC_SEARCH_ALGOLIA_KEY: z.string(),
+  NEXT_PUBLIC_ALGOLIA_APP_ID: z.string(),
 });
 
 /**
@@ -47,4 +50,6 @@ export const clientEnv = {
   // NEXT_PUBLIC_BAR: process.env.NEXT_PUBLIC_BAR,
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+  NEXT_PUBLIC_SEARCH_ALGOLIA_KEY: process.env.NEXT_PUBLIC_SEARCH_ALGOLIA_KEY,
+  NEXT_PUBLIC_ALGOLIA_APP_ID: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
 };

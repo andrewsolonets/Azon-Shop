@@ -1,8 +1,14 @@
 import { randBetweenDate, randNumber, randProduct } from "@ngneat/falso";
 import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
+import algoliasearch from "algoliasearch/lite";
 
 const prisma = new PrismaClient();
+
+const client = algoliasearch(
+  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID as string,
+  process.env.ADMIN_ALGOLIA_KEY as string
+);
 
 const main = async () => {
   try {
@@ -46,6 +52,29 @@ const main = async () => {
         update: {},
       });
     }
+
+    /*
+     ALGOLIA UPDATE DATA BASED ON CURRENT PRODUCTS (CAN BE USED SEPARATELY)
+     You can both add new items with this as well as update existing ones. If objectID matches the existing one, it will be updated.
+     See https://www.algolia.com/doc/api-client/methods/indexing/ for how to manipulate data (delete, update, replace etc.)
+    */
+
+    const allProducts = await prisma.product.findMany();
+
+    // CHANGE TO YOUR INDEX NAME
+    const index = client.initIndex("azon1");
+    const objectsToAdd = allProducts?.map((el) => ({
+      ...el,
+      objectID: el?.id,
+      name: el?.title,
+    }));
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+
+    index.saveObjects(objectsToAdd).then(({ objectIDs }) => {
+      console.log(objectIDs);
+    });
   } catch (error) {
     throw error;
   }

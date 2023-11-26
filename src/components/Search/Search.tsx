@@ -3,10 +3,11 @@ import algoliasearch from "algoliasearch/lite";
 import { useRouter } from "next/router";
 import { Autocomplete } from "./AutoComplete";
 import { SearchItem } from "./SearchItem";
+import { env } from "../../env/client.mjs";
 
 const searchClient = algoliasearch(
-  "02IY9OU587",
-  "4a4823810a947597ce43df859d1bdcd3"
+  env.NEXT_PUBLIC_ALGOLIA_APP_ID,
+  env.NEXT_PUBLIC_SEARCH_ALGOLIA_KEY
   // Change key for search only on prod
 );
 
@@ -23,12 +24,14 @@ export default function Search() {
       }}
       getSources={({ query }: { query: string }) => [
         {
+          // CHANGE TO YOUR APPLICATION NAME
           sourceId: "AzonShop",
           getItems() {
             return getAlgoliaResults({
               searchClient,
               queries: [
                 {
+                  // CHANGE TO YOUR INDEX
                   indexName: "azon1",
                   query,
                 },
