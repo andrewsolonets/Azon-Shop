@@ -40,6 +40,13 @@ To run this project, you will need to add the following environment variables to
 
 `STRIPE_WEBHOOK_SECRET`
 
+`ADMIN_ALGOLIA_KEY`
+
+`NEXT_PUBLIC_SEARCH_ALGOLIA_KEY`
+
+`NEXT_PUBLIC_ALGOLIA_APP_ID`
+
+
 
 ## Run Locally
 
