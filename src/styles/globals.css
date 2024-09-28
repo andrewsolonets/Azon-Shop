@@ -1,15 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@media (max-width: 1024px) {
-  .aa-DetachedSearchButtonPlaceholder {
-    display: none;
-  }
-  .aa-DetachedSearchButtonIcon {
-    color: #fbbf24;
-  }
-  .aa-Autocomplete {
-    border: 0;
-  }
-}
