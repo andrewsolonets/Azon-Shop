@@ -1,15 +1,16 @@
+"use client";
 import { ButtonRegular } from "./Buttons";
-import { ReviewCard } from "./ReviewCard";
-import { ReviewForm } from "./ReviewForm";
-import { useState } from "react";
-import { api } from "../utils/api";
-import { useRouter } from "next/router";
 
-export const ProductReviews = () => {
-  const router = useRouter();
-  const { id } = router.query as { id: string };
+import { useState } from "react";
+
+import { useRouter } from "next/router";
+import { ReviewForm } from "./ReviewForm";
+import { ReviewCard } from "./ReviewCard";
+import { ReviewModel } from "~/server/db/schema";
+
+export const ProductReviews = ({ reviews }: { reviews: ReviewModel[] }) => {
   const [isFormOpen, setFormOpen] = useState(false);
-  const { data: reviews } = api.product.getRating.useQuery(id);
+
   return (
     <div className="flex h-fit flex-col gap-6">
       {!isFormOpen ? (
@@ -27,7 +28,8 @@ export const ProductReviews = () => {
           <ReviewCard
             key={review.id}
             title={review.heading}
-            author={review.user ? review.user.name : review.userName}
+            author={review.authorName}
+            // author={review.user ? review.user.name : review.authorName}
             date={review.createdAt}
             text={review.message}
             rating={review.rating}

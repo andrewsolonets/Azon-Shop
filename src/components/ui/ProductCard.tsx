@@ -19,11 +19,11 @@ export const RatingStyles = {
   inactiveFillColor: "#8b5cf6",
 };
 
-export const getAvgRating = (ratings: ProductWithRelations[]) => {
+export const getAvgRating = (reviews: ProductWithRelations[]) => {
   return Math.round(
-    ratings?.reduce((acc, item) => {
+    reviews?.reduce((acc, item) => {
       return (acc += item.rating);
-    }, 0) / ratings?.length,
+    }, 0) / reviews?.length,
   );
 };
 
@@ -32,7 +32,7 @@ export const ProductCard = ({ product }: Props) => {
   // const { addToCartHandler } = useCartActions();
   const addToCartHandler = (test: string) => {};
   const priceFinal = Math.round(Number(price));
-  const avgRating = getAvgRating(product?.ratings);
+  const avgRating = getAvgRating(product?.reviews);
   return (
     <div className="mb-2 flex w-full min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-violet-600 drop-shadow-md md:w-60">
       <Link href={`/products/${id}`}>

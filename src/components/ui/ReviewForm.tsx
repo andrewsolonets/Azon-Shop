@@ -1,8 +1,8 @@
+"use client";
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { auth } from "@clerk/nextjs/server";
 import { Rating } from "@smastrom/react-rating";
 
-import { useRouter } from "next/router";
 import {
   type FormEvent,
   useState,
@@ -10,20 +10,23 @@ import {
   type SetStateAction,
 } from "react";
 import { RatingStyles } from "./ProductCard";
+import { useParams } from "next/navigation";
+import { addReview } from "~/app/actions";
 
 export const ReviewForm = ({
   setIsOpen,
 }: {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const router = useRouter();
+  const { id } = useParams();
   const sessionData = auth();
 
   const userId = sessionData?.userId;
   // const { addReview } = useReviewActions();
   const [rating, setRating] = useState(0);
-  const { id } = router.query as { id: string };
+
   const submitCallback = (e: FormEvent<HTMLFormElement>) => {
+    if (!id) return;
     e.preventDefault();
     // console.log(e.target.elements);
     //@ts-ignore
@@ -34,11 +37,11 @@ export const ReviewForm = ({
     const message = e.target.elements.message.value;
     console.log(username, heading, message, rating);
     setRating(0);
-    addReview({
+    void addReview({
       heading,
       message,
       rating,
-      productId: id,
+      productId: Number(id),
       username: username ? username : "",
     });
     setIsOpen(false);

@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import MinusIcon from "public/img/MinusIcon";
@@ -7,24 +5,26 @@ import PlusIcon from "public/img/PlusIcon";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { FeaturedList } from "~/app/_components/FeaturedList";
+import { QuantitywCart } from "~/components/QuantitywCart";
 import { BigButton } from "~/components/ui/Buttons";
+import { ProductReviews } from "~/components/ui/ProductReviews";
 import { getFeaturedProducts, getProduct } from "~/server/queries";
 
 //TODO: Move quantity + add to cart to seperate component so that only it is "use client".
 
-export default function SingleProductPage({
+export default async function SingleProductPage({
   params: { id: id },
 }: {
   params: { id: string };
 }) {
-  const featured = getFeaturedProducts();
-  const [quantityCounter, setQuantity] = useState(1);
+  const featured = await getFeaturedProducts();
+
   // const { addToCartHandler } = useCartActions();
-  const addToCartHandler = () => {};
-  const item = getProduct(Number(id));
+
+  const item = await getProduct(Number(id));
   if (!item) return;
   const { image, title, price, quantity } = item;
-  const finalPrice = Math.round(Number(price));
+
   // return (
   //   <>
   //     <Head>
@@ -40,7 +40,7 @@ export default function SingleProductPage({
           <Image
             // changed image to static for data saving
             // src={image}
-            src={"/static/img/testcardimg.png"}
+            src={"/img/testcardimg.png"}
             alt={title}
             className="object-cover"
             fill
@@ -58,60 +58,10 @@ export default function SingleProductPage({
             metus. Mauris egestas euismod turpis arcu at bibendum risus aliquam.
             Ornare pulvinar pretium nunc ante. Sed faucibus pretium et id.
           </p>
-          <div className="flex flex-col justify-between gap-6 md:flex-row">
-            <div className="flex flex-col items-center gap-1">
-              <span>Price</span>
-              <span className="text-2xl font-bold">${finalPrice}</span>
-            </div>
-            <div className="relative flex flex-col items-center gap-1">
-              <span>Quantity</span>
-              <div className="flex items-center gap-2">
-                <button
-                  className="h-5 w-5"
-                  onClick={() => {
-                    if (quantityCounter > 0) {
-                      setQuantity((prev) => (prev -= 1));
-                    }
-                  }}
-                >
-                  <MinusIcon className="fill-amber-400 hover:fill-violet-400" />
-                </button>
-
-                <input
-                  type="text"
-                  onChange={(e) => setQuantity(Number(e.target.value))}
-                  value={quantityCounter}
-                  className="relative w-10 rounded-md border-0 bg-violet-800 px-2 py-1 text-center text-xl font-bold"
-                />
-                <button
-                  className="h-5 w-5"
-                  onClick={() =>
-                    setQuantity((prev) => {
-                      if (prev < quantity) {
-                        return (prev += 1);
-                      } else {
-                        toast.info(
-                          `Maxed out (only ${quantity} items available)`,
-                        );
-                        return prev;
-                      }
-                    })
-                  }
-                >
-                  <PlusIcon className="fill-amber-400 hover:fill-violet-400" />
-                </button>
-              </div>
-            </div>
-            <BigButton
-              onClick={() => addToCartHandler(item, quantityCounter)}
-              disabled={quantity < 1}
-            >
-              Add to Cart
-            </BigButton>
-          </div>
+          <QuantitywCart product={item} />
         </div>
       </div>
-      <ProductReviews />
+      <ProductReviews reviews={item.reviews} />
       <FeaturedList items={featured} />
     </section>
   );

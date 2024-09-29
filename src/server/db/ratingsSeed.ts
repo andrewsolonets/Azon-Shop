@@ -38,7 +38,7 @@ const main = async () => {
         from: new Date("2020-01-01T00:00:00.000Z"), // From date
         to: new Date("2022-12-01T00:00:00.000Z"), // To date
       });
-      await db.insert(schema.ratings).values({
+      await db.insert(schema.reviews).values({
         productId: id,
         authorName: name,
         heading,
@@ -68,7 +68,7 @@ main().catch(console.error);
 //           "2020-01-01T00:00:00.000Z",
 //           "2022-12-01T00:00:00.000Z"
 //         );
-//         await prisma?.ratings.create({
+//         await prisma?.reviews.create({
 //           data: {
 //             product: { connect: { id } },
 //             userName: name,

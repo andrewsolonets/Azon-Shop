@@ -59,8 +59,9 @@ export const products = createTable(
 );
 
 export type ProductSelectModel = InferSelectModel<typeof products>;
+export type ReviewModel = InferSelectModel<typeof reviews>;
 export type ProductWithRelations = ProductSelectModel & {
-  ratings?: Array<InferSelectModel<typeof ratings>>; // Optional array of ratings
+  reviews?: Array<ReviewModel>; // Optional array of reviews
   category?: InferSelectModel<typeof categories> | null; // Optional category or null
 };
 
@@ -69,7 +70,7 @@ export const productsRelations = relations(products, ({ one, many }) => ({
     fields: [products.categoryId],
     references: [categories.id],
   }),
-  ratings: many(ratings),
+  reviews: many(reviews),
 }));
 
 // model Category {
@@ -171,7 +172,7 @@ export const cartsRelations = relations(carts, ({ many }) => ({
 //   @@index([productId])
 //   @@index([userId])
 // }
-export const ratings = createTable("rating", {
+export const reviews = createTable("reviews", {
   id: serial("id").primaryKey(),
   rating: integer("rating"),
   heading: varchar("heading", { length: 256 }),
@@ -187,9 +188,9 @@ export const ratings = createTable("rating", {
   authorId: varchar("author_id", { length: 256 }),
 });
 
-export const ratingsRelations = relations(ratings, ({ one }) => ({
+export const reviewsRelations = relations(reviews, ({ one }) => ({
   product: one(products, {
-    fields: [ratings.productId],
+    fields: [reviews.productId],
     references: [products.id],
   }),
 }));
