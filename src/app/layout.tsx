@@ -1,4 +1,5 @@
 import "~/styles/globals.css";
+import "@smastrom/react-rating/style.css";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
@@ -31,7 +32,10 @@ export default function RootLayout({
           <SignedIn>
             <UserButton />
           </SignedIn>
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <TRPCReactProvider>
+            <main className="flex w-full flex-col gap-28 overflow-y-scroll"></main>
+            {children}
+          </TRPCReactProvider>
         </body>
       </html>
     </ClerkProvider>

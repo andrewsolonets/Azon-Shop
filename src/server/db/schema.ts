@@ -1,7 +1,7 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { Many, relations, sql } from "drizzle-orm";
+import { InferSelectModel, Many, relations, sql } from "drizzle-orm";
 import {
   index,
   integer,
@@ -57,6 +57,12 @@ export const products = createTable(
     nameIndex: index("categoryId_idx").on(product.categoryId),
   }),
 );
+
+export type ProductSelectModel = InferSelectModel<typeof products>;
+export type ProductWithRelations = ProductSelectModel & {
+  ratings?: Array<InferSelectModel<typeof ratings>>; // Optional array of ratings
+  category?: InferSelectModel<typeof categories> | null; // Optional category or null
+};
 
 export const productsRelations = relations(products, ({ one, many }) => ({
   category: one(categories, {

@@ -1,7 +1,10 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
-import { ProductCard } from "./ProductCard";
-import ArrowCarouselIcon from "../../public/static/img/ArrowCarouselIcon";
-import { type ExtProduct } from "../types/product";
+
+import { ProductWithRelations } from "~/server/db/schema";
+import { ProductCard } from "~/components/ui/ProductCard";
+import ArrowCarouselIcon from "public/img/ArrowCarouselIcon";
 
 interface Ref extends HTMLDivElement {
   offsetWidth: number;
@@ -12,7 +15,7 @@ interface Ref extends HTMLDivElement {
 export const FeaturedList = ({
   items,
 }: {
-  items: ExtProduct[] | undefined;
+  items: ProductWithRelations[] | undefined;
 }) => {
   const carousel = useRef<Ref>(null);
   const maxScrollWidth = useRef(0);
@@ -65,11 +68,11 @@ export const FeaturedList = ({
   }, [currentIndex]);
 
   return (
-    <div className=" flex flex-col gap-6  ">
-      <h4 className="ml-4 w-fit rounded-md bg-violet-600 px-4  py-1 font-semibold drop-shadow-sm">
+    <div className="flex flex-col gap-6">
+      <h4 className="ml-4 w-fit rounded-md bg-violet-600 px-4 py-1 font-semibold drop-shadow-sm">
         Featured Products
       </h4>
-      <div className="relative ">
+      <div className="relative">
         <div className="absolute hidden h-full w-full items-center justify-between md:flex">
           <button
             onClick={movePrev}
@@ -77,7 +80,7 @@ export const FeaturedList = ({
             className="group relative z-10 h-12 w-12 rotate-180 rounded-full bg-amber-400 p-2 transition-all duration-300 hover:bg-violet-800 disabled:opacity-0"
             disabled={isDisabled("prev")}
           >
-            <ArrowCarouselIcon className=" fill-violet-600 transition-all duration-300 hover:fill-amber-400 group-hover:fill-amber-400" />
+            <ArrowCarouselIcon className="fill-violet-600 transition-all duration-300 hover:fill-amber-400 group-hover:fill-amber-400" />
           </button>
           <button
             onClick={moveNext}
@@ -85,11 +88,11 @@ export const FeaturedList = ({
             className="group relative z-10 h-12 w-12 rounded-full bg-amber-400 p-2 transition-all duration-300 hover:bg-violet-800 disabled:opacity-0"
             disabled={isDisabled("next")}
           >
-            <ArrowCarouselIcon className=" fill-violet-600 transition-all duration-300 hover:fill-amber-400 group-hover:fill-amber-400" />
+            <ArrowCarouselIcon className="fill-violet-600 transition-all duration-300 hover:fill-amber-400 group-hover:fill-amber-400" />
           </button>
         </div>
         <div
-          className=" relative  flex touch-pan-x snap-x snap-mandatory justify-between gap-6 overflow-x-auto scroll-smooth md:overflow-x-hidden  "
+          className="relative flex touch-pan-x snap-x snap-mandatory justify-between gap-6 overflow-x-auto scroll-smooth md:overflow-x-hidden"
           ref={carousel}
         >
           {items?.map((el) => {
