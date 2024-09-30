@@ -12,9 +12,9 @@ export async function addReview({
   message,
   username,
 }: ReviewItem) {
-  await db
+  const review = await db
     .insert(reviews)
     .values({ rating, productId, heading, message, authorName: username });
 
-  toast.success("Review Added!");
+  return review;
 }

@@ -1,6 +1,6 @@
 "use client";
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { auth } from "@clerk/nextjs/server";
+
 import { Rating } from "@smastrom/react-rating";
 
 import {
@@ -11,39 +11,51 @@ import {
 } from "react";
 import { RatingStyles } from "./ProductCard";
 import { useParams } from "next/navigation";
-import { addReview } from "~/app/actions";
+import { toast } from "react-toastify";
 
+// TODO: try shadcn forms
 export const ReviewForm = ({
   setIsOpen,
 }: {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { id } = useParams();
-  const sessionData = auth();
+  // const sessionData = auth();
 
-  const userId = sessionData?.userId;
+  const userId = false;
   // const { addReview } = useReviewActions();
   const [rating, setRating] = useState(0);
 
-  const submitCallback = (e: FormEvent<HTMLFormElement>) => {
+  const submitCallback = async (e: FormEvent<HTMLFormElement>) => {
     if (!id) return;
     e.preventDefault();
-    // console.log(e.target.elements);
-    //@ts-ignore
-    const username = e.target.elements?.username?.value;
-    //@ts-ignore
-    const heading = e.target.elements.heading.value;
-    //@ts-ignorev
-    const message = e.target.elements.message.value;
-    console.log(username, heading, message, rating);
-    setRating(0);
-    void addReview({
-      heading,
-      message,
-      rating,
-      productId: Number(id),
-      username: username ? username : "",
+    const formData = new FormData(e.currentTarget); // Create a new FormData object
+
+    console.log(e.target.elements);
+    // // @ts-ignore
+    // const username = e.target.elements?.username?.value;
+    // //@ts-ignore
+    // const heading = e.target.elements.heading.value;
+    // //@ts-ignorev
+    // const message = e.target.elements.message.value;
+    // console.log(username, heading, message, rating);
+
+    // formData.append("username", username);
+    // formData.append("heading", heading);
+    // formData.append("message", message);
+    formData.append("productId", Number(id));
+    formData.append("rating", rating);
+    // TODO: Update UI on review added
+    const response = await fetch("/api/sendReview", {
+      method: "POST",
+      body: formData,
     });
+    if (response.ok) {
+      toast.success("Review Added!");
+    }
+    setRating(0);
+  
+
     setIsOpen(false);
     //@ts-ignore
     e.target.reset();

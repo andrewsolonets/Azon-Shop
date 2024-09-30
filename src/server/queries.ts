@@ -27,7 +27,9 @@ export async function getProduct(id: number) {
   const product = await db.query.products.findFirst({
     where: eq(products.id, id),
     with: {
-      reviews: true,
+      reviews: {
+        orderBy: (reviews, { desc }) => [desc(reviews.createdAt)],
+      },
     },
   });
 
