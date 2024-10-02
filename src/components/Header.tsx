@@ -1,4 +1,12 @@
 "use client";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignOutButton,
+  useAuth,
+  UserButton,
+} from "@clerk/nextjs";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import CartIcon from "public/img/CartIcon";
@@ -51,7 +59,7 @@ const NavMain = () => {
 export const Header = () => {
   // const { data: sessionData } = useSession();
   // const { toggleCart, getCartQuantity } = useCart();
-  const userId = false;
+
   // const userId = sessionData?.user?.id;
   // const { data: cartItems } = api.cart.getCartItems.useQuery();
   // let totalQuantity = 0;
@@ -93,25 +101,22 @@ export const Header = () => {
               </span>
             </span>
           </li>
-          {userId && (
+          <SignedIn>
             <li>
-              <Link
-                href={`/profile/${userId ? userId : "#"}`}
-                className="h-fit w-fit"
-              >
+              <Link href={`/profile`} className="h-fit w-fit">
                 <div className="h-7 w-7">
                   <ProfileIcon className="fill-amber-400 hover:fill-violet-400" />
                 </div>
               </Link>
             </li>
-          )}
+          </SignedIn>
           <li>
-            <button
-              className="outline-amber w-max rounded-sm bg-transparent px-3 py-1 text-amber-400 outline outline-2 transition-all duration-300 hover:bg-amber-400/20 hover:bg-opacity-10 md:px-4"
-              // onClick={sessionData ? () => signOut() : () => signIn()}
-            >
-              {/* {sessionData ? "Sign out" : "Sign in"} */}
-            </button>
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <SignOutButton />
+            </SignedIn>
           </li>
         </ul>
       </nav>
