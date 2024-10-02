@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 // import { useCartActions } from "../hooks/useCartActions";
 import Link from "next/link";
@@ -7,7 +9,7 @@ import { Rating } from "@smastrom/react-rating";
 // import { getAvgRating } from "../utils/helpers";
 import StarIcon from "public/img/StartIcon";
 import { ButtonRegular } from "./Buttons";
-import { ProductWithRelations } from "~/server/db/schema";
+import { ProductWithRelations, ReviewModel } from "~/server/db/schema";
 
 type Props = {
   product: ProductWithRelations;
@@ -19,7 +21,7 @@ export const RatingStyles = {
   inactiveFillColor: "#8b5cf6",
 };
 
-export const getAvgRating = (reviews: ProductWithRelations[]) => {
+export const getAvgRating = (reviews: ReviewModel[]) => {
   return Math.round(
     reviews?.reduce((acc, item) => {
       return (acc += item.rating);
@@ -32,7 +34,7 @@ export const ProductCard = ({ product }: Props) => {
   // const { addToCartHandler } = useCartActions();
   const addToCartHandler = (test: string) => {};
   const priceFinal = Math.round(Number(price));
-  const avgRating = getAvgRating(product?.reviews);
+  const avgRating = getAvgRating(product?.reviews ?? []);
   return (
     <div className="mb-2 flex w-full min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-violet-600 drop-shadow-md md:w-60">
       <Link href={`/products/${id}`}>

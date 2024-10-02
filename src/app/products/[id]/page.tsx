@@ -10,8 +10,6 @@ import { BigButton } from "~/components/ui/Buttons";
 import { ProductReviews } from "~/components/ui/ProductReviews";
 import { getFeaturedProducts, getProduct } from "~/server/queries";
 
-//TODO: Move quantity + add to cart to seperate component so that only it is "use client".
-
 export default async function SingleProductPage({
   params: { id: id },
 }: {
@@ -41,7 +39,7 @@ export default async function SingleProductPage({
             // changed image to static for data saving
             // src={image}
             src={"/img/testcardimg.png"}
-            alt={title}
+            alt={title ?? "invalid image"}
             className="object-cover"
             fill
             sizes="(min-width: 60em) 24vw,
@@ -50,7 +48,7 @@ export default async function SingleProductPage({
           />
         </div>
         <div className="flex w-full flex-col gap-8 text-center md:w-[80%] md:text-left">
-          <h2 className="max-w-sm text-4xl font-semibold">{title}</h2>
+          <h2 className="text-4xl font-semibold md:max-w-md">{title}</h2>
           <p>
             Lorem ipsum dolor sit amet consectetur. Tortor consequat commodo
             facilisis quam dictumst ut magna pharetra. Turpis malesuada enim sit

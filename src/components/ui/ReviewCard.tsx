@@ -1,3 +1,5 @@
+"use client";
+
 import { Rating } from "@smastrom/react-rating";
 import { RatingStyles } from "./ProductCard";
 
@@ -18,7 +20,7 @@ export const ReviewCard = ({
 }: ReviewProps) => {
   return (
     <div className="flex w-full flex-col overflow-hidden rounded-lg bg-violet-600 drop-shadow-xl">
-      <div className="flex w-full items-center justify-between border-b-2 border-slate-400/20 px-8 py-4">
+      <div className="flex w-full items-center justify-between gap-2 border-b-2 border-slate-400/20 px-8 py-4">
         <div className="flex items-center gap-4">
           <div className="h-12 w-12 rounded-full bg-violet-500"></div>
           <h2 className="text-lg">{author}</h2>
@@ -27,7 +29,7 @@ export const ReviewCard = ({
         <p>{date.toLocaleDateString()}</p>
       </div>
       <div className="flex w-full flex-col items-start gap-4 p-8">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col items-center gap-4 md:flex-row">
           <div className="w-28">
             <Rating value={rating} itemStyles={RatingStyles} readOnly />
           </div>

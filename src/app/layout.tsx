@@ -12,6 +12,9 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+import { Footer } from "~/components/Footer";
+import { Toaster } from "~/components/ui/sonner";
+import { Header } from "~/components/Header";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -33,8 +36,10 @@ export default function RootLayout({
             <UserButton />
           </SignedIn>
           <TRPCReactProvider>
-            <main className="flex w-full flex-col gap-28 overflow-y-scroll"></main>
-            {children}
+            <Header />
+            <main>{children}</main>
+            <Footer />
+            <Toaster />
           </TRPCReactProvider>
         </body>
       </html>

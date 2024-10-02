@@ -60,9 +60,10 @@ export const products = createTable(
 
 export type ProductSelectModel = InferSelectModel<typeof products>;
 export type ReviewModel = InferSelectModel<typeof reviews>;
+export type CategoryModel = InferSelectModel<typeof categories>;
 export type ProductWithRelations = ProductSelectModel & {
   reviews?: Array<ReviewModel>; // Optional array of reviews
-  category?: InferSelectModel<typeof categories> | null; // Optional category or null
+  category?: CategoryModel | null; // Optional category or null
 };
 
 export const productsRelations = relations(products, ({ one, many }) => ({
