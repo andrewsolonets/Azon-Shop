@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { addReview } from "~/app/actions";
 
+// TODO: Validate data here
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
   const data = Object.fromEntries(formData);

@@ -13,6 +13,8 @@ import { ZodError } from "zod";
 import * as trpcNext from "@trpc/server/adapters/next";
 
 import { db } from "~/server/db";
+import { NextRequest } from "next/server";
+type AuthObject = ReturnType<typeof getAuth>;
 
 /**
  * 1. CONTEXT
@@ -26,15 +28,20 @@ import { db } from "~/server/db";
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (
-  opts: trpcNext.CreateNextContextOptions,
-) => {
-  const { req } = opts;
-  const session = getAuth(req);
 
+// const createContext = async (req: NextRequest) => {
+//   return createTRPCContext({
+//     headers: req.headers,
+//     session: getAuth(req),
+//   });
+// };
+
+export const createTRPCContext = async (opts: {
+  headers: Headers;
+  session: AuthObject;
+}) => {
   return {
     db,
-    session,
     ...opts,
   };
 };
@@ -105,7 +112,8 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
 });
 
 const isAuthed = t.middleware(({ next, ctx }) => {
-  if (!ctx.session.sessionId) {
+  console.log(ctx);
+  if (!ctx.session.userId) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({

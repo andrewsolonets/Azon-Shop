@@ -63,7 +63,7 @@ export const cartRouter = createTRPCRouter({
   increaseQuantity: protectedProcedure
     .input(
       z.object({
-        itemId: z.string(),
+        itemId: z.number(),
         quantity: z.number(),
       }),
     )
@@ -73,7 +73,7 @@ export const cartRouter = createTRPCRouter({
       const updatedItem = await db
         .update(cartItems)
         .set({ quantity: sql`${cartItems.quantity} + ${quantity}` })
-        .where(eq(cartItems.id, parseInt(itemId)))
+        .where(eq(cartItems.id, itemId))
         .returning();
 
       return updatedItem;
@@ -83,7 +83,7 @@ export const cartRouter = createTRPCRouter({
   addNewItem: protectedProcedure
     .input(
       z.object({
-        item: z.object({ id: z.string() }),
+        item: z.object({ id: z.number() }),
         quantity: z.number(),
       }),
     )
@@ -99,7 +99,7 @@ export const cartRouter = createTRPCRouter({
         .insert(cartItems)
         .values({
           quantity,
-          productId: parseInt(item.id),
+          productId: item.id,
           cartId: cartId,
           userId,
         })
@@ -110,14 +110,14 @@ export const cartRouter = createTRPCRouter({
 
   // Remove one quantity of an item in the cart
   removeOne: publicProcedure
-    .input(z.object({ id: z.string(), quantity: z.number() }))
+    .input(z.object({ id: z.number(), quantity: z.number() }))
     .mutation(async ({ ctx, input }) => {
       const { id } = input;
 
       const updatedItem = await db
         .update(cartItems)
         .set({ quantity: sql`${cartItems.quantity} - 1` })
-        .where(eq(cartItems.id, parseInt(id)))
+        .where(eq(cartItems.id, id))
         .returning();
 
       return updatedItem;
@@ -125,7 +125,7 @@ export const cartRouter = createTRPCRouter({
 
   // Remove an item from the cart
   removeItem: publicProcedure
-    .input(z.string())
+    .input(z.number())
     .mutation(async ({ ctx, input }) => {
       const id = input;
 
@@ -154,7 +154,7 @@ export const cartRouter = createTRPCRouter({
     .input(
       z.array(
         z.object({
-          product: z.object({ id: z.string() }),
+          product: z.object({ id: z.number() }),
           quantity: z.number(),
         }),
       ),
@@ -165,7 +165,7 @@ export const cartRouter = createTRPCRouter({
       if (!cartId) return;
       const data = input.map((item) => ({
         quantity: item.quantity,
-        productId: parseInt(item.product.id),
+        productId: item.product.id,
         cartId: cartId,
         userId,
       }));

@@ -12,7 +12,7 @@ export default async function Home() {
   // const hello = await api.post.hello({ text: "from tRPC" });
   const featuredProducts = await getFeaturedProducts();
 
-  console.log(featuredProducts);
+  // console.log(featuredProducts);
   // void api.post.getLatest.prefetch();
 
   return (

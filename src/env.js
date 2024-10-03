@@ -11,6 +11,9 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
+    STRIPE_WEBHOOK_SECRET: z.string(),
+    STRIPE_SECRET_KEY: z.string(),
+    ADMIN_ALGOLIA_KEY: z.string(),
   },
 
   /**
@@ -19,6 +22,9 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string(),
+    NEXT_PUBLIC_SEARCH_ALGOLIA_KEY: z.string(),
+    NEXT_PUBLIC_ALGOLIA_APP_ID: z.string(),
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
   },
 
@@ -29,6 +35,13 @@ export const env = createEnv({
   runtimeEnv: {
     POSTGRES_URL: process.env.POSTGRES_URL,
     NODE_ENV: process.env.NODE_ENV,
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
+      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+    NEXT_PUBLIC_SEARCH_ALGOLIA_KEY: process.env.NEXT_PUBLIC_SEARCH_ALGOLIA_KEY,
+    NEXT_PUBLIC_ALGOLIA_APP_ID: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
+    STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+    ADMIN_ALGOLIA_KEY: process.env.ADMIN_ALGOLIA_KEY,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

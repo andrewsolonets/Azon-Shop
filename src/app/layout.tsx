@@ -15,6 +15,7 @@ import {
 import { Footer } from "~/components/Footer";
 import { Toaster } from "~/components/ui/sonner";
 import { Header } from "~/components/Header";
+import { CartProvider } from "~/context/CartContext";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
+// TODO: Put metadata to each page in the app
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -30,7 +32,9 @@ export default function RootLayout({
       <html lang="en" className={`${GeistSans.variable}`}>
         <body>
           <TRPCReactProvider>
-            <Header />
+            <CartProvider>
+              <Header />
+            </CartProvider>
             <main>{children}</main>
             <Footer />
             <Toaster />

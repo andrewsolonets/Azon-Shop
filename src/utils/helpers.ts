@@ -3,13 +3,21 @@
 // import { type CartItemGuest } from "../types/cart";
 // import onClickOutside from "react-onclickoutside";
 
+import { toast } from "sonner";
+import {
+  CartModel,
+  ProductWithRelations,
+  ReviewModel,
+} from "~/server/db/schema";
+import { CartItem, CartItemGuest } from "~/types/cart";
+
 interface CartItemLong extends CartItem {
   product: { title: string; image: string; price: number; description: string };
 }
 
 export type CartItemPlus = {
-  cart: Cart;
-  product: Product;
+  cart: CartModel;
+  product: ProductWithRelations;
   id: string;
   quantity: number;
   cartId: string;
@@ -42,7 +50,7 @@ export const tranformCartItems = (items: CartItemLong[]) => {
       product_data: {
         name: item.product.title,
         description: item.product.description,
-        images: [item.product.image],
+        // images: item?.product?.image ? [item.product.image] : null,
       },
     },
 
@@ -50,26 +58,20 @@ export const tranformCartItems = (items: CartItemLong[]) => {
   }));
 };
 
-export const getAvgRating = (ratings: Ratings[]) => {
+export const getAvgRating = (ratings: ReviewModel[]) => {
   return Math.round(
     ratings?.reduce((acc, item) => {
-      return (acc += item.rating);
+      return (acc += item?.rating ?? 0);
     }, 0) / ratings?.length,
   );
 };
 
 export const paymentNotification = (status: string | string[]) => {
   if (status === "cancel") {
-    toast.error("Payment Canceled!", {
-      position: "top-center",
-      autoClose: 3500,
-    });
+    toast.warning("Payment Canceled!");
   }
   if (status === "success") {
-    toast.success("Payment Successful!", {
-      position: "top-center",
-      autoClose: 3500,
-    });
+    toast.success("Payment Successful!");
   }
 };
 

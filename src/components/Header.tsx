@@ -11,6 +11,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import CartIcon from "public/img/CartIcon";
 import ProfileIcon from "public/img/ProfileIcon";
+import { useCart } from "~/context/CartContext";
+import { api } from "~/trpc/react";
 
 // TODO: refactor navigation - use client component only when needed, disable links when on that page, use shadcn
 // TODO: Make breadcrumb links
@@ -58,19 +60,19 @@ const NavMain = () => {
 
 export const Header = () => {
   // const { data: sessionData } = useSession();
-  // const { toggleCart, getCartQuantity } = useCart();
+  const { toggleCart, getCartQuantity } = useCart();
 
   // const userId = sessionData?.user?.id;
-  // const { data: cartItems } = api.cart.getCartItems.useQuery();
-  // let totalQuantity = 0;
+  const { data: cartItems } = api.cart.getCartItems.useQuery();
+  let totalQuantity = 0;
 
-  // if (cartItems) {
-  //   cartItems?.forEach((el) => {
-  //     totalQuantity += el.quantity;
-  //   });
-  // } else {
-  //   totalQuantity = getCartQuantity();
-  // }
+  if (cartItems) {
+    cartItems?.forEach((el) => {
+      totalQuantity += el.quantity;
+    });
+  } else {
+    totalQuantity = getCartQuantity();
+  }
 
   return (
     <header className="drop-shadow-header fixed left-0 right-0 top-0 z-20 flex items-center justify-between bg-violet-800 px-4 py-4 font-medium text-slate-50 backdrop-blur sm:gap-10 md:justify-start md:px-10">
@@ -86,7 +88,7 @@ export const Header = () => {
         <ul className="relative flex items-center gap-6 md:gap-8">
           <li className="relative">
             <button
-              // onClick={toggleCart}
+              onClick={toggleCart}
               className="group"
               aria-label="Open Cart"
             >
@@ -97,7 +99,7 @@ export const Header = () => {
 
             <span className="items absolute -bottom-2 -right-3 flex h-6 w-6 items-center justify-center rounded-full bg-violet-600">
               <span className="text-sm font-bold transition-all duration-300">
-                {/* {totalQuantity} */}
+                {totalQuantity}
               </span>
             </span>
           </li>

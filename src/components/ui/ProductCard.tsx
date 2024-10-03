@@ -10,6 +10,8 @@ import { Rating } from "@smastrom/react-rating";
 import StarIcon from "public/img/StartIcon";
 import { ButtonRegular } from "./Buttons";
 import { ProductWithRelations, ReviewModel } from "~/server/db/schema";
+import { useCartActions } from "~/hooks/useCartActions";
+import { getAvgRating } from "~/utils/helpers";
 
 type Props = {
   product: ProductWithRelations;
@@ -21,18 +23,9 @@ export const RatingStyles = {
   inactiveFillColor: "#8b5cf6",
 };
 
-export const getAvgRating = (reviews: ReviewModel[]) => {
-  return Math.round(
-    reviews?.reduce((acc, item) => {
-      return (acc += item.rating);
-    }, 0) / reviews?.length,
-  );
-};
-
 export const ProductCard = ({ product }: Props) => {
   const { title, price, image, id, quantity } = product;
-  // const { addToCartHandler } = useCartActions();
-  const addToCartHandler = (test: string) => {};
+  const { addToCartHandler } = useCartActions();
   const priceFinal = Math.round(Number(price));
   const avgRating = getAvgRating(product?.reviews ?? []);
   return (
