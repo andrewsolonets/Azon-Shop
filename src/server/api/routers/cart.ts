@@ -131,7 +131,7 @@ export const cartRouter = createTRPCRouter({
 
       const deletedItem = await db
         .delete(cartItems)
-        .where(eq(cartItems.id, parseInt(id)))
+        .where(eq(cartItems.id, id))
         .returning();
 
       return deletedItem;

@@ -29,7 +29,9 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
               <p className="">(items)</p>
             </div>
             <div className="flex items-center gap-4">
-              <OutlineBtn onClick={() => clearCart()}>Clear</OutlineBtn>
+              {cartItems?.length ? (
+                <OutlineBtn onClick={() => clearCart()}>Clear</OutlineBtn>
+              ) : null}
               <OutlineBtn onClick={toggleCart}>Close</OutlineBtn>
             </div>
           </div>

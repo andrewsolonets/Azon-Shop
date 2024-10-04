@@ -39,7 +39,7 @@ export const useCartActions = () => {
             quantity: number;
             cartId: string;
           }) => {
-            if (oldCart.id === el.item.id) {
+            if (oldCart.id === el.itemId) {
               return { ...oldCart, quantity: oldCart.quantity + el.quantity };
             } else {
               return oldCart;
@@ -206,7 +206,7 @@ export const useCartActions = () => {
       return data.product.id === item.id;
     });
     if (existing) {
-      return increaseQuantity.mutate({ item: existing, quantity });
+      return increaseQuantity.mutate({ itemId: existing.id, quantity });
     } else {
       return addNewToCart.mutate({ item, quantity });
     }

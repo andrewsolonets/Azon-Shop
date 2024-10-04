@@ -1,5 +1,5 @@
 "use client";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 // import { useRouter } from "next/router";
 // import { paymentNotification } from "../utils/helpers";
@@ -13,6 +13,7 @@ export const HeroSection = () => {
   // const router = useRouter();
   const searchParams = useSearchParams(); // Get search params object
   const status = searchParams.get("status"); // Extract the 'status' query parameter
+
   useEffect(() => {
     console.log(status);
     if ((status && status === "cancel") || status === "success") {

@@ -16,6 +16,7 @@ import { api } from "~/trpc/react";
 
 // TODO: refactor navigation - use client component only when needed, disable links when on that page, use shadcn
 // TODO: Make breadcrumb links
+// TODO: Make header glass effect
 const NavMain = () => {
   const pathname = usePathname();
   return (
