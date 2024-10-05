@@ -43,7 +43,7 @@ const NavMain = () => {
           Categories
         </Link>
       </li>
-      {/* <li className="w-max">
+      <li className="w-max">
         <Link
           href="/products"
           className={`transition-all duration-300 hover:text-violet-300 active:text-amber-300 ${
@@ -54,7 +54,7 @@ const NavMain = () => {
         >
           All Products
         </Link>
-      </li> */}
+      </li>
     </ul>
   );
 };
@@ -69,14 +69,14 @@ export const Header = () => {
 
   if (cartItems) {
     cartItems?.forEach((el) => {
-      totalQuantity += el.quantity;
+      totalQuantity += el?.quantity ?? 0;
     });
   } else {
     totalQuantity = getCartQuantity();
   }
 
   return (
-    <header className="drop-shadow-header fixed left-0 right-0 top-0 z-20 flex items-center justify-between bg-violet-800 px-4 py-4 font-medium text-slate-50 backdrop-blur sm:gap-10 md:justify-start md:px-10">
+    <header className="drop-shadow-header sticky left-0 right-0 top-0 z-20 flex items-center justify-between border-b border-violet-800/10 bg-violet-800/30 px-4 py-4 font-medium backdrop-blur-lg sm:gap-10 md:justify-start md:px-10">
       <Link href="/">
         <h3 className="text-2xl font-bold text-amber-400 transition-all duration-300 hover:text-violet-400">
           Azon

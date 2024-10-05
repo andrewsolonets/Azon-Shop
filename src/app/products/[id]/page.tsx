@@ -38,7 +38,7 @@ export default async function SingleProductPage({
           <Image
             // changed image to static for data saving
             // src={image}
-            src={"/img/testcardimg.png"}
+            src={"/img/product.webp"}
             alt={title ?? "invalid image"}
             className="object-cover"
             fill

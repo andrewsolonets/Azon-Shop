@@ -16,12 +16,12 @@ export default async function Home() {
   // void api.post.getLatest.prefetch();
 
   return (
-    <main className="">
+    <>
       <HeroSection />
 
       <div className="px-4">
         <FeaturedList items={featuredProducts} />
       </div>
-    </main>
+    </>
   );
 }

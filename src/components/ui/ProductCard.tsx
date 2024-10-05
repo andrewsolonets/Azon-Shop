@@ -36,7 +36,7 @@ export const ProductCard = ({ product }: Props) => {
             // changed image to static for data saving
             // src={image}
 
-            src={"/img/testcardimg.png"}
+            src={"/img/product.webp"}
             alt={title}
             fill
             className="rounded-lg object-cover"
