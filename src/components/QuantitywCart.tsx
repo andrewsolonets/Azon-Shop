@@ -5,16 +5,19 @@ import { useState } from "react";
 import { ProductWithRelations } from "~/server/db/schema";
 import { BigButton } from "./ui/Buttons";
 import { toast } from "react-toastify";
+import { useCartActions } from "~/hooks/useCartActions";
 
 export const QuantitywCart = ({
   product,
 }: {
   product: ProductWithRelations;
 }) => {
+  const { addToCartHandler } = useCartActions();
   const [quantityCounter, setQuantity] = useState(1);
 
-  const { image, title, price, quantity } = product;
-  const addToCartHandler = () => {};
+  const { image, title, price, quantity: rawQuantity } = product;
+  const quantity = rawQuantity ?? 0;
+
   const finalPrice = Math.round(Number(price));
 
   return (
