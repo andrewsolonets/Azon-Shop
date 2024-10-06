@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { auth } from "@clerk/nextjs/server";
 import { type NextApiRequest, type NextApiResponse } from "next";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { env } from "~/env";
 
@@ -13,11 +13,10 @@ const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: "2022-11-15",
 });
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
-  //@ts-ignore
+export async function POST(req: NextRequest) {
   const transformedItems = await req.json();
   const { userId } = auth();
-  //@ts-expect-error origin
+
   const origin = req.headers.get("origin"); // Access the origin header
 
   if (!origin) {
