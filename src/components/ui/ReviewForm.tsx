@@ -28,14 +28,7 @@ import {
 import { Input } from "./input";
 import { Button } from "./button";
 import { Textarea } from "./textarea";
-
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  heading: z.string(),
-  message: z.string(),
-});
+import { schema } from "~/app/reviewSchema";
 
 // TODO: try shadcn forms
 export const ReviewForm = ({
@@ -44,12 +37,14 @@ export const ReviewForm = ({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { id } = useParams();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof schema>>({
+    resolver: zodResolver(schema),
     defaultValues: {
       username: "",
       heading: "",
       message: "",
+      rating: 5,
+      productId: Number(id),
     },
   });
 
@@ -93,9 +88,29 @@ export const ReviewForm = ({
   //   e.target.reset();
   // };
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof schema>) {
+    const { username, heading, message } = values;
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    const formData = new FormData(); // Create a new FormData object
+
+    formData.append("username", username);
+    formData.append("heading", heading);
+    formData.append("message", message);
+
+    formData.append("productId", id as string);
+    formData.append("rating", rating.toString());
+    // TODO: Update UI on review added
+    const response = await fetch("/api/sendReview", {
+      method: "POST",
+      body: formData,
+    });
+    if (response.ok) {
+      toast.success("Review Added!");
+    }
+    setRating(0);
+
+    setIsOpen(false);
     console.log(values);
     toast.success("Review submitted successfuly!");
     form.reset();
@@ -159,7 +174,7 @@ export const ReviewForm = ({
             <FormItem className="relative w-full">
               <FormLabel>Message</FormLabel>
               <FormControl>
-                <Textarea placeholder="shadcn" {...field} />
+                <Textarea placeholder="Message" {...field} />
               </FormControl>
 
               <FormMessage />
