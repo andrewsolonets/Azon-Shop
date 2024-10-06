@@ -24,7 +24,8 @@ export const RatingStyles = {
 };
 
 export const ProductCard = ({ product }: Props) => {
-  const { title, price, image, id, quantity } = product;
+  const { title, price, image, id, quantity: rawQuantity } = product;
+  const quantity = rawQuantity ?? 0;
   const { addToCartHandler } = useCartActions();
   const priceFinal = Math.round(Number(price));
   const avgRating = getAvgRating(product?.reviews ?? []);
@@ -37,7 +38,7 @@ export const ProductCard = ({ product }: Props) => {
             // src={image}
 
             src={"/img/product.webp"}
-            alt={title}
+            alt={title ?? "invalid image"}
             fill
             className="rounded-lg object-cover"
             sizes="(min-width: 60em) 24vw,
