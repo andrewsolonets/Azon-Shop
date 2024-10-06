@@ -16,11 +16,11 @@ interface CartItemLong extends CartItem {
 }
 
 export type CartItemPlus = {
-  cart: CartModel;
+  cart?: CartModel;
   product: ProductWithRelations;
-  id: string;
+  id: number;
   quantity: number;
-  cartId: string;
+  cartId: number;
 };
 
 // function listenForOutsideClicks(

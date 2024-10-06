@@ -38,7 +38,7 @@ export default function UserOrders({ orders }: { orders: OrderModel[] }) {
       {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[300px]">Date</TableHead>
+          <TableHead className="w-[150px]">Date</TableHead>
           <TableHead>Status</TableHead>
 
           <TableHead className="text-right">Total Amount</TableHead>

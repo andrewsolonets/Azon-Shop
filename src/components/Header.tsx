@@ -12,59 +12,51 @@ import { usePathname } from "next/navigation";
 import CartIcon from "public/img/CartIcon";
 import ProfileIcon from "public/img/ProfileIcon";
 import { useCart } from "~/context/CartContext";
+import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
 
-// TODO: refactor navigation - use client component only when needed, disable links when on that page, use shadcn
-// TODO: Make breadcrumb links
-// TODO: Make header glass effect
+// TODO: use client component only when needed - move client side parts to separate comps.
+
 const NavMain = () => {
   const pathname = usePathname();
+  const LINKS: { text: string; href: string }[] = [
+    { text: "Home", href: "/" },
+    { text: "Categories", href: "/categories" },
+    { text: "All products", href: "/products" },
+  ];
+
   return (
     <ul className="hidden items-center gap-10 sm:flex">
-      <li>
-        <Link
-          href="/"
-          className={`transition-all duration-300 hover:text-violet-300 active:text-amber-300 ${
-            pathname == "/" ? "font-semibold text-amber-400" : "text-slate-50"
-          }`}
-        >
-          Home
-        </Link>
-      </li>
-      <li>
-        <Link
-          href="/categories"
-          className={`transition-all duration-300 hover:text-violet-300 active:text-amber-300 ${
-            pathname == "/categories"
-              ? "font-semibold text-amber-400"
-              : "text-slate-50"
-          }`}
-        >
-          Categories
-        </Link>
-      </li>
-      <li className="w-max">
-        <Link
-          href="/products"
-          className={`transition-all duration-300 hover:text-violet-300 active:text-amber-300 ${
-            pathname == "/products"
-              ? "font-semibold text-amber-400"
-              : "text-white"
-          }`}
-        >
-          All Products
-        </Link>
-      </li>
+      {LINKS.map((link) => (
+        <li key={link.href}>
+          <Link
+            href={link.href}
+            aria-disabled={pathname === link.href}
+            tabIndex={pathname === link.href ? -1 : undefined}
+            className={cn(
+              "transition-all duration-300 hover:text-violet-300 active:text-amber-300",
+              pathname === link.href
+                ? "pointer-events-none font-semibold text-amber-400"
+                : "",
+            )}
+          >
+            {link.text}
+          </Link>
+        </li>
+      ))}
     </ul>
   );
 };
 
 export const Header = () => {
-  // const { data: sessionData } = useSession();
+  const { userId } = useAuth();
   const { toggleCart, getCartQuantity } = useCart();
 
-  // const userId = sessionData?.user?.id;
-  const { data: cartItems } = api.cart.getCartItems.useQuery();
+  const { data: cartItems } = api.cart.getCartItems.useQuery(undefined, {
+    staleTime: 60 * 1000,
+    enabled: !!userId,
+  });
+
   let totalQuantity = 0;
 
   if (cartItems) {

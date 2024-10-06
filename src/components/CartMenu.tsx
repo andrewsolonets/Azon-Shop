@@ -6,6 +6,8 @@ import { CartItemCard } from "./CartItem";
 import { useCart } from "../context/CartContext";
 import { api } from "~/trpc/react";
 import { ArrowBtn, OutlineBtn } from "./ui/Buttons";
+import { CartItemGuest } from "~/types/cart";
+import { CartItemPlus } from "~/utils/helpers";
 
 export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
   const { clearCart, createCheckOutSession } = useCartActions();
@@ -38,7 +40,9 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
           <div className="flex h-fit w-full flex-col gap-4 overflow-y-auto md:w-[600px]">
             {cartItems
               ? cartItems?.map((el) => {
-                  return <CartItemCard key={el.id} item={el} />;
+                  return (
+                    <CartItemCard key={el.id} item={el as CartItemGuest} />
+                  );
                 })
               : guestItems
                 ? guestItems?.map((el) => {
@@ -54,7 +58,10 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
           </div>
           <ArrowBtn
             onClick={() =>
-              createCheckOutSession(cartItems ? cartItems : guestItems)
+              createCheckOutSession(
+                //@ts-expect-error cart items type error
+                cartItems ? (cartItems as CartItemPlus) : guestItems,
+              )
             }
           >
             Checkout

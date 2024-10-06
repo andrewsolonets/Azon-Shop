@@ -30,8 +30,23 @@ export async function getProduct(id: number) {
       reviews: {
         orderBy: (reviews, { desc }) => [desc(reviews.createdAt)],
       },
+      category: true,
     },
   });
 
   return product;
+}
+
+export async function getCategory(id: number) {
+  const category = await db.query.categories.findFirst({
+    where: (categories, { eq }) => eq(categories.id, Number(id)),
+    with: {
+      products: {
+        with: {
+          reviews: true,
+        },
+      },
+    },
+  });
+  return category;
 }

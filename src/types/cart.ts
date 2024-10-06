@@ -13,8 +13,8 @@ export type CartProviderProps = {
 export type CartItemGuest = {
   id: number;
   product: ProductWithRelations;
-  cart: string;
-  cartId: string;
+  cart?: string;
+  cartId: number;
   quantity: number;
 };
 export type CartContext = {

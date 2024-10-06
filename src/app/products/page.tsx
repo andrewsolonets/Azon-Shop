@@ -20,15 +20,15 @@ export default function AllProducts() {
 
   useEffect(() => {
     if (inView && hasNextPage) {
-      fetchNextPage();
+      void fetchNextPage();
     }
   }, [inView]);
 
   // data will be split in pages
   return (
     <>
-      <section className="mt-32 h-fit px-4 py-4 md:px-8">
-        <div className="relative flex w-full flex-col items-center justify-center">
+      <section className="mt-12 h-fit px-4 py-4 md:px-8">
+        <div className="relative flex w-full flex-col">
           <h2 className="mb-8 text-3xl font-bold">All Products</h2>
           <div className="grid auto-cols-max grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
             {data?.pages.map((page) => (

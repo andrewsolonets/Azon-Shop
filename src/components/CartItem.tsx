@@ -5,7 +5,7 @@ import { type CartItemPlus } from "../utils/helpers";
 import CrossIcon from "public/img/CrossIcon";
 import PlusIcon from "public/img/PlusIcon";
 import MinusIcon from "public/img/MinusIcon";
-import { CartItemGuest } from "~/types/cart";
+import { CartItem, CartItemGuest } from "~/types/cart";
 
 type Props = {
   item: CartItemPlus | CartItemGuest;

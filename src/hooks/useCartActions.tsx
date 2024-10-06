@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 "use client";
+
+//@ts-nocheck
 import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
 import { toast } from "sonner";
@@ -7,7 +10,7 @@ import { CartModel, ProductWithRelations } from "~/server/db/schema";
 import { api } from "~/trpc/react";
 import { CartItem, CartItemGuest } from "~/types/cart";
 import getStripe from "~/utils/get-stripejs";
-import { tranformCartItems } from "~/utils/helpers";
+import { CartItemPlus, tranformCartItems } from "~/utils/helpers";
 
 export const useCartActions = () => {
   const utils = api.useContext();
@@ -28,18 +31,19 @@ export const useCartActions = () => {
     async onMutate(el: { item: CartItem; quantity: number }) {
       await utils.cart.getCartItems.cancel();
       const prevData = utils.cart.getCartItems.getData();
-
+      //@ts-ignore
       utils.cart.getCartItems.setData(undefined, (old) => {
         if (!old) return;
         return old.map(
+          //@ts-ignore
           (oldCart: {
             cart: CartModel;
             product: ProductWithRelations;
-            id: string;
+            id: number;
             quantity: number;
-            cartId: string;
+            cartId: number;
           }) => {
-            if (oldCart.id === el.itemId) {
+            if (oldCart.id === el.item.id) {
               return { ...oldCart, quantity: oldCart.quantity + el.quantity };
             } else {
               return oldCart;
@@ -56,8 +60,8 @@ export const useCartActions = () => {
       // @ts-ignore
       utils.cart.getCartItems.setData(undefined, ctx.prevData);
     },
-    onSettled() {
-      utils.cart.getCartItems.invalidate();
+    async onSettled() {
+      await utils.cart.getCartItems.invalidate();
     },
   });
 
@@ -82,6 +86,7 @@ export const useCartActions = () => {
       };
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       utils.cart.getCartItems.setData(undefined, (old) => [...old, newItem]);
       return { prevData };
     },
@@ -93,12 +98,12 @@ export const useCartActions = () => {
       utils.cart.getCartItems.setData(undefined, ctx.prevData);
     },
     onSettled() {
-      utils.cart.getCartItems.invalidate();
+      void utils.cart.getCartItems.invalidate();
     },
   });
 
   const removeFromCart = api.cart.removeItem.useMutation({
-    async onMutate(id: string) {
+    async onMutate(id: number) {
       await utils.cart.getCartItems.cancel();
       const prevData = utils.cart.getCartItems.getData();
       const newItems = prevData?.filter((item) => item.id !== id);
@@ -109,7 +114,7 @@ export const useCartActions = () => {
       utils.cart.getCartItems.setData(undefined, ctx?.prevData);
     },
     onSettled() {
-      utils.cart.getCartItems.invalidate();
+      void utils.cart.getCartItems.invalidate();
     },
   });
   const removeOne = api.cart.removeOne.useMutation({
@@ -121,7 +126,7 @@ export const useCartActions = () => {
         if (!old) return;
         return old.map((item) => {
           if (item.id === el.id) {
-            return { ...item, quantity: item.quantity - 1 };
+            return { ...item, quantity: (item?.quantity ?? 0) - 1 };
           } else {
             return item;
           }
@@ -133,7 +138,7 @@ export const useCartActions = () => {
       utils.cart.getCartItems.setData(undefined, ctx?.prevData);
     },
     onSettled() {
-      utils.cart.getCartItems.invalidate();
+      void utils.cart.getCartItems.invalidate();
     },
   });
 
@@ -148,10 +153,10 @@ export const useCartActions = () => {
       utils.cart.getCartItems.setData(undefined, ctx?.prevData);
     },
     onSettled() {
-      utils.cart.getCartItems.invalidate();
+      void utils.cart.getCartItems.invalidate();
     },
     onSuccess() {
-      utils.cart.getUserCart.refetch();
+      void utils.cart.getUserCart.refetch();
     },
   });
 
@@ -164,7 +169,7 @@ export const useCartActions = () => {
     async onMutate(
       items: {
         product: {
-          id: string;
+          id: number;
         };
         quantity: number;
       }[],
@@ -186,7 +191,7 @@ export const useCartActions = () => {
       utils.cart.getCartItems.setData(undefined, ctx.prevData);
     },
     onSettled() {
-      utils.cart.getCartItems.invalidate();
+      void utils.cart.getCartItems.invalidate();
     },
   });
 
@@ -237,7 +242,7 @@ export const useCartActions = () => {
     }
   };
   const createCheckOutSession = async (
-    cartItems: CartItemGuest[] | CartItem[] | undefined,
+    cartItems: CartItemGuest[] | CartItem[] | CartItemPlus | undefined,
   ) => {
     const stripe = await getStripe();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -250,7 +255,8 @@ export const useCartActions = () => {
     );
 
     const result = await stripe?.redirectToCheckout({
-      sessionId: checkoutSession.data.id,
+      //@ts-ignore
+      sessionId: (checkoutSession as { data: { id: string } }).data.id,
     });
 
     if (result?.error) {

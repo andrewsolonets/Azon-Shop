@@ -5,10 +5,13 @@ import PlusIcon from "public/img/PlusIcon";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { FeaturedList } from "~/app/_components/FeaturedList";
+import ProductBreadcrumb from "~/components/ProductBreadcrumb";
 import { QuantitywCart } from "~/components/QuantitywCart";
 import { BigButton } from "~/components/ui/Buttons";
 import { ProductReviews } from "~/components/ui/ProductReviews";
 import { getFeaturedProducts, getProduct } from "~/server/queries";
+
+// TODO: Make breadcrumb links
 
 export default async function SingleProductPage({
   params: { id: id },
@@ -21,7 +24,7 @@ export default async function SingleProductPage({
 
   const item = await getProduct(Number(id));
   if (!item) return;
-  const { image, title, price, quantity } = item;
+  const { image, title, price, quantity, categoryId } = item;
 
   // return (
   //   <>
@@ -32,9 +35,10 @@ export default async function SingleProductPage({
   //   </>
   // );
   return (
-    <section className="mt-32 flex h-fit flex-col gap-24 px-4 py-4 md:px-8">
+    <section className="flex h-fit flex-col gap-12 px-4 py-4 md:px-8">
+      <ProductBreadcrumb product={item} />
       <div className="flex w-full flex-col items-center justify-between gap-20 md:flex-row md:items-start">
-        <div className="b- border- relative h-72 w-72 rounded-lg border-8 border-amber-400 object-cover">
+        <div className="relative h-72 w-72 rounded-lg border-8 border-amber-400 object-cover">
           <Image
             // changed image to static for data saving
             // src={image}

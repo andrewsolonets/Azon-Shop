@@ -9,6 +9,7 @@ import { createTRPCContext } from "~/server/api/trpc";
 import { createQueryClient } from "./query-client";
 import { getAuth } from "@clerk/nextjs/server";
 import { NextRequest } from "next/server";
+import { getBaseUrl } from "./react";
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when
@@ -20,9 +21,7 @@ const createContext = cache(() => {
 
   return createTRPCContext({
     headers: heads,
-    session: getAuth(
-      new NextRequest("https://localhost:3000", { headers: headers() }),
-    ),
+    session: getAuth(new NextRequest(getBaseUrl(), { headers: headers() })),
   });
 });
 

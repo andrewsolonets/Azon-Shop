@@ -37,7 +37,9 @@ export function CartProvider({ children }: CartProviderProps) {
 
   const changeTotalAmount = () => {
     if (cartItemsServer) {
-      setTotalAmount(Math.round(getTotalAmount(cartItemsServer)));
+      setTotalAmount(
+        Math.round(getTotalAmount(cartItemsServer as CartItemGuest[])),
+      );
     } else {
       setTotalAmount(Math.round(getTotalAmount(cartItems)));
     }
@@ -82,10 +84,10 @@ export function CartProvider({ children }: CartProviderProps) {
         return [
           ...currItems,
           {
-            id: randomUUID(),
+            id: Math.random() * 1000,
             product: item,
             cart: "guest",
-            cartId: randomUUID(),
+            cartId: Math.random() * 1000,
             quantity: quantity,
           },
         ];
