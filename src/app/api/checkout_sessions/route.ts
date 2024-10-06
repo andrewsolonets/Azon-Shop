@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { auth } from "@clerk/nextjs/server";
-import { type NextApiRequest, type NextApiResponse } from "next";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { env } from "~/env";
