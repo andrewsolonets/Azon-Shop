@@ -14,6 +14,7 @@ export const env = createEnv({
     STRIPE_WEBHOOK_SECRET: z.string(),
     STRIPE_SECRET_KEY: z.string(),
     ADMIN_ALGOLIA_KEY: z.string(),
+    CLERK_SECRET_KEY: z.string(),
   },
 
   /**
@@ -25,6 +26,7 @@ export const env = createEnv({
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string(),
     NEXT_PUBLIC_SEARCH_ALGOLIA_KEY: z.string(),
     NEXT_PUBLIC_ALGOLIA_APP_ID: z.string(),
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: z.string(),
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
   },
 
@@ -42,6 +44,9 @@ export const env = createEnv({
     STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     ADMIN_ALGOLIA_KEY: process.env.ADMIN_ALGOLIA_KEY,
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
+      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
