@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { auth } from "@clerk/nextjs/server";
 import { type NextApiRequest, type NextApiResponse } from "next";
 import { NextResponse } from "next/server";
@@ -6,14 +9,15 @@ import { env } from "~/env";
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   // https://github.com/stripe/stripe-node#configuration
+  //@ts-expect-error api version
   apiVersion: "2022-11-15",
 });
 
 export async function POST(req: NextApiRequest, res: NextApiResponse) {
+  //@ts-ignore
   const transformedItems = await req.json();
   const { userId } = auth();
-  // console.log(transformedItems, "transformedItem");
-  console.log(userId, "USER ID");
+  //@ts-expect-error origin
   const origin = req.headers.get("origin"); // Access the origin header
 
   if (!origin) {
