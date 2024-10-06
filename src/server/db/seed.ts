@@ -1,24 +1,22 @@
 import { sql } from "@vercel/postgres";
 import { drizzle } from "drizzle-orm/node-postgres";
-
 import { categories, products } from "./schema";
-import * as schema from "./schema";
 import { faker } from "@faker-js/faker";
 import { randBetweenDate, randNumber, randProduct } from "@ngneat/falso";
 import * as dotenv from "dotenv";
-// import { env } from "~/env";
 import pg from "pg";
 import { eq } from "drizzle-orm";
-const { Pool } = pg;
+
 dotenv.config({ path: "./.env" });
+
+const { Pool } = pg;
 const pool = new Pool({ connectionString: process.env.POSTGRES_URL });
+const db = drizzle(pool);
+
 const main = async () => {
-  const db = drizzle(pool);
-  const fakeProducts = randProduct({
-    length: 1000,
-  });
-  for (let index = 0; index < fakeProducts.length; index++) {
-    const product = fakeProducts[index];
+  const fakeProducts = randProduct({ length: 1000 });
+
+  for (const product of fakeProducts) {
     const name = faker.commerce.productName();
     const productCategory = product?.category || "category"; // Example category
 
@@ -29,11 +27,11 @@ const main = async () => {
       .where(eq(categories.name, productCategory))
       .limit(1);
 
-    let categoryId;
+    let categoryId: number;
 
-    if (existingCategory.length > 0) {
+    if (existingCategory.length > 0 && existingCategory?.[0]) {
       // Category exists, use its ID
-      categoryId = existingCategory[0].id;
+      categoryId = existingCategory?.[0]?.id;
     } else {
       // Category doesn't exist, insert a new one
       const insertedCategory = await db
@@ -46,8 +44,9 @@ const main = async () => {
           }),
         })
         .returning({ id: categories.id });
-
-      categoryId = insertedCategory[0].id;
+      if (insertedCategory?.[0]) {
+        categoryId = insertedCategory[0].id;
+      }
     }
 
     // 2. Check if the product exists by title, then upsert
@@ -63,25 +62,30 @@ const main = async () => {
         .update(products)
         .set({
           description: product?.description || "hello world",
-          price: faker.commerce.price(),
-          // image: faker.image.abstract(640, 480, true),
+          //@ts-expect-error price
+          price: Number(faker.commerce.price()), // Ensure price is a number
+          // image: faker.image.abstract(640, 480, true), // Uncomment if needed
           quantity: randNumber({ min: 10, max: 100 }),
-          categoryId: categoryId, // Associate with the category
+          //@ts-expect-error categoryId
+          categoryId, // Associate with the category
           createdAt: randBetweenDate({
             from: new Date("10/07/2020"),
             to: new Date(),
           }),
         })
-        .where(eq(products.id, existingProduct[0].id));
+        //@ts-expect-error null
+        .where(eq(products.id, existingProduct?.[0]?.id));
     } else {
       // Product doesn't exist, insert it
+      //@ts-expect-error insert
       await db.insert(products).values({
         title: name,
         description: product?.description || "hello world",
-        price: faker.commerce.price(),
-        // image: faker.image.abstract(640, 480, true),
+        price: Number(faker.commerce.price()), // Ensure price is a number
+        // image: faker.image.abstract(640, 480, true), // Uncomment if needed
         quantity: randNumber({ min: 10, max: 100 }),
-        categoryId: categoryId, // Associate with the category
+        //@ts-expect-error categoryId
+        categoryId, // Associate with the category
         createdAt: randBetweenDate({
           from: new Date("10/07/2020"),
           to: new Date(),
@@ -91,4 +95,6 @@ const main = async () => {
   }
 };
 
-main();
+main().catch((err) => {
+  console.error("Error in the process:", err);
+});
