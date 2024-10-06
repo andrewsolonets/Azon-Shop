@@ -34,10 +34,10 @@ export default function RootLayout({
           <TRPCReactProvider>
             <CartProvider>
               <Header />
+              <main>{children}</main>
+              <Footer />
+              <Toaster />
             </CartProvider>
-            <main>{children}</main>
-            <Footer />
-            <Toaster />
           </TRPCReactProvider>
         </body>
       </html>
