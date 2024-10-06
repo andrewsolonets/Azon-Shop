@@ -62,7 +62,7 @@ export const FeaturedList = ({
   };
 
   useEffect(() => {
-    if (carousel !== null && carousel.current !== null) {
+    if (carousel?.current !== null) {
       carousel.current.scrollLeft = carousel.current.offsetWidth * currentIndex;
     }
   }, [currentIndex]);
