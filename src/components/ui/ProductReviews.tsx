@@ -27,12 +27,12 @@ export const ProductReviews = ({ reviews }: { reviews: ReviewModel[] }) => {
         {reviews?.map((review) => (
           <ReviewCard
             key={review.id}
-            title={review.heading}
+            title={review.heading ?? "Review"}
             author={review.authorName}
             // author={review.user ? review.user.name : review.authorName}
             date={review.createdAt}
-            text={review.message}
-            rating={review.rating}
+            text={review.message ?? "Message"}
+            rating={review.rating ?? 4}
           />
         ))}
       </div>
