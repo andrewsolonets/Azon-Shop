@@ -16,6 +16,7 @@ export default async function CustomerProfile() {
   if (!userId) return;
   const orders = await db.query.orders.findMany({
     where: (orders, { eq }) => eq(orders.userId, userId),
+    orderBy: (orders, { desc }) => [desc(orders.createdAt)],
   });
 
   return (

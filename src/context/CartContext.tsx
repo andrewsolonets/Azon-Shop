@@ -21,6 +21,7 @@ export function useCart() {
   return useContext(CartContext);
 }
 
+// TODO: Fix cart items persisting after success order
 export function CartProvider({ children }: CartProviderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { addItemsToUserCart } = useCartActions();

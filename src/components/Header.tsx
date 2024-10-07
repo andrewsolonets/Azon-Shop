@@ -14,6 +14,7 @@ import ProfileIcon from "public/img/ProfileIcon";
 import { useCart } from "~/context/CartContext";
 import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
+import Search from "./Search/Search";
 
 // TODO: use client component only when needed - move client side parts to separate comps.
 
@@ -77,7 +78,7 @@ export const Header = () => {
 
       <nav className="flex items-center justify-between gap-6 sm:w-full">
         <NavMain />
-        {/* <Search /> */}
+        <Search />
         <ul className="relative flex items-center gap-6 md:gap-8">
           <li className="relative">
             <button

@@ -113,3 +113,7 @@
     --chart-5: 340 75% 55%;
   }
 }
+
+.aa-ItemContent mark {
+  @apply text-violet-800;
+}

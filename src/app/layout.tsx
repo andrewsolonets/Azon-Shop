@@ -1,5 +1,6 @@
 import "~/styles/globals.css";
 import "@smastrom/react-rating/style.css";
+import "@algolia/autocomplete-theme-classic";
 
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
