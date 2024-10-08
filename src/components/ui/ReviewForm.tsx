@@ -30,7 +30,6 @@ import { Button } from "./button";
 import { Textarea } from "./textarea";
 import { schema } from "~/app/reviewSchema";
 
-// TODO: try shadcn forms
 export const ReviewForm = ({
   setIsOpen,
 }: {
@@ -53,40 +52,6 @@ export const ReviewForm = ({
   const userId = false;
   // const { addReview } = useReviewActions();
   const [rating, setRating] = useState(0);
-
-  // const submitCallback = async (e: FormEvent<HTMLFormElement>) => {
-  //   if (!id) return;
-  //   e.preventDefault();
-  //   const formData = new FormData(e.currentTarget); // Create a new FormData object
-
-  //   console.log(e.target.elements);
-  //   // // @ts-ignore
-  //   // const username = e.target.elements?.username?.value;
-  //   // //@ts-ignore
-  //   // const heading = e.target.elements.heading.value;
-  //   // //@ts-ignorev
-  //   // const message = e.target.elements.message.value;
-  //   // console.log(username, heading, message, rating);
-
-  //   // formData.append("username", username);
-  //   // formData.append("heading", heading);
-  //   // formData.append("message", message);
-  //   formData.append("productId", Number(id));
-  //   formData.append("rating", rating);
-  //   // TODO: Update UI on review added
-  //   const response = await fetch("/api/sendReview", {
-  //     method: "POST",
-  //     body: formData,
-  //   });
-  //   if (response.ok) {
-  //     toast.success("Review Added!");
-  //   }
-  //   setRating(0);
-
-  //   setIsOpen(false);
-  //   //@ts-ignore
-  //   e.target.reset();
-  // };
 
   async function onSubmit(values: z.infer<typeof schema>) {
     const { username, heading, message } = values;

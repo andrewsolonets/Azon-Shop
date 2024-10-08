@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { addReview } from "~/app/actions";
 import { schema } from "~/app/reviewSchema";
 
-// TODO: Validate data here
+
 export async function POST(req: NextRequest) {
   const formData = await req.formData();
 

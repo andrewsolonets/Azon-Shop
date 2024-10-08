@@ -11,8 +11,6 @@ import { BigButton } from "~/components/ui/Buttons";
 import { ProductReviews } from "~/components/ui/ProductReviews";
 import { getFeaturedProducts, getProduct } from "~/server/queries";
 
-// TODO: Make breadcrumb links
-
 export default async function SingleProductPage({
   params: { id: id },
 }: {
