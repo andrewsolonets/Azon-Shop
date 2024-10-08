@@ -1,33 +1,41 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-//@ts-nocheck
-
-import { autocomplete } from "@algolia/autocomplete-js";
-import React, { createElement, Fragment, useEffect, useRef } from "react";
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+"use client";
+import { autocomplete, AutocompleteOptions } from "@algolia/autocomplete-js";
+import React, {
+  createElement,
+  Fragment,
+  useEffect,
+  useRef,
+  ReactElement,
+} from "react";
 import { createRoot } from "react-dom/client";
 
-export function Autocomplete(props) {
-  const containerRef = useRef(null);
-  const panelRootRef = useRef(null);
-  const rootRef = useRef(null);
+type AutocompleteProps = Partial<AutocompleteOptions<never>>; // Adjust type if known
+
+export function Autocomplete(props: AutocompleteProps): ReactElement {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const panelRootRef = useRef<HTMLElement>(null);
+  const rootRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (!containerRef.current) {
-      return undefined;
-    }
+    if (!containerRef.current) return;
 
     const search = autocomplete({
       container: containerRef.current,
       placeholder: "Search for products",
+
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       renderer: { createElement, Fragment, render: () => {} },
       render({ children }, root) {
         if (!panelRootRef.current || rootRef.current !== root) {
+          //@ts-expect-error current
           rootRef.current = root;
-
+          //@ts-expect-error unmount
           panelRootRef.current?.unmount();
+          //@ts-expect-error current
           panelRootRef.current = createRoot(root);
         }
-
+        //@ts-expect-error current
         panelRootRef.current.render(children);
       },
       ...props,
@@ -41,7 +49,7 @@ export function Autocomplete(props) {
   return (
     <div
       ref={containerRef}
-      className="w-fit flex-grow  overflow-hidden bg-transparent  text-zinc-200 "
+      className="w-fit flex-grow overflow-hidden bg-transparent text-violet-200"
     />
   );
 }

@@ -1,8 +1,8 @@
-import { type Product } from "@prisma/client";
 import { type ReactNode } from "react";
+import { ProductWithRelations } from "~/server/db/schema";
 
 export interface CartItem {
-  id: string;
+  id: number;
   quantity: number;
 }
 
@@ -11,19 +11,19 @@ export type CartProviderProps = {
 };
 
 export type CartItemGuest = {
-  id: string;
-  product: Product;
-  cart: string;
-  cartId: string;
+  id: number;
+  product: ProductWithRelations;
+  cart?: string;
+  cartId: number;
   quantity: number;
 };
 export type CartContext = {
   toggleCart: () => void;
   cartItems: CartItemGuest[];
-  increaseQuantity: (item: Product, quantity: number) => void;
+  increaseQuantity: (item: ProductWithRelations, quantity: number) => void;
   getCartQuantity: () => number;
-  decreaseQuantity: (id: string) => void;
-  deleteGuestItem: (id: string) => void;
+  decreaseQuantity: (id: number) => void;
+  deleteGuestItem: (id: number) => void;
   clearCart: () => void;
   totalAmount: number;
 };

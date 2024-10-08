@@ -1,20 +1,21 @@
-import { useState, createContext, useContext, useEffect } from "react";
-import { CartMenu } from "../components/CartMenu";
+"use client";
 
-import { randUuid } from "@ngneat/falso";
-import { type Product } from "@prisma/client";
-import useLocalStorage from "../hooks/useLocalStorage";
-import { api } from "../utils/api";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@clerk/nextjs";
+import { randomUUID } from "crypto";
+import { createContext, useContext, useEffect, useState } from "react";
+import { CartMenu } from "~/components/CartMenu";
+import { useCartActions } from "~/hooks/useCartActions";
+import useLocalStorage from "~/hooks/useLocalStorage";
+import { ProductWithRelations } from "~/server/db/schema";
+import { api } from "~/trpc/react";
 import {
-  CartContext,
-  type CartItemGuest,
-  type CartProviderProps,
-} from "../types/cart";
-import { getTotalAmount } from "../utils/helpers";
-import { useCartActions } from "../hooks/useCartActions";
+  CartContext as CartContextType,
+  CartItemGuest,
+  CartProviderProps,
+} from "~/types/cart";
+import { getTotalAmount } from "~/utils/helpers";
 
-const CartContext = createContext({} as CartContext);
+const CartContext = createContext({} as CartContextType);
 
 export function useCart() {
   return useContext(CartContext);
@@ -25,8 +26,9 @@ export function CartProvider({ children }: CartProviderProps) {
   const { addItemsToUserCart } = useCartActions();
   const [cartItems, setCartItems] = useLocalStorage(
     "guestCart",
-    [] as CartItemGuest[]
+    [] as CartItemGuest[],
   );
+
   const { data: cartItemsServer } = api.cart.getCartItems.useQuery();
   const [totalAmount, setTotalAmount] = useState(0);
 
@@ -36,15 +38,15 @@ export function CartProvider({ children }: CartProviderProps) {
 
   const changeTotalAmount = () => {
     if (cartItemsServer) {
-      setTotalAmount(Math.round(getTotalAmount(cartItemsServer)));
+      setTotalAmount(
+        Math.round(getTotalAmount(cartItemsServer as CartItemGuest[])),
+      );
     } else {
       setTotalAmount(Math.round(getTotalAmount(cartItems)));
     }
   };
 
-  const { data: sessionData } = useSession();
-
-  const userId = sessionData?.user?.id;
+  const { userId } = useAuth();
 
   useEffect(() => {
     if (userId && cartItems && cartItems.length !== 0) {
@@ -58,10 +60,10 @@ export function CartProvider({ children }: CartProviderProps) {
   const getCartQuantity = () =>
     cartItems?.reduce((acc, el) => el.quantity + acc, 0);
 
-  const deleteGuestItem = (id: string) =>
+  const deleteGuestItem = (id: number) =>
     setCartItems((currItems) => currItems.filter((el) => el.id !== id));
 
-  const decreaseQuantity = (id: string) => {
+  const decreaseQuantity = (id: number) => {
     return setCartItems((currItems) => {
       if (currItems.find((el) => el.id === id)?.quantity === 1) {
         return currItems.filter((el) => el.id !== id);
@@ -77,16 +79,16 @@ export function CartProvider({ children }: CartProviderProps) {
     });
   };
 
-  const increaseQuantity = (item: Product, quantity: number) => {
+  const increaseQuantity = (item: ProductWithRelations, quantity: number) => {
     return setCartItems((currItems) => {
       if (currItems.find((el) => el.product.id === item.id) == null) {
         return [
           ...currItems,
           {
-            id: randUuid(),
+            id: Math.random() * 1000,
             product: item,
             cart: "guest",
-            cartId: randUuid(),
+            cartId: Math.random() * 1000,
             quantity: quantity,
           },
         ];

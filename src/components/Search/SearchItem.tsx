@@ -1,11 +1,23 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-//@ts-nocheck
+"use client";
 
-export function SearchItem({ hit, components }) {
+import { PublicAutocompleteComponents } from "@algolia/autocomplete-js";
+
+interface SearchItemProps {
+  hit: never; // Define hit type based on the structure
+  components: PublicAutocompleteComponents; // Define the component type if known, otherwise `any`
+}
+
+export function SearchItem({ hit, components }: SearchItemProps) {
   return (
     <div className="aa-ItemContent">
       <div className="aa-ItemTitle">
-        <components.Highlight hit={hit} attribute="title" />
+        {components.Highlight ? (
+          <components.Highlight
+            className="text-violet-800"
+            hit={hit}
+            attribute="title"
+          />
+        ) : null}
       </div>
     </div>
   );

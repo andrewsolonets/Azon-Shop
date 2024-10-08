@@ -1,10 +1,11 @@
 import Image from "next/image";
-import PlusIcon from "../../public/static/img/PlusIcon";
-import MinusIcon from "../../public/static/img/MinusIcon";
-import CrossIcon from "../../public/static/img/CrossIcon";
+
 import { useCartActions } from "../hooks/useCartActions";
 import { type CartItemPlus } from "../utils/helpers";
-import { type CartItemGuest } from "../types/cart";
+import CrossIcon from "public/img/CrossIcon";
+import PlusIcon from "public/img/PlusIcon";
+import MinusIcon from "public/img/MinusIcon";
+import { CartItem, CartItemGuest } from "~/types/cart";
 
 type Props = {
   item: CartItemPlus | CartItemGuest;
@@ -16,9 +17,9 @@ export const CartItemCard = ({ item }: Props) => {
   const { removeItem, addToCartHandler, deleteOne } = useCartActions();
   const finalPrice = Math.round(Number(price));
   return (
-    <div className="flex  h-32 min-h-[8rem] w-full items-center justify-between border-[3px] border-amber-400 bg-transparent px-2 md:justify-around md:px-0">
+    <div className="flex h-32 min-h-[8rem] w-full items-center justify-between border-[3px] border-amber-400 bg-transparent px-2 md:justify-around md:px-0">
       <div className="flex h-full items-center gap-2 md:gap-6">
-        <div className=" flex flex-col items-start justify-center gap-4">
+        <div className="flex flex-col items-start justify-center gap-4">
           <button
             className="h-7 w-7"
             aria-label="Increase quantity"
@@ -37,8 +38,8 @@ export const CartItemCard = ({ item }: Props) => {
           <Image
             // changed image to static for data saving
             // src={image}
-            src={"/static/img/testcardimg.png"}
-            alt={title}
+            src={"/img/product.webp"}
+            alt={title ?? "invalid image"}
             className="object-cover"
             fill
             sizes="(min-width: 60em) 24vw,

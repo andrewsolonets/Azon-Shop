@@ -1,30 +1,75 @@
-import CartIcon from "../../public/static/img/CartIcon";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { api } from "../utils/api";
+"use client";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignOutButton,
+  useAuth,
+  UserButton,
+} from "@clerk/nextjs";
 import Link from "next/link";
-import ProfileIcon from "../../public/static/img/ProfileIcon";
-import { NavMain } from "./NavMain";
-import { useCart } from "../context/CartContext";
+import { usePathname } from "next/navigation";
+import CartIcon from "public/img/CartIcon";
+import ProfileIcon from "public/img/ProfileIcon";
+import { useCart } from "~/context/CartContext";
+import { cn } from "~/lib/utils";
+import { api } from "~/trpc/react";
 import Search from "./Search/Search";
 
+// TODO: use client component only when needed - move client side parts to separate comps.
+
+const NavMain = () => {
+  const pathname = usePathname();
+  const LINKS: { text: string; href: string }[] = [
+    { text: "Home", href: "/" },
+    { text: "Categories", href: "/categories" },
+    { text: "All products", href: "/products" },
+  ];
+
+  return (
+    <ul className="hidden items-center gap-10 sm:flex">
+      {LINKS.map((link) => (
+        <li key={link.href}>
+          <Link
+            href={link.href}
+            aria-disabled={pathname === link.href}
+            tabIndex={pathname === link.href ? -1 : undefined}
+            className={cn(
+              "transition-all duration-300 hover:text-violet-300 active:text-amber-300",
+              pathname === link.href
+                ? "pointer-events-none font-semibold text-amber-400"
+                : "",
+            )}
+          >
+            {link.text}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+};
+
 export const Header = () => {
-  const { data: sessionData } = useSession();
+  const { userId } = useAuth();
   const { toggleCart, getCartQuantity } = useCart();
 
-  const userId = sessionData?.user?.id;
-  const { data: cartItems } = api.cart.getCartItems.useQuery();
+  const { data: cartItems } = api.cart.getCartItems.useQuery(undefined, {
+    staleTime: 60 * 1000,
+    enabled: !!userId,
+  });
+
   let totalQuantity = 0;
 
   if (cartItems) {
     cartItems?.forEach((el) => {
-      totalQuantity += el.quantity;
+      totalQuantity += el?.quantity ?? 0;
     });
   } else {
     totalQuantity = getCartQuantity();
   }
 
   return (
-    <header className="drop-shadow-header fixed  top-0 left-0 right-0 z-20 flex items-center justify-between bg-violet-800 py-4 px-4 font-medium text-slate-50 backdrop-blur sm:gap-10  md:justify-start md:px-10">
+    <header className="drop-shadow-header sticky left-0 right-0 top-0 z-20 flex items-center justify-between border-b border-violet-800/10 bg-violet-800/30 px-4 py-4 font-medium backdrop-blur-lg sm:gap-10 md:justify-start md:px-10">
       <Link href="/">
         <h3 className="text-2xl font-bold text-amber-400 transition-all duration-300 hover:text-violet-400">
           Azon
@@ -35,13 +80,13 @@ export const Header = () => {
         <NavMain />
         <Search />
         <ul className="relative flex items-center gap-6 md:gap-8">
-          <li className="relative ">
+          <li className="relative">
             <button
               onClick={toggleCart}
               className="group"
               aria-label="Open Cart"
             >
-              <div className="h-7 w-7 ">
+              <div className="h-7 w-7">
                 <CartIcon className="fill-amber-400 transition-all duration-300 hover:fill-violet-400" />
               </div>
             </button>
@@ -52,25 +97,22 @@ export const Header = () => {
               </span>
             </span>
           </li>
-          {userId && (
+          <SignedIn>
             <li>
-              <Link
-                href={`/profile/${userId ? userId : "#"}`}
-                className="h-fit w-fit"
-              >
+              <Link href={`/profile`} className="h-fit w-fit">
                 <div className="h-7 w-7">
-                  <ProfileIcon className="fill-amber-400 hover:fill-violet-400 " />
+                  <ProfileIcon className="fill-amber-400 hover:fill-violet-400" />
                 </div>
               </Link>
             </li>
-          )}
+          </SignedIn>
           <li>
-            <button
-              className="outline-amber  w-max rounded-sm bg-transparent px-3 py-1 text-amber-400 outline outline-2 transition-all duration-300 hover:bg-amber-400/20 hover:bg-opacity-10 md:px-4"
-              onClick={sessionData ? () => signOut() : () => signIn()}
-            >
-              {sessionData ? "Sign out" : "Sign in"}
-            </button>
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <SignOutButton />
+            </SignedIn>
           </li>
         </ul>
       </nav>

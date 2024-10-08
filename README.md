@@ -1,52 +1,26 @@
-
 # Azon Shop
 
-Ecommerce website built with t3-stack (typescript, prisma, trpc, next.js)
-
+E-commerce website built with the modern t3-stack (typescript, drizzle, trpc, next.js app router)
+(see v1 for older t3-stack implementation w/ prisma)
 
 ## Features
 
 - Fully functioning, persistent Cart
-- Infinite scroll 
+- Infinite scroll
 - Rating System
 - User profile with order history
 - Checkout with Stripe
 - Custom db with orders connected to Stripe
-- Authentication
+- Authentication w/ Clerk
 - Algolia Autocomplete search
 
+## Migration from pages to app router
+
+The current version was migrated to use app router along drizzle ORM and clerk auth. v1 branch is saved as a reference, built with pages router, prisma and next auth.
 
 ## Environment Variables
 
-To run this project, you will need to add the following environment variables to your .env file
-
-`DATABASE_URL`
-
-`NEXTAUTH_SECRET`
-
-`NEXTAUTH_URL`
-
-`GOOGLE_CLIENT_ID`
-
-`GOOGLE_CLIENT_SECRET`
-
-`GITHUB_ID`
-
-`GITHUB_SECRET`
-
-`NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
-
-`STRIPE_SECRET_KEY`
-
-`STRIPE_WEBHOOK_SECRET`
-
-`ADMIN_ALGOLIA_KEY`
-
-`NEXT_PUBLIC_SEARCH_ALGOLIA_KEY`
-
-`NEXT_PUBLIC_ALGOLIA_APP_ID`
-
-
+To run this project, you will need to add the environment variables from .env.example to your .env file
 
 ## Run Locally
 
@@ -68,40 +42,45 @@ Install dependencies
   npm install
 ```
 
-
-Connect to your db, change schema.prisma if it's not mysql
+Connect to your db, update drizzle integration if not using PostgreSQL
 
 ```bash
 in .env
-  DATABASE_URL=
+  POSTGRES_URL=
 ```
 
 Add all the vars to the .env
 
 ## Set up Algolia
 
-1. Go to `seed.ts` and change `"azon1"` to your index name:
+1. Go to `algoliaSeed.ts` and change `"azon1"` to your index name:
 
-    ```typescript
-    const index = client.initIndex("azon1");
-    ```
+   ```typescript
+   await client.saveObjects({ indexName: "azon1", objects: objectsToAdd });
+   ```
 
 2. Go to `Search.tsx` and change:
 
-    - `sourceId: "AzonShop"` to your Algolia application name.
-    - `indexName: "azon1"` to your index.
-
-
+   - `sourceId: "AzonShop"` to your Algolia application name.
+   - `indexName: "azon1"` to your index.
 
 ## Seeding the Database
 
 Once you've completed the setup for Algolia and added the necessary environment variables, proceed with seeding your database with products.
 
-**Seed the Database:** Run the following command in your terminal:
+**Seed the Database:** Run the following commands in your terminal:
 
-   ```bash
-    npx prisma db seed
-   ```
+```bash
+ npm run db:productSeed
+```
+
+```bash
+ npm run db:ratingsSeed
+```
+
+```bash
+ npm run db:algoliaSeed
+```
 
 ### Checking the Changes
 
@@ -109,14 +88,13 @@ After the seeding process completes:
 
 - **Algolia Dashboard:** Visit the Algolia dashboard to see your data indexed based on your seeding.
 
-- **Prisma Studio:** Access Prisma Studio using the following command:
+- **Drizzle Studio:** Access Drizzle Studio using the following command:
 
-    ```bash
-    npx prisma db studio
-    ```
+  ```bash
+  npm run db:studio
+  ```
 
-    Use Prisma Studio to examine your database and verify the seeded data.
-
+  Use Drizzle Studio to examine your database and verify the seeded data.
 
 Start the server
 
@@ -124,12 +102,18 @@ Start the server
   npm run start
 ```
 
+# Tech stack
 
-## Tech Stack
+## V.2 (main branch)
 
-**Client:** React, React Query TailwindCSS, nextauth.js.
+**Client:** React, Next.js (app router), Shadcn, React Query, TailwindCSS, Clerk.
+**Server:** Next.js, trpc, Drizzle ORM, PostgreSQL (Vercel DB).
 
+## V.1 - older t3 stack
+
+**Client:** React, React Query, TailwindCSS, nextauth.js.
 **Server:** Next.js, trpc, prisma, planetscale.
+(see v1 branch)
 
 ## Learn More
 
@@ -143,3 +127,11 @@ You can check out the [create-t3-app GitHub repository](https://github.com/t3-os
 ## How do I deploy this?
 
 Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+
+## TODO
+
+- [x] Move from Prizma to Drizzle ORM
+- [x] Migrate from pages to app router (next js)
+- [x] Use shadcn where reasonable
+- [ ] Integrate Sentry for error tracking
+- [x] Algolia search
