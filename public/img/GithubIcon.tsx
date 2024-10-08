@@ -1,7 +1,7 @@
 import * as React from "react";
 
 function GithubIcon(
-  props: JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
+  props: JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>,
 ) {
   return (
     <svg

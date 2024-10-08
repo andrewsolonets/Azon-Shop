@@ -1,4 +1,3 @@
-
 import { drizzle } from "drizzle-orm/node-postgres";
 
 import * as schema from "./schema";
@@ -7,7 +6,6 @@ import { faker } from "@faker-js/faker";
 import * as dotenv from "dotenv";
 // import { env } from "~/env";
 import pg from "pg";
-
 
 function randomIntFromInterval(min: number, max: number) {
   // min and max included
