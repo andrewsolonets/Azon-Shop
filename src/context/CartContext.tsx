@@ -29,6 +29,7 @@ export function CartProvider({ children }: CartProviderProps) {
     "guestCart",
     [] as CartItemGuest[],
   );
+
   const { data: cartItemsServer } = api.cart.getCartItems.useQuery();
   const [totalAmount, setTotalAmount] = useState(0);
 

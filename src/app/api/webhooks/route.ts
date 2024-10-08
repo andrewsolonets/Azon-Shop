@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
 
     // Use clerkUserId to create an order or perform other operations
     console.log(`Order placed by Clerk user: ${clerkUserId}`);
-    console.log(checkoutCompleted);
+    // console.log(checkoutCompleted);
   } else if (event.type === "payment_intent.payment_failed") {
     console.log(
       `Payment failed: ${event.data.object.last_payment_error?.message}`,

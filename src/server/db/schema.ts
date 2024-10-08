@@ -120,8 +120,12 @@ export const cartItems = createTable("cart_item", {
     () => new Date(),
   ),
   userId: varchar("user_id", { length: 256 }),
-  productId: integer("product_id").notNull(),
-  cartId: integer("cart_id").notNull(),
+  productId: integer("product_id")
+    .references(() => products.id, { onDelete: "cascade", onUpdate: "cascade" })
+    .notNull(),
+  cartId: integer("cart_id")
+    .references(() => carts.id, { onDelete: "cascade", onUpdate: "cascade" })
+    .notNull(),
 });
 
 export const cartItemsRelations = relations(cartItems, ({ one }) => ({
