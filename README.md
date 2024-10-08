@@ -133,5 +133,5 @@ Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/ver
 - [x] Move from Prizma to Drizzle ORM
 - [x] Migrate from pages to app router (next js)
 - [x] Use shadcn where reasonable
-- [ ] Integrate Sentry for error tracking
+- [x] Integrate Sentry for error tracking
 - [x] Algolia search
