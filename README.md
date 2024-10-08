@@ -99,7 +99,7 @@ After the seeding process completes:
 Start the server
 
 ```bash
-  npm run start
+  npm run dev
 ```
 
 # Tech stack
