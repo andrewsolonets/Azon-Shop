@@ -1,4 +1,4 @@
-import { SignedIn, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignOutButton, UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import { useParams } from "next/navigation";
 import UserOrders from "~/components/UserOrders";
@@ -26,6 +26,9 @@ export default async function CustomerProfile() {
           <h1 className="text-2xl">Welcome, {user.firstName}!</h1>
           <SignedIn>
             <UserButton />
+          </SignedIn>
+          <SignedIn>
+            <SignOutButton />
           </SignedIn>
         </div>
         {orders?.length ? (

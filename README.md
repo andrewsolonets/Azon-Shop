@@ -135,3 +135,6 @@ Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/ver
 - [x] Use shadcn where reasonable
 - [x] Integrate Sentry for error tracking
 - [x] Algolia search
+- [ ] Discounts feature
+- [ ] Quick buy feature w/ next.js modal setup
+- [ ] Product description use accordion shadcn

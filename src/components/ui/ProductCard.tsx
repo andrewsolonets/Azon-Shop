@@ -63,13 +63,15 @@ export const ProductCard = ({ product }: Props) => {
             }`}
           >{`${quantity > 0 ? "In stock" : "Out of stock"}`}</h5>
         </Link>
-
-        <div className="w-28">
-          <Rating
-            value={avgRating ? avgRating : 4}
-            itemStyles={RatingStyles}
-            readOnly
-          />
+        <div className="flex justify-center gap-2">
+          <div className="w-28">
+            <Rating
+              value={avgRating ? avgRating : 4}
+              itemStyles={RatingStyles}
+              readOnly
+            />
+          </div>
+          <span>({product?.reviews?.length})</span>
         </div>
 
         <div className="w-full">
