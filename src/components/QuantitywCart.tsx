@@ -30,14 +30,15 @@ export const QuantitywCart = ({
         <span>Quantity</span>
         <div className="flex items-center gap-2">
           <button
-            className="h-5 w-5"
+            disabled={quantityCounter === 1}
+            className="group h-5 w-5"
             onClick={() => {
               if (quantityCounter > 0) {
                 setQuantity((prev) => (prev -= 1));
               }
             }}
           >
-            <MinusIcon className="fill-amber-400 hover:fill-violet-400" />
+            <MinusIcon className="fill-amber-400 hover:fill-violet-400 group-disabled:pointer-events-none group-disabled:fill-violet-300" />
           </button>
 
           <input
@@ -51,6 +52,7 @@ export const QuantitywCart = ({
           />
           <button
             className="h-5 w-5"
+            disabled={quantityCounter === quantity}
             onClick={() =>
               setQuantity((prev) => {
                 if (prev < quantity) {
