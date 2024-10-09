@@ -18,6 +18,8 @@ export const ReviewCard = ({
   text,
   rating,
 }: ReviewProps) => {
+  const dateString = date.toLocaleDateString("en-US");
+
   return (
     <div className="flex w-full flex-col overflow-hidden rounded-lg bg-violet-600 drop-shadow-xl">
       <div className="flex w-full items-center justify-between gap-2 border-b-2 border-slate-400/20 px-8 py-4">
@@ -26,7 +28,7 @@ export const ReviewCard = ({
           <h2 className="text-lg">{author}</h2>
         </div>
 
-        <p>{date.toLocaleDateString()}</p>
+        <p>{dateString}</p>
       </div>
       <div className="flex w-full flex-col items-start gap-4 p-8">
         <div className="flex flex-col items-center gap-4 md:flex-row">
