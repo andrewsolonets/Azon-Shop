@@ -10,7 +10,7 @@ import {
   type SetStateAction,
 } from "react";
 import { RatingStyles } from "./ProductCard";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { toast } from "sonner";
 
 import { z } from "zod";
@@ -29,6 +29,7 @@ import { Input } from "./input";
 import { Button } from "./button";
 import { Textarea } from "./textarea";
 import { schema } from "~/app/reviewSchema";
+import { revalidatePath } from "next/cache";
 
 export const ReviewForm = ({
   setIsOpen,
@@ -78,6 +79,7 @@ export const ReviewForm = ({
     setIsOpen(false);
     console.log(values);
     toast.success("Review submitted successfuly!");
+
     form.reset();
   }
   return (

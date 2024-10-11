@@ -41,7 +41,10 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
             {cartItems
               ? cartItems?.map((el) => {
                   return (
-                    <CartItemCard key={el.id} item={el as CartItemGuest} />
+                    <CartItemCard
+                      key={el.id}
+                      item={el as unknown as CartItemGuest}
+                    />
                   );
                 })
               : guestItems

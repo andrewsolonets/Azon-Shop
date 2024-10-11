@@ -3,6 +3,7 @@
 
 import { type InferSelectModel, relations, sql } from "drizzle-orm";
 import {
+  decimal,
   index,
   integer,
   pgTableCreator,
@@ -52,9 +53,31 @@ export const products = createTable(
     quantity: integer("quantity"),
     image: varchar("image", { length: 256 }),
     categoryId: integer("category_id"),
+    pricingId: integer("pricing_id"),
   },
   (product) => ({
     nameIndex: index("categoryId_idx").on(product.categoryId),
+  }),
+);
+
+export const productPricings = createTable("product_pricing", {
+  id: serial("id").primaryKey(),
+  productId: integer("product_id")
+    .references(() => products.id, { onDelete: "cascade", onUpdate: "cascade" })
+    .notNull(),
+  startDate: timestamp("start_date"),
+  endDate: timestamp("end_date"),
+  price: decimal("price"),
+  originalPrice: decimal("original_price"),
+});
+
+export const productPricingsRelations = relations(
+  productPricings,
+  ({ one }) => ({
+    product: one(products, {
+      fields: [productPricings.productId],
+      references: [products.id],
+    }),
   }),
 );
 
@@ -63,9 +86,11 @@ export type ReviewModel = InferSelectModel<typeof reviews>;
 export type CategoryModel = InferSelectModel<typeof categories>;
 export type CartModel = InferSelectModel<typeof carts>;
 export type OrderModel = InferSelectModel<typeof orders>;
+export type ProductPricingModel = InferSelectModel<typeof productPricings>;
 export type ProductWithRelations = ProductSelectModel & {
   reviews?: Array<ReviewModel>; // Optional array of reviews
   category?: CategoryModel | null; // Optional category or null
+  pricing?: ProductPricingModel | null;
 };
 
 export const productsRelations = relations(products, ({ one, many }) => ({
@@ -74,6 +99,7 @@ export const productsRelations = relations(products, ({ one, many }) => ({
     references: [categories.id],
   }),
   reviews: many(reviews),
+  pricing: many(productPricings),
 }));
 
 // model Category {

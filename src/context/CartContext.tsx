@@ -30,7 +30,7 @@ export function CartProvider({ children }: CartProviderProps) {
   );
 
   const { data: cartItemsServer } = api.cart.getCartItems.useQuery();
-  const [totalAmount, setTotalAmount] = useState(0);
+  const [totalAmount, setTotalAmount] = useState("0");
 
   useEffect(() => {
     changeTotalAmount();
@@ -38,11 +38,9 @@ export function CartProvider({ children }: CartProviderProps) {
 
   const changeTotalAmount = () => {
     if (cartItemsServer) {
-      setTotalAmount(
-        Math.round(getTotalAmount(cartItemsServer as CartItemGuest[])),
-      );
+      setTotalAmount(getTotalAmount(cartItemsServer as CartItemGuest[]));
     } else {
-      setTotalAmount(Math.round(getTotalAmount(cartItems)));
+      setTotalAmount(getTotalAmount(cartItems));
     }
   };
 

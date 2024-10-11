@@ -1,11 +1,12 @@
 "use client";
 import MinusIcon from "public/img/MinusIcon";
 import PlusIcon from "public/img/PlusIcon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProductWithRelations } from "~/server/db/schema";
 import { BigButton } from "./ui/Buttons";
 import { toast } from "react-toastify";
 import { useCartActions } from "~/hooks/useCartActions";
+import PriceDisplay from "./PriceDisplay";
 
 export const QuantitywCart = ({
   product,
@@ -15,29 +16,29 @@ export const QuantitywCart = ({
   const { addToCartHandler } = useCartActions();
   const [quantityCounter, setQuantity] = useState(1);
 
-  const { image, title, price, quantity: rawQuantity } = product;
+  const { quantity: rawQuantity, pricing } = product;
   const quantity = rawQuantity ?? 0;
 
-  const finalPrice = Math.round(Number(price));
-
   return (
-    <div className="flex flex-col justify-between gap-6 md:flex-row">
-      <div className="flex flex-col items-center gap-1">
+    <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
+      <div className="flex flex-col items-start">
         <span>Price</span>
-        <span className="text-2xl font-bold">${finalPrice}</span>
+        {/* <span className="text-2xl font-bold">${finalPrice}</span> */}
+        {pricing ? <PriceDisplay pricing={pricing} /> : null}
       </div>
       <div className="relative flex flex-col items-center gap-1">
         <span>Quantity</span>
         <div className="flex items-center gap-2">
           <button
-            className="h-5 w-5"
+            disabled={quantityCounter === 1}
+            className="group h-5 w-5"
             onClick={() => {
               if (quantityCounter > 0) {
                 setQuantity((prev) => (prev -= 1));
               }
             }}
           >
-            <MinusIcon className="fill-amber-400 hover:fill-violet-400" />
+            <MinusIcon className="fill-amber-400 hover:fill-violet-400 group-disabled:pointer-events-none group-disabled:fill-violet-300" />
           </button>
 
           <input
@@ -51,6 +52,7 @@ export const QuantitywCart = ({
           />
           <button
             className="h-5 w-5"
+            disabled={quantityCounter === quantity}
             onClick={() =>
               setQuantity((prev) => {
                 if (prev < quantity) {

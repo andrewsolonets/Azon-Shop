@@ -242,7 +242,7 @@ export const useCartActions = () => {
     }
   };
   const createCheckOutSession = async (
-    cartItems: CartItemGuest[] | CartItem[] | CartItemPlus | undefined,
+    cartItems: CartItemGuest[] | CartItemPlus | undefined,
   ) => {
     const stripe = await getStripe();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

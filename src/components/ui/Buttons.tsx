@@ -29,7 +29,7 @@ export const BigButton = ({ children, onClick, disabled }: Props) => {
     <button
       onClick={onClick}
       aria-label={children}
-      className="flex w-full items-center justify-center gap-2 rounded-lg bg-amber-400 px-10 py-2 text-xl font-bold text-violet-700 transition-all duration-150 hover:bg-violet-800 hover:text-amber-400 disabled:bg-violet-500 disabled:hover:text-violet-700 md:w-fit md:justify-start"
+      className="flex h-min w-full items-center justify-center gap-2 rounded-lg bg-amber-400 px-10 py-2 text-xl font-bold text-violet-700 transition-all duration-150 hover:bg-violet-800 hover:text-amber-400 disabled:bg-violet-500 disabled:hover:text-violet-700 md:w-fit md:justify-start"
       disabled={disabled}
     >
       {children}

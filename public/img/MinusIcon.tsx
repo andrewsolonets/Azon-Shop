@@ -1,7 +1,7 @@
 import * as React from "react";
 
 function MinusIcon(
-  props: JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
+  props: JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>,
 ) {
   return (
     <svg

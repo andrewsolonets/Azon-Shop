@@ -106,14 +106,11 @@ export const Header = () => {
               </Link>
             </li>
           </SignedIn>
-          <li>
-            <SignedOut>
+          <SignedOut>
+            <li>
               <SignInButton />
-            </SignedOut>
-            <SignedIn>
-              <SignOutButton />
-            </SignedIn>
-          </li>
+            </li>
+          </SignedOut>
         </ul>
       </nav>
     </header>

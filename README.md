@@ -99,7 +99,7 @@ After the seeding process completes:
 Start the server
 
 ```bash
-  npm run start
+  npm run dev
 ```
 
 # Tech stack
@@ -133,5 +133,10 @@ Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/ver
 - [x] Move from Prizma to Drizzle ORM
 - [x] Migrate from pages to app router (next js)
 - [x] Use shadcn where reasonable
-- [ ] Integrate Sentry for error tracking
+- [x] Integrate Sentry for error tracking
 - [x] Algolia search
+- [ ] Discounts feature: discount component
+- [ ] Discounts feature: use discounted price on checkout and cart
+- [ ] Quick buy feature w/ next.js modal setup
+- [ ] Product description use accordion shadcn
+- [ ] Add metadata to each route

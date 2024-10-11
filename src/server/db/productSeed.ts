@@ -76,6 +76,8 @@ const main = async () => {
         //@ts-expect-error null
         .where(eq(products.id, existingProduct?.[0]?.id));
     } else {
+      // TODO: Add product pricing to each newly created product
+
       // Product doesn't exist, insert it
       //@ts-expect-error insert
       await db.insert(products).values({
