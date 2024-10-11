@@ -2,6 +2,18 @@ import { ProductCard } from "~/components/ui/ProductCard";
 import { db } from "~/server/db";
 import { getCategory } from "~/server/queries";
 
+export async function generateMetadata({
+  params: { id: id },
+}: {
+  params: { id: string };
+}) {
+  const category = await getCategory(Number(id));
+
+  return {
+    title: category.name,
+  };
+}
+
 export default async function SingleCategory({
   params: { id: id },
 }: {

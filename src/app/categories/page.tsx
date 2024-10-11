@@ -1,4 +1,9 @@
+import { Metadata } from "next";
 import CategoryList from "~/components/CategoryList";
+
+export const metadata: Metadata = {
+  title: "Categories",
+};
 
 export default async function Categories() {
   return (

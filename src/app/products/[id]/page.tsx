@@ -13,6 +13,18 @@ import {
   AccordionTrigger,
 } from "~/components/ui/accordion";
 
+export async function generateMetadata({
+  params: { id: id },
+}: {
+  params: { id: string };
+}) {
+  const product = await getProduct(Number(id));
+
+  return {
+    title: `${product.title} - Product`,
+  };
+}
+
 export default async function SingleProductPage({
   params: { id: id },
 }: {
