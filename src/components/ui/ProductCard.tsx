@@ -12,6 +12,7 @@ import { ButtonRegular } from "./Buttons";
 import { ProductWithRelations, ReviewModel } from "~/server/db/schema";
 import { useCartActions } from "~/hooks/useCartActions";
 import { getAvgRating } from "~/utils/helpers";
+import PriceDisplay from "../PriceDisplay";
 
 type Props = {
   product: ProductWithRelations;
@@ -24,7 +25,7 @@ export const RatingStyles = {
 };
 
 export const ProductCard = ({ product }: Props) => {
-  const { title, price, image, id, quantity: rawQuantity } = product;
+  const { title, price, image, id, quantity: rawQuantity, pricing } = product;
   const quantity = rawQuantity ?? 0;
   const { addToCartHandler } = useCartActions();
   const priceFinal = Math.round(Number(price));
@@ -56,7 +57,7 @@ export const ProductCard = ({ product }: Props) => {
             {title}
           </h4>
 
-          <h4 className="text-xl font-bold">${priceFinal}</h4>
+          {pricing ? <PriceDisplay pricing={pricing} size={"small"} /> : null}
           <h5
             className={`text-lg font-bold ${
               quantity > 0 ? "" : "text-violet-400"

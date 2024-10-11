@@ -42,11 +42,11 @@ export type CartItemPlus = {
 //   };
 // }
 
-export const tranformCartItems = (items: CartItemLong[]) => {
+export const tranformCartItems = (items: CartItemPlus[]) => {
   return items.map((item) => ({
     price_data: {
       currency: "usd",
-      unit_amount: Math.floor(item.product.price) * 100,
+      unit_amount: Math.floor(Number(item.product.pricing?.price) ?? 1) * 100,
       product_data: {
         name: item.product.title,
         description: item.product.description,
@@ -80,10 +80,11 @@ export const getTotalAmount = (
 ) => {
   let total = 0;
   items?.forEach((item) => {
-    const itemTotal = item.quantity * Number(item.product.price);
+    const itemTotal =
+      item.quantity * Number(item?.product?.pricing?.price ?? 1);
     total += itemTotal;
   });
-  return total;
+  return total.toFixed(2);
 };
 
 // <CartItemCard

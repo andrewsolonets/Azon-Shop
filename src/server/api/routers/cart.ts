@@ -2,8 +2,8 @@ import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { db } from "~/server/db";
-import { eq, sql } from "drizzle-orm";
-import { cartItems, carts } from "~/server/db/schema";
+import { and, eq, gte, isNull, lte, or, sql } from "drizzle-orm";
+import { cartItems, carts, productPricings } from "~/server/db/schema";
 import { TRPCError } from "@trpc/server";
 
 // Utility function to find or create a cart for a user
@@ -28,11 +28,30 @@ export const cartRouter = createTRPCRouter({
   // Fetch cart items for the logged-in user
   getCartItems: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.userId;
-
+    const now = new Date();
     const items = await db.query.cartItems.findMany({
       where: eq(cartItems.userId, userId),
       with: {
-        product: true,
+        product: {
+          with: {
+            pricing: {
+              where: and(
+                or(
+                  isNull(productPricings.startDate),
+                  lte(productPricings.startDate, now),
+                ),
+                or(
+                  isNull(productPricings.endDate),
+                  gte(productPricings.endDate, now),
+                ),
+              ),
+              orderBy: (productPricings, { desc }) => [
+                desc(productPricings.startDate),
+              ],
+              limit: 1, // Select only one pricing
+            },
+          },
+        },
       },
     });
     // {
@@ -42,7 +61,20 @@ export const cartRouter = createTRPCRouter({
     //   cartId: cartItems.cartId,
     // }
 
-    return items;
+    return items?.map((item) => {
+      if (item?.product?.pricing?.length) {
+        // Transform pricing array to the first object
+        const [pricing] = item?.product?.pricing;
+        return {
+          ...item,
+          product: {
+            ...item.product,
+            pricing, // Assign the first pricing object
+          },
+        };
+      }
+      return item; // Return item without modification if no pricing exists
+    });
   }),
 
   // Fetch the user's cart

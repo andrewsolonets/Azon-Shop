@@ -1,9 +1,5 @@
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import MinusIcon from "public/img/MinusIcon";
-import PlusIcon from "public/img/PlusIcon";
-import { useState } from "react";
-import { toast } from "react-toastify";
+
 import { FeaturedList } from "~/app/_components/FeaturedList";
 import ProductBreadcrumb from "~/components/ProductBreadcrumb";
 import { QuantitywCart } from "~/components/QuantitywCart";
@@ -23,12 +19,12 @@ export default async function SingleProductPage({
   params: { id: string };
 }) {
   const featured = await getFeaturedProducts();
-
+  // console.log(featured);
   // const { addToCartHandler } = useCartActions();
 
   const item = await getProduct(Number(id));
   if (!item) return;
-  const { image, title, price, quantity, categoryId } = item;
+  const { title } = item;
 
   // return (
   //   <>
@@ -94,7 +90,7 @@ export default async function SingleProductPage({
           </Accordion>
         </div>
       </div>
-      <ProductReviews reviews={item.reviews} />
+      <ProductReviews reviews={item.reviews ?? []} />
       <FeaturedList items={featured} />
     </section>
   );

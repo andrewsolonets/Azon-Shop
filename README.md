@@ -135,6 +135,8 @@ Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/ver
 - [x] Use shadcn where reasonable
 - [x] Integrate Sentry for error tracking
 - [x] Algolia search
-- [ ] Discounts feature
+- [ ] Discounts feature: discount component
+- [ ] Discounts feature: use discounted price on checkout and cart
 - [ ] Quick buy feature w/ next.js modal setup
 - [ ] Product description use accordion shadcn
+- [ ] Add metadata to each route

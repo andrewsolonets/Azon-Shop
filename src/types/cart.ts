@@ -25,5 +25,5 @@ export type CartContext = {
   decreaseQuantity: (id: number) => void;
   deleteGuestItem: (id: number) => void;
   clearCart: () => void;
-  totalAmount: number;
+  totalAmount: string;
 };

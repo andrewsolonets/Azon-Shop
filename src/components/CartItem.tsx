@@ -13,9 +13,9 @@ type Props = {
 
 export const CartItemCard = ({ item }: Props) => {
   const { quantity } = item;
-  const { title, price, image } = item.product;
+  const { title, price, image, pricing } = item.product;
   const { removeItem, addToCartHandler, deleteOne } = useCartActions();
-  const finalPrice = Math.round(Number(price));
+  const finalPrice = Number(pricing?.price ?? 1).toFixed(2);
   return (
     <div className="flex h-32 min-h-[8rem] w-full items-center justify-between border-[3px] border-amber-400 bg-transparent px-2 md:justify-around md:px-0">
       <div className="flex h-full items-center gap-2 md:gap-6">
