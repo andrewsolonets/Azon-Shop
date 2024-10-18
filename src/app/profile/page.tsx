@@ -1,8 +1,13 @@
 import { SignedIn, SignOutButton, UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
+import { Metadata } from "next";
 import { useParams } from "next/navigation";
 import UserOrders from "~/components/UserOrders";
 import { db } from "~/server/db";
+
+export const metadata: Metadata = {
+  title: "Profile",
+};
 
 export default async function CustomerProfile() {
   const user = await currentUser();
