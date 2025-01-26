@@ -31,7 +31,10 @@ export const ProductCard = ({ product }: Props) => {
   const priceFinal = Math.round(Number(price));
   const avgRating = getAvgRating(product?.reviews ?? []);
   return (
-    <div className="mb-2 flex w-full min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-violet-600 drop-shadow-md md:w-60">
+    <div
+      data-cy="productCard"
+      className="mb-2 flex w-full min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-violet-600 drop-shadow-md md:w-60"
+    >
       <Link href={`/products/${id}`}>
         <div className="relative h-40 w-full object-cover">
           <Image
