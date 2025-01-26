@@ -131,6 +131,9 @@ Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/ver
 
 ## TODO
 
+- [ ] Implement e2e testing with Cypress
+- [ ] Quick buy feature w/ next.js modal setup
+- [ ] Add metadata to each route
 - [x] Move from Prizma to Drizzle ORM
 - [x] Migrate from pages to app router (next js)
 - [x] Use shadcn where reasonable
@@ -138,6 +141,4 @@ Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/ver
 - [x] Algolia search
 - [x] Discounts feature: discount component
 - [x] Discounts feature: use discounted price on checkout and cart
-- [ ] Quick buy feature w/ next.js modal setup
 - [x] Product description use accordion shadcn
-- [ ] Add metadata to each route
