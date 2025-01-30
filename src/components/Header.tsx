@@ -82,6 +82,7 @@ export const Header = () => {
         <ul className="relative flex items-center gap-6 md:gap-8">
           <li className="relative">
             <button
+              data-cy="open-cart-button"
               onClick={toggleCart}
               className="group"
               aria-label="Open Cart"

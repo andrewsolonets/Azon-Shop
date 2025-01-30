@@ -17,7 +17,10 @@ export const CartItemCard = ({ item }: Props) => {
   const { removeItem, addToCartHandler, deleteOne } = useCartActions();
   const finalPrice = Number(pricing?.price ?? 1).toFixed(2);
   return (
-    <div className="flex h-32 min-h-[8rem] w-full items-center justify-between border-[3px] border-amber-400 bg-transparent px-2 md:justify-around md:px-0">
+    <div
+      className="flex h-32 min-h-[8rem] w-full items-center justify-between border-[3px] border-amber-400 bg-transparent px-2 md:justify-around md:px-0"
+      data-cy="cart-item"
+    >
       <div className="flex h-full items-center gap-2 md:gap-6">
         <div className="flex flex-col items-start justify-center gap-4">
           <button
@@ -59,6 +62,7 @@ export const CartItemCard = ({ item }: Props) => {
       <button
         className="flex h-8 w-8 items-center justify-center rounded-sm bg-amber-400 transition-all duration-300 hover:bg-violet-600"
         onClick={() => removeItem(item.id)}
+        data-cy="remove-cart-item"
       >
         <CrossIcon className="fill-violet-600 transition-all duration-300 hover:fill-amber-400" />
       </button>

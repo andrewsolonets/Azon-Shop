@@ -65,9 +65,6 @@ importers:
       '@trpc/server':
         specifier: ^11.0.0-rc.446
         version: 11.0.0-rc.532
-      '@vercel/postgres':
-        specifier: ^0.10.0
-        version: 0.10.0
       algoliasearch:
         specifier: ^5.7.0
         version: 5.7.0
@@ -4911,6 +4908,7 @@ snapshots:
   '@neondatabase/serverless@0.9.5':
     dependencies:
       '@types/pg': 8.11.6
+    optional: true
 
   '@next/env@14.2.13': {}
 
@@ -5708,6 +5706,7 @@ snapshots:
       '@types/node': 20.16.9
       pg-protocol: 1.7.0
       pg-types: 4.0.2
+    optional: true
 
   '@types/pg@8.6.1':
     dependencies:
@@ -5827,6 +5826,7 @@ snapshots:
       ws: 8.18.0(bufferutil@4.0.8)
     transitivePeerDependencies:
       - utf-8-validate
+    optional: true
 
   '@webassemblyjs/ast@1.12.1':
     dependencies:
@@ -6144,6 +6144,7 @@ snapshots:
   bufferutil@4.0.8:
     dependencies:
       node-gyp-build: 4.8.2
+    optional: true
 
   busboy@1.6.0:
     dependencies:
@@ -7611,7 +7612,8 @@ snapshots:
     dependencies:
       whatwg-url: 5.0.0
 
-  node-gyp-build@4.8.2: {}
+  node-gyp-build@4.8.2:
+    optional: true
 
   node-releases@2.0.18: {}
 
@@ -8624,6 +8626,7 @@ snapshots:
   ws@8.18.0(bufferutil@4.0.8):
     optionalDependencies:
       bufferutil: 4.0.8
+    optional: true
 
   xtend@4.0.2: {}
 
