@@ -5,15 +5,16 @@ import * as dotenv from "dotenv";
 // import { env } from "~/env";
 import pg from "pg";
 import { algoliasearch } from "algoliasearch";
-import { env } from "~/env";
 
 const { Pool } = pg;
 dotenv.config({ path: "./.env" });
+
 const client = algoliasearch(
-  env.NEXT_PUBLIC_ALGOLIA_APP_ID,
-  env.ADMIN_ALGOLIA_KEY,
+  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID ?? "",
+  process.env.ADMIN_ALGOLIA_KEY ?? "",
 );
-const pool = new Pool({ connectionString: env.POSTGRES_URL });
+
+const pool = new Pool({ connectionString: process.env.POSTGRES_URL });
 const main = async () => {
   const db = drizzle(pool);
   try {

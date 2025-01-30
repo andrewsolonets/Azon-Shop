@@ -76,6 +76,10 @@ Once you've completed the setup for Algolia and added the necessary environment 
 ```
 
 ```bash
+ npm run db:pricingSeed
+```
+
+```bash
  npm run db:ratingsSeed
 ```
 
@@ -132,6 +136,8 @@ Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/ver
 ## TODO
 
 - [ ] Implement e2e testing with Cypress
+  - [ ] Write tests for the navigation bar
+  - [ ] Test adding a product to the cart.
 - [ ] Quick buy feature w/ next.js modal setup
 - [ ] Add metadata to each route
 - [x] Move from Prizma to Drizzle ORM

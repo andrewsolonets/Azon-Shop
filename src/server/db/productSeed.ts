@@ -1,4 +1,3 @@
-import { sql } from "@vercel/postgres";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { categories, products } from "./schema";
 import { faker } from "@faker-js/faker";
