@@ -28,25 +28,30 @@ export const useCartActions = () => {
   const increaseQuantity = api.cart.increaseQuantity.useMutation({
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    async onMutate(el: { item: CartItem; quantity: number }) {
+    async onMutate(el: { itemId: number; quantity: number }) {
       await utils.cart.getCartItems.cancel();
       const prevData = utils.cart.getCartItems.getData();
+      console.log(prevData);
       //@ts-ignore
       utils.cart.getCartItems.setData(undefined, (old) => {
         if (!old) return;
+        console.log(old, el);
         return old.map(
           //@ts-ignore
-          (oldCart: {
+          (oldCartItem: {
             cart: CartModel;
             product: ProductWithRelations;
             id: number;
             quantity: number;
             cartId: number;
           }) => {
-            if (oldCart.id === el.item.id) {
-              return { ...oldCart, quantity: oldCart.quantity + el.quantity };
+            if (oldCartItem.id === el.itemId) {
+              return {
+                ...oldCartItem,
+                quantity: oldCartItem.quantity + el.quantity,
+              };
             } else {
-              return oldCart;
+              return oldCartItem;
             }
           },
         );
@@ -55,6 +60,7 @@ export const useCartActions = () => {
       return { prevData };
     },
     onError(err, newPost, ctx) {
+      console.log(err);
       // If the mutation fails, use the context-value from onMutate
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
@@ -211,14 +217,15 @@ export const useCartActions = () => {
       return data.product.id === item.id;
     });
     if (existing) {
-      return increaseQuantity.mutate({ itemId: existing.id, quantity });
+      console.log(existing, "EXISTING", { itemId: existing.id, quantity });
+      increaseQuantity.mutate({ itemId: existing.id, quantity });
     } else {
+      toast.success("Added to cart");
       return addNewToCart.mutate({ item, quantity });
     }
   };
 
   const addToCartHandler = (el: ProductWithRelations, quantity: number) => {
-    toast.success("Added to cart");
     if (!userId) return addItemsGuest(el, quantity);
     addToCartRegulator({ item: el, quantity });
   };

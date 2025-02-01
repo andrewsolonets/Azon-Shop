@@ -5,7 +5,7 @@ import { useCartActions } from "../hooks/useCartActions";
 import { CartItemCard } from "./CartItem";
 import { useCart } from "../context/CartContext";
 import { api } from "~/trpc/react";
-import { ArrowBtn, OutlineBtn } from "./ui/Buttons";
+import { ArrowButton, OutlineBtn } from "./ui/Buttons";
 import { CartItemGuest } from "~/types/cart";
 import { CartItemPlus } from "~/utils/helpers";
 
@@ -36,7 +36,7 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
           <div className="flex items-center justify-between gap-8">
             <div className="flex items-center gap-2">
               <h4 className="text-2xl font-medium">My Basket</h4>
-              <p className="">(items)</p>
+              <p className="">({cartItems?.length ?? 0} items)</p>
             </div>
             <div className="flex items-center gap-4">
               {cartItems?.length ? (
@@ -58,13 +58,13 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
             })}
           </div>
         </div>
-        <div className="flex h-1/6 w-full justify-between justify-self-end bg-violet-900 px-4 py-4 md:px-8 md:py-6">
+        <div className="flex w-full items-center justify-between justify-self-end bg-violet-900 px-4 py-4 md:px-8 md:py-6">
           <div className="flex flex-col gap-2">
             <h6 className="font-medium">Subtotal Amount:</h6>
             <h6 className="text-2xl font-semibold">${totalAmount}</h6>
           </div>
 
-          <ArrowBtn
+          <ArrowButton
             onClick={() =>
               createCheckOutSession(
                 //@ts-expect-error cart items type error
@@ -73,7 +73,7 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
             }
           >
             Checkout
-          </ArrowBtn>
+          </ArrowButton>
         </div>
       </div>
     </div>

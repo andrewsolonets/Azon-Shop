@@ -58,12 +58,12 @@ export const OutlineBtn = ({ children, onClick, ...rest }: Props) => {
   );
 };
 
-export const ArrowBtn = ({ children, onClick, ...rest }: Props) => {
+export const ArrowButton = ({ children, onClick, ...rest }: Props) => {
   return (
     <button
       onClick={onClick}
       aria-label={children}
-      className="group flex w-fit items-center gap-2 rounded-lg bg-amber-400 px-6 py-1 text-xl font-bold text-violet-700 transition-all duration-300 hover:bg-violet-700 hover:text-amber-400 md:px-8 md:py-3 md:text-2xl"
+      className="group flex h-fit w-fit items-center gap-2 rounded-lg bg-amber-400 px-6 py-3 text-xl font-bold text-violet-700 transition-all duration-300 hover:bg-violet-700 hover:text-amber-400 md:px-8 md:py-3 md:text-2xl"
       {...rest}
     >
       {children}
