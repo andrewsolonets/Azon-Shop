@@ -9,7 +9,7 @@ interface SearchItemProps {
 
 export function SearchItem({ hit, components }: SearchItemProps) {
   return (
-    <div className="aa-ItemContent">
+    <div data-cy="search-item" className="aa-ItemContent">
       <div className="aa-ItemTitle">
         {components.Highlight ? (
           <components.Highlight

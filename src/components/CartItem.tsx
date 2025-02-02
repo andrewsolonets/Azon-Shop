@@ -25,16 +25,19 @@ export const CartItemCard = ({ item }: Props) => {
         <div className="flex flex-col items-start justify-center gap-4">
           <button
             className="h-7 w-7"
+            data-cy="increase-quantity"
             aria-label="Increase quantity"
             onClick={() => addToCartHandler(item.product, 1)}
           >
             <PlusIcon className="fill-amber-400 transition-all duration-300 hover:fill-violet-400" />
           </button>
-          <button className="h-7 w-7" onClick={() => deleteOne(item)}>
-            <MinusIcon
-              aria-label="Decrease quantity"
-              className="fill-amber-400 transition-all duration-300 hover:fill-violet-400"
-            />
+          <button
+            data-cy="decrease-quantity"
+            className="h-7 w-7"
+            aria-label="Decrease quantity"
+            onClick={() => deleteOne(item)}
+          >
+            <MinusIcon className="fill-amber-400 transition-all duration-300 hover:fill-violet-400" />
           </button>
         </div>
         <div className="relative h-24 w-24 object-cover object-center md:h-full md:w-28">
@@ -55,10 +58,15 @@ export const CartItemCard = ({ item }: Props) => {
         <h6 className="text-center text-lg font-medium">{title}</h6>
         <div className="flex items-center gap-1 text-sm">
           Quantity:
-          <span className="text-lg font-medium text-amber-400">{quantity}</span>
+          <span
+            data-cy="quantity-label"
+            className="text-lg font-medium text-amber-400"
+          >
+            {quantity}
+          </span>
         </div>
       </div>
-      <p>${finalPrice}</p>
+      <p data-cy="price-label">${finalPrice}</p>
       <button
         className="flex h-8 w-8 items-center justify-center rounded-sm bg-amber-400 transition-all duration-300 hover:bg-violet-600"
         onClick={() => removeItem(item.id)}

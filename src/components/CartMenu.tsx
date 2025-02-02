@@ -61,10 +61,13 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
         <div className="flex w-full items-center justify-between justify-self-end bg-violet-900 px-4 py-4 md:px-8 md:py-6">
           <div className="flex flex-col gap-2">
             <h6 className="font-medium">Subtotal Amount:</h6>
-            <h6 className="text-2xl font-semibold">${totalAmount}</h6>
+            <h6 data-cy="subtotal" className="text-2xl font-semibold">
+              ${totalAmount}
+            </h6>
           </div>
 
           <ArrowButton
+            data-cy="checkout-button"
             onClick={() =>
               createCheckOutSession(
                 //@ts-expect-error cart items type error

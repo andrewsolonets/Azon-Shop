@@ -49,6 +49,7 @@ export function Autocomplete(props: AutocompleteProps): ReactElement {
   return (
     <div
       ref={containerRef}
+      data-cy="search-box"
       className="w-fit flex-grow overflow-hidden bg-transparent text-violet-200"
     />
   );

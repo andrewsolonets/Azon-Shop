@@ -1,4 +1,7 @@
 /// <reference types="cypress" />
+
+import { useCartActions } from "~/hooks/useCartActions";
+
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
