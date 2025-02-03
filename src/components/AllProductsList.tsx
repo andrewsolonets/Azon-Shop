@@ -31,7 +31,10 @@ export default function AllProductsList() {
       <section className="mt-12 h-fit px-4 py-4 md:px-8">
         <div className="relative flex w-full flex-col">
           <h2 className="mb-8 text-3xl font-bold">All Products</h2>
-          <div className="grid auto-cols-max grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
+          <div
+            data-cy="product-grid"
+            className="grid auto-cols-max grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4"
+          >
             {data?.pages.map((page) => (
               <Fragment key={page.nextCursor}>
                 {page.items.map((item) => (
