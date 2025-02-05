@@ -19,8 +19,10 @@ describe("Header Navigation", () => {
   });
 
   NAV_LINKS.forEach(({ text, href }) => {
-    if (href === "/") return;
     it(`navigates to ${text} page via "${text}" link`, () => {
+      if (href === "/") {
+        cy.visit("/categories");
+      }
       // Find link by exact text within header navigation
       cy.get("header nav")
         .find("a")
