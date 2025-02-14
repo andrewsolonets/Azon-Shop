@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 import { useCartActions } from "~/hooks/useCartActions";
+import { addClerkCommands } from "@clerk/testing/cypress";
 
 // ***********************************************
 // This example commands.ts shows you how to
@@ -47,6 +48,7 @@ import { useCartActions } from "~/hooks/useCartActions";
 //   }
 // }
 
+addClerkCommands({ Cypress, cy });
 export {};
 
 declare global {

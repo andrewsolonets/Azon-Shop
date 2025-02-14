@@ -85,6 +85,7 @@ export const ReviewForm = ({
   return (
     <Form {...form}>
       <form
+        data-cy="review-form"
         onSubmit={form.handleSubmit(onSubmit)}
         className="relative flex w-full flex-col items-center gap-7 self-center py-2 md:w-1/2"
         // onSubmit={submitCallback}
@@ -126,7 +127,7 @@ export const ReviewForm = ({
 
         <div className="flex gap-4 text-xl text-gray-300">
           <h6>Rating</h6>
-          <div className="w-36">
+          <div data-cy="rating-container" className="w-36">
             <Rating
               value={rating}
               onChange={setRating}
