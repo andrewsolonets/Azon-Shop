@@ -33,10 +33,13 @@ export const ProductCard = ({ product }: Props) => {
   return (
     <div
       data-cy="productCard"
-      className="relative mb-2 flex min-h-[26rem] w-full min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-violet-600 drop-shadow-md md:w-60"
+      className="relative flex min-h-[30rem] w-full min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-violet-600 drop-shadow-md md:w-60"
     >
-      <Link href={`/products/${id}`}>
-        <div className="relative h-1/4 min-h-40 w-full object-cover">
+      <Link
+        className="mb-2 h-1/2 min-h-[14rem] w-full"
+        href={`/products/${id}`}
+      >
+        <div className="relative h-full min-h-[14rem] w-full object-cover">
           <Image
             // changed image to static for data saving
             // src={image}
@@ -51,7 +54,7 @@ export const ProductCard = ({ product }: Props) => {
           />
         </div>
       </Link>
-      <div className="flex w-full flex-1 flex-col items-center justify-end gap-4 px-3 py-4">
+      <div className="flex h-1/2 w-full flex-1 flex-col items-center justify-end gap-2 px-3 py-4">
         <Link
           href={`/products/${id}`}
           className="flex w-full flex-col items-center justify-end gap-2"
