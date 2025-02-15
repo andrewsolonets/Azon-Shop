@@ -13,6 +13,61 @@ describe("Header Structure", () => {
   });
 });
 
+describe("Mobile version", () => {
+  beforeEach(() => {
+    cy.visit("/");
+    cy.viewport("iphone-xr");
+  });
+
+  it("displays basic header structure", () => {
+    cy.get("header").should("be.visible");
+    cy.getDataCy("header-logo").should("contain", "Azon");
+    cy.getDataCy("search-box").should("be.visible");
+    cy.getDataCy("cart-button").should("be.visible");
+    cy.getDataCy("mobile-menu-button").should("be.visible");
+  });
+
+  it("mobile menu opens and closes", () => {
+    cy.getDataCy("mobile-menu-button").click();
+    cy.getDataCy("mobile-menu-close").should("be.visible");
+  });
+});
+
+describe("Mobile Menu Navigation", () => {
+  beforeEach(() => {
+    cy.visit("/");
+    cy.viewport("iphone-xr");
+    cy.getDataCy("mobile-menu-button").click();
+  });
+  NAV_LINKS.forEach(({ text, href }) => {
+    it(`navigates to ${text} page via "${text}" link`, () => {
+      if (href === "/") {
+        cy.visit("/categories");
+        cy.getDataCy("mobile-menu-button").click();
+      }
+      // Find link by exact text within header navigation
+      cy.getDataCy("mobile-nav-links")
+        .find("a")
+        .contains(new RegExp(`^${text}$`, "i")) // Case-insensitive exact match
+        .should("have.attr", "href", href)
+        .click();
+
+      // Verify navigation
+      cy.location("pathname").should("eq", href);
+
+      // Page-specific content checks
+      switch (text) {
+        case "Categories":
+          cy.getDataCy("category-list").should("be.visible");
+          break;
+        case "All products":
+          cy.getDataCy("product-grid").should("be.visible");
+          break;
+      }
+    });
+  });
+});
+
 describe("Header Navigation", () => {
   beforeEach(() => {
     cy.visit("/");
