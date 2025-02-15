@@ -3,6 +3,7 @@
 import { useAuth } from "@clerk/nextjs";
 import { randomUUID } from "crypto";
 import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { CartMenu } from "~/components/CartMenu";
 import { useCartActions } from "~/hooks/useCartActions";
 import useLocalStorage from "~/hooks/useLocalStorage";
@@ -78,6 +79,8 @@ export function CartProvider({ children }: CartProviderProps) {
   };
 
   const increaseQuantity = (item: ProductWithRelations, quantity: number) => {
+    if (!cartItems.some((el) => el.product.id === item.id))
+      toast.success("Added to cart");
     return setCartItems((currItems) => {
       if (currItems.find((el) => el.product.id === item.id) == null) {
         return [
