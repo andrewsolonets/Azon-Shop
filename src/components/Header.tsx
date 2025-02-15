@@ -17,12 +17,8 @@ import { api } from "~/trpc/react";
 import Search from "./Search/Search";
 import { HamburgerMenuIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { useEffect, useRef, useState } from "react";
+import { NAV_LINKS } from "~/utils/constants";
 
-const LINKS: { text: string; href: string }[] = [
-  { text: "Home", href: "/" },
-  { text: "Categories", href: "/categories" },
-  { text: "All products", href: "/products" },
-];
 // TODO: use client component only when needed - move client side parts to separate comps.
 
 const MobileMenu = () => {
@@ -58,6 +54,7 @@ const MobileMenu = () => {
   return (
     <div className="h-7 w-7" ref={menuRef}>
       <button
+        data-cy="mobile-menu-button"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         className="text-amber-400 hover:text-violet-400"
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -66,18 +63,22 @@ const MobileMenu = () => {
       </button>
 
       <div
+        data-cy="mobile-menu"
         className={cn(
           "fixed inset-0 z-50 h-screen w-full bg-violet-800/95 backdrop-blur-lg",
           "transition-all duration-300 ease-in-out",
           "transform-gpu",
           isMenuOpen
             ? "translate-x-0 opacity-100"
-            : "translate-x-full opacity-0",
+            : "hidden translate-x-full opacity-0",
         )}
         style={{ pointerEvents: isMenuOpen ? "auto" : "none" }}
       >
-        <div className="flex h-full flex-col items-center justify-center space-y-8">
-          {LINKS.map((link) => (
+        <div
+          data-cy="mobile-nav-links"
+          className="flex h-full flex-col items-center justify-center space-y-8"
+        >
+          {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -93,6 +94,7 @@ const MobileMenu = () => {
           ))}
 
           <button
+            data-cy="mobile-menu-close"
             onClick={() => setIsMenuOpen(false)}
             className="absolute right-6 top-6 text-amber-400 hover:text-violet-400"
             aria-label="Close menu"
@@ -109,7 +111,7 @@ const NavMain = () => {
 
   return (
     <ul className="hidden items-center gap-10 md:flex">
-      {LINKS.map((link) => (
+      {NAV_LINKS.map((link) => (
         <li key={link.href}>
           <Link
             href={link.href}
@@ -152,7 +154,10 @@ export const Header = () => {
   return (
     <header className="drop-shadow-header sticky left-0 right-0 top-0 z-20 flex items-center justify-between gap-6 border-b border-violet-800/10 bg-violet-800/30 px-4 py-4 font-medium backdrop-blur-lg md:justify-start md:gap-10 md:px-10">
       <Link href="/">
-        <h3 className="text-2xl font-bold text-amber-400 transition-all duration-300 hover:text-violet-400">
+        <h3
+          data-cy="header-logo"
+          className="text-2xl font-bold text-amber-400 transition-all duration-300 hover:text-violet-400"
+        >
           Azon
         </h3>
       </Link>
@@ -163,7 +168,7 @@ export const Header = () => {
         <ul className="relative flex items-center gap-6 md:gap-8">
           <li className="relative">
             <button
-              data-cy="open-cart-button"
+              data-cy="cart-button"
               onClick={toggleCart}
               className="group"
               aria-label="Open Cart"
