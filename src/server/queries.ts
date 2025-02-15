@@ -8,7 +8,6 @@ import {
   ProductWithRelations,
   reviews,
 } from "./db/schema";
-import { toast } from "react-toastify";
 
 export type ReviewItem = {
   productId: number;

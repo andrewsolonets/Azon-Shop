@@ -21,7 +21,7 @@ export const CartMenu = ({ isOpen }: { isOpen: boolean }) => {
     <div
       data-cy="cart-menu"
       className={`${
-        isOpen ? "" : "translate-x-full"
+        isOpen ? "" : "hidden translate-x-full"
       } animate fixed bottom-0 top-0 z-50 flex h-screen w-screen justify-end duration-500 ease-out`}
     >
       <div

@@ -54,6 +54,7 @@ const MobileMenu = () => {
   return (
     <div className="h-7 w-7" ref={menuRef}>
       <button
+        data-cy="mobile-menu-button"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         className="text-amber-400 hover:text-violet-400"
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -62,17 +63,21 @@ const MobileMenu = () => {
       </button>
 
       <div
+        data-cy="mobile-menu"
         className={cn(
           "fixed inset-0 z-50 h-screen w-full bg-violet-800/95 backdrop-blur-lg",
           "transition-all duration-300 ease-in-out",
           "transform-gpu",
           isMenuOpen
             ? "translate-x-0 opacity-100"
-            : "translate-x-full opacity-0",
+            : "hidden translate-x-full opacity-0",
         )}
         style={{ pointerEvents: isMenuOpen ? "auto" : "none" }}
       >
-        <div className="flex h-full flex-col items-center justify-center space-y-8">
+        <div
+          data-cy="mobile-nav-links"
+          className="flex h-full flex-col items-center justify-center space-y-8"
+        >
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
@@ -89,6 +94,7 @@ const MobileMenu = () => {
           ))}
 
           <button
+            data-cy="mobile-menu-close"
             onClick={() => setIsMenuOpen(false)}
             className="absolute right-6 top-6 text-amber-400 hover:text-violet-400"
             aria-label="Close menu"
