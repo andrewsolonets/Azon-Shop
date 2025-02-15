@@ -140,7 +140,7 @@ Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/ver
   - [x] Test adding a product to the cart.
   - [ ] Test FeaturedList component
   - [ ] Test Infinite loading in "all products"
-  - [ ] Test mobile menu
+  - [x] Test mobile menu
   - [ ] Single product page
     - [ ] Test Quantity buttons
     - [ ] Test Description and Key benefits

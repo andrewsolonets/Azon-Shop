@@ -33,7 +33,7 @@ export default function AllProductsList() {
           <h2 className="mb-8 text-3xl font-bold">All Products</h2>
           <div
             data-cy="product-grid"
-            className="grid auto-cols-max grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4"
+            className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
           >
             {data?.pages.map((page) => (
               <Fragment key={page.nextCursor}>
