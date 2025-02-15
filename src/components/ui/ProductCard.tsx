@@ -33,10 +33,10 @@ export const ProductCard = ({ product }: Props) => {
   return (
     <div
       data-cy="productCard"
-      className="mb-2 flex w-full min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-violet-600 drop-shadow-md md:w-60"
+      className="relative mb-2 flex min-h-[26rem] w-full min-w-[15rem] snap-center flex-col justify-between rounded-lg bg-violet-600 drop-shadow-md md:w-60"
     >
       <Link href={`/products/${id}`}>
-        <div className="relative h-40 w-full object-cover">
+        <div className="relative h-1/4 min-h-40 w-full object-cover">
           <Image
             // changed image to static for data saving
             // src={image}
@@ -51,7 +51,7 @@ export const ProductCard = ({ product }: Props) => {
           />
         </div>
       </Link>
-      <div className="flex w-full flex-col items-center justify-end gap-4 px-3 py-4">
+      <div className="flex w-full flex-1 flex-col items-center justify-end gap-4 px-3 py-4">
         <Link
           href={`/products/${id}`}
           className="flex w-full flex-col items-center justify-end gap-2"
@@ -61,30 +61,30 @@ export const ProductCard = ({ product }: Props) => {
           </h4>
 
           {pricing ? <PriceDisplay pricing={pricing} size={"small"} /> : null}
-          <h5
-            className={`text-lg font-bold ${
-              quantity > 0 ? "" : "text-violet-400"
-            }`}
-          >{`${quantity > 0 ? "In stock" : "Out of stock"}`}</h5>
+          <p
+            className={`font-bold ${quantity > 0 ? "" : "text-violet-400"}`}
+          >{`${quantity > 0 ? "In stock" : "Out of stock"}`}</p>
         </Link>
-        <div className="flex justify-center gap-2">
-          <div className="w-28">
-            <Rating
-              value={avgRating ? avgRating : 4}
-              itemStyles={RatingStyles}
-              readOnly
-            />
+        <div className="mt-auto w-full">
+          <div className="mb-4 flex justify-center gap-2">
+            <div className="w-28">
+              <Rating
+                value={avgRating ? avgRating : 4}
+                itemStyles={RatingStyles}
+                readOnly
+              />
+            </div>
+            <span>({product?.reviews?.length})</span>
           </div>
-          <span>({product?.reviews?.length})</span>
-        </div>
 
-        <div className="w-full">
-          <ButtonRegular
-            onClick={() => addToCartHandler(product, 1)}
-            disabled={quantity < 1}
-          >
-            Add to Cart
-          </ButtonRegular>
+          <div className="w-full">
+            <ButtonRegular
+              onClick={() => addToCartHandler(product, 1)}
+              disabled={quantity < 1}
+            >
+              Add to Cart
+            </ButtonRegular>
+          </div>
         </div>
       </div>
     </div>
