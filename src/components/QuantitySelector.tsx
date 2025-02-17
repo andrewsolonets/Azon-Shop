@@ -26,14 +26,18 @@ export const QuantitySelector = ({
         value={quantity.toString()}
       >
         <span className="mb-1 block">Quantity</span>
-        <SelectTrigger>
+        <SelectTrigger data-cy="select-trigger">
           <SelectValue placeholder="Select quantity" />
         </SelectTrigger>
         <SelectContent>
           {Array.from(Array(available).keys()).map((i) => {
             const num = i + 1;
             return (
-              <SelectItem key={num} value={num.toString()}>
+              <SelectItem
+                data-cy="select-item"
+                key={num}
+                value={num.toString()}
+              >
                 {num}
               </SelectItem>
             );

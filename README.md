@@ -142,7 +142,7 @@ Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/ver
   - [ ] Test Infinite loading in "all products"
   - [x] Test mobile menu
   - [ ] Single product page
-    - [ ] Test Quantity buttons
+    - [x] Test Quantity buttons
     - [ ] Test Description and Key benefits
 - [ ] Quick buy feature w/ next.js modal setup
 - [ ] Add metadata to each route
