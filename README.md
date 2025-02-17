@@ -138,12 +138,9 @@ Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/ver
 - [ ] Implement e2e testing with Cypress
   - [x] Write tests for the navigation bar
   - [x] Test adding a product to the cart.
-  - [ ] Test FeaturedList component
-  - [ ] Test Infinite loading in "all products"
   - [x] Test mobile menu
-  - [ ] Single product page
-    - [ ] Test Quantity buttons
-    - [ ] Test Description and Key benefits
+  - [x] Single product page
+    - [x] Test Quantity buttons
 - [ ] Quick buy feature w/ next.js modal setup
 - [ ] Add metadata to each route
 - [x] Move from Prizma to Drizzle ORM

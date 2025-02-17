@@ -4,6 +4,15 @@ describe("Product page", () => {
     cy.visit("/products/1");
   });
 
+  it("should render initial quantity correctly", () => {
+    cy.getDataCy("select-trigger").should("contain", "1");
+  });
+
+  it("should display correct number of options based on available stock", () => {
+    cy.getDataCy("select-trigger").click();
+    cy.getDataCy("select-item").should("have.length", 47);
+  });
+
   it("Should add review", () => {
     cy.intercept("POST", "/api/sendReview", (req) => {
       // Get the raw request body
