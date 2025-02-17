@@ -78,7 +78,6 @@ export const ReviewForm = ({
 
     setIsOpen(false);
     console.log(values);
-    toast.success("Review submitted successfuly!");
 
     form.reset();
   }
