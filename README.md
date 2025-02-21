@@ -14,6 +14,7 @@ E-commerce website built with the modern t3-stack (typescript, drizzle, trpc, ne
 - Authentication w/ Clerk
 - Algolia Autocomplete search
 - Product discounts and price history
+- E2E tests w/ Cypress
 
 ## Migration from pages to app router
 
