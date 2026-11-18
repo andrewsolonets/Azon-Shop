@@ -43,17 +43,10 @@ export type CartItemPlus = {
 // }
 
 export const tranformCartItems = (items: CartItemPlus[]) => {
+  // Send only product identity and quantity. Prices are resolved
+  // server-side so the amount charged cannot be set by the client.
   return items.map((item) => ({
-    price_data: {
-      currency: "usd",
-      unit_amount: Math.floor(Number(item.product.pricing?.price) ?? 1) * 100,
-      product_data: {
-        name: item.product.title,
-        description: item.product.description,
-        // images: item?.product?.image ? [item.product.image] : null,
-      },
-    },
-
+    id: item.product.id,
     quantity: item.quantity,
   }));
 };

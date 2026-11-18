@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
+import { z } from "zod";
+import { and, gte, inArray, isNull, lte, or } from "drizzle-orm";
 import { env } from "~/env";
+import { db } from "~/server/db";
+import { productPricings, products } from "~/server/db/schema";
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   // https://github.com/stripe/stripe-node#configuration
@@ -12,8 +14,14 @@ const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: "2022-11-15",
 });
 
+const checkoutInput = z.array(
+  z.object({
+    id: z.number().int().positive(),
+    quantity: z.number().int().positive(),
+  }),
+);
+
 export async function POST(req: NextRequest) {
-  const transformedItems = await req.json();
   const { userId } = auth();
 
   const origin = req.headers.get("origin"); // Access the origin header
@@ -22,8 +30,63 @@ export async function POST(req: NextRequest) {
     throw new Error("Origin header is missing");
   }
 
+  const parsed = checkoutInput.safeParse(await req.json());
+  if (!parsed.success || parsed.data.length === 0) {
+    return NextResponse.json(
+      { statusCode: 400, message: "Invalid cart payload" },
+      { status: 400 },
+    );
+  }
+
   try {
-    // Validate the amount that was passed from the client.
+    // Derive line items from authoritative server-side pricing. The amounts are
+    // never read from the request body so a client cannot alter what is charged.
+    const now = new Date();
+    const productRecords = await db.query.products.findMany({
+      where: inArray(
+        products.id,
+        parsed.data.map((item) => item.id),
+      ),
+      with: {
+        pricing: {
+          where: and(
+            or(
+              isNull(productPricings.startDate),
+              lte(productPricings.startDate, now),
+            ),
+            or(
+              isNull(productPricings.endDate),
+              gte(productPricings.endDate, now),
+            ),
+          ),
+          orderBy: (productPricings, { desc }) => [
+            desc(productPricings.startDate),
+          ],
+          limit: 1,
+        },
+      },
+    });
+
+    const line_items = parsed.data.map((item) => {
+      const product = productRecords.find((record) => record.id === item.id);
+      const price = product?.pricing?.[0]?.price;
+      if (!product || price === null || price === undefined) {
+        throw new Error("Invalid product in cart");
+      }
+
+      return {
+        price_data: {
+          currency: "usd",
+          unit_amount: Math.round(Number(price) * 100),
+          product_data: {
+            name: product.title ?? "Product",
+            description: product.description ?? undefined,
+          },
+        },
+        quantity: item.quantity,
+      };
+    });
+
     // Create Checkout Sessions from body params.
     const params: Stripe.Checkout.SessionCreateParams = {
       payment_method_types: ["card"],
@@ -40,7 +103,7 @@ export async function POST(req: NextRequest) {
           },
         },
       ],
-      line_items: transformedItems,
+      line_items,
       mode: "payment",
       success_url: `${origin}/?status=success`,
       cancel_url: `${origin}/?status=cancel`,
